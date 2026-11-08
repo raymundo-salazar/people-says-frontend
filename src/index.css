@@ -1,4 +1,12 @@
 @import "tailwindcss";
-@theme { --font-sans: Inter, ui-sans-serif, system-ui, sans-serif; }
-body { @apply min-w-[320px] bg-stone-50 text-stone-900 antialiased; }
-button, input, select { font: inherit; }
+@theme {
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+body {
+  @apply min-w-[320px] bg-stone-50 text-stone-900 antialiased;
+}
+button,
+input,
+select {
+  font: inherit;
+}

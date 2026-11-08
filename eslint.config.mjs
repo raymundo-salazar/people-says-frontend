@@ -10,8 +10,11 @@ export default tseslint.config(
     languageOptions: { ecmaVersion: "latest", globals: globals.browser },
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
       "eol-last": ["error", "always"],
     },
-  },
+  }
 )
