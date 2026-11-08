@@ -66,6 +66,7 @@ export default function App() {
     { name: "Equipo Rojo", color: "red", players: ["Sofía", "Pedro"] },
   ])
   const [rounds, setRounds] = useState([10, 8, 6, 5, 4])
+  const [multipliers, setMultipliers] = useState([1, 1, 1, 1, 1])
   const [roomCode, setRoomCode] = useState(
     () => localStorage.getItem("people-says-room-code") ?? ""
   )
@@ -73,9 +74,11 @@ export default function App() {
     () => localStorage.getItem("people-says-host-token") ?? ""
   )
   const [joinCode, setJoinCode] = useState("")
+  const [stealIndex, setStealIndex] = useState(0)
   const [devices, setDevices] = useState<Array<{ role: string }>>([])
   const [error, setError] = useState("")
-  const answers = state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
+  const answers =
+    state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
   const blue = state.scores?.blue ?? 0
   const red = state.scores?.red ?? 0
@@ -114,7 +117,10 @@ export default function App() {
         body: JSON.stringify({
           mode,
           name: "Noche de amigos",
-          rounds: rounds.map((answerCount) => ({ answerCount, multiplier: 1 })),
+          rounds: rounds.map((answerCount, index) => ({
+            answerCount,
+            multiplier: multipliers[index] as 1 | 2 | 3,
+          })),
           teams,
         }),
       })
@@ -146,6 +152,25 @@ export default function App() {
     }
     setState((await response.json()).state)
     setScreen("rounds")
+  }
+  const saveRounds = async () => {
+    if (!validRounds) return
+    const response = await fetch(`${api}/api/rooms/${roomCode}/rounds`, {
+      method: "PATCH",
+      headers: { "content-type": "application/json", "x-host-token": hostToken },
+      body: JSON.stringify({
+        rounds: rounds.map((answerCount, index) => ({
+          answerCount,
+          multiplier: multipliers[index],
+        })),
+      }),
+    })
+    if (!response.ok) {
+      setError("No se pudo guardar la configuración de rondas")
+      return
+    }
+    setState((await response.json()).state)
+    setScreen("lobby")
   }
   const start = () => {
     emitAction({ type: "start" })
@@ -331,6 +356,19 @@ export default function App() {
                   className="w-full rounded-xl border border-stone-200 px-3 py-2"
                 />
                 <span className="text-sm text-stone-500">respuestas</span>
+                <select
+                  value={multipliers[index]}
+                  onChange={(e) =>
+                    setMultipliers((old) =>
+                      old.map((item, i) => (i === index ? Number(e.target.value) : item))
+                    )
+                  }
+                  className="rounded-xl border border-stone-200 px-2 py-2 text-sm"
+                >
+                  <option value="1">x1</option>
+                  <option value="2">x2</option>
+                  <option value="3">x3</option>
+                </select>
               </div>
             ))}
           </div>
@@ -339,7 +377,7 @@ export default function App() {
               Las rondas deben estar entre 4 y 10 y ser descendentes.
             </p>
           )}
-          <Button className="mt-6" onClick={() => validRounds && setScreen("lobby")}>
+          <Button className="mt-6" onClick={saveRounds}>
             Guardar configuración →
           </Button>
         </div>
@@ -532,10 +570,24 @@ export default function App() {
         <div className="mx-auto max-w-lg rounded-2xl border border-stone-200 bg-white p-6 text-center">
           <p className="text-xs uppercase tracking-widest text-red-700">Robo</p>
           <p className="my-6 text-6xl font-black">{state.pot}</p>
+          <select
+            value={stealIndex}
+            onChange={(e) => setStealIndex(Number(e.target.value))}
+            className="mb-5 w-full rounded-xl border border-stone-200 px-3 py-3 text-left"
+          >
+            {answers.map(
+              (answer, index) =>
+                !revealed.includes(index) && (
+                  <option key={index} value={index}>
+                    Respuesta {index + 1}: {answer.text || "oculta"}
+                  </option>
+                )
+            )}
+          </select>
           <div className="grid grid-cols-2 gap-3">
             <Button
               onClick={() => {
-                emitAction({ type: "steal_answer", answerIndex: 0 })
+                emitAction({ type: "steal_answer", answerIndex: stealIndex })
                 setScreen("roundResult")
               }}
             >
