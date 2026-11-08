@@ -27,6 +27,7 @@ type State = {
   roundConfigs: Array<{ answerCount: number; multiplier: number }>
   questionPrompt?: string
   answers?: Answer[]
+  answerCount?: number
   revealed: number[]
   strikes: { blue: number; red: number }
   pot: number
@@ -74,7 +75,7 @@ export default function App() {
   const [joinCode, setJoinCode] = useState("")
   const [devices, setDevices] = useState<Array<{ role: string }>>([])
   const [error, setError] = useState("")
-  const answers = state.answers ?? []
+  const answers = state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
   const blue = state.scores?.blue ?? 0
   const red = state.scores?.red ?? 0
