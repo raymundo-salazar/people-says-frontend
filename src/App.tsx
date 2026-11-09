@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { ArrowLeft, ArrowRight, ExternalLink, Monitor, X } from "lucide-react"
+import { ArrowLeft, ArrowRight, ExternalLink, Monitor, Trash2, X } from "lucide-react"
 import { gameSocket } from "./socket"
 import {
   Button,
@@ -366,31 +366,64 @@ export default function App() {
               </div>
               <div className="space-y-2">
                 {team.players.map((player, playerIndex) => (
-                  <label key={`${player}-${playerIndex}`} className="block">
-                    <span className="sr-only">
-                      Integrante {playerIndex + 1} <span className="text-red-600">*</span>
+                  <div
+                    key={`${team.color}-player-${playerIndex}`}
+                    className="flex items-center gap-2"
+                  >
+                    <span className="w-5 text-center text-sm font-semibold text-stone-400">
+                      {playerIndex + 1}
                     </span>
-                    <input
-                      required
-                      value={player}
-                      placeholder={`Integrante ${playerIndex + 1} *`}
-                      onChange={(e) =>
-                        setTeams((old) =>
-                          old.map((item, i) =>
-                            i === index
-                              ? {
-                                  ...item,
-                                  players: item.players.map((name, j) =>
-                                    j === playerIndex ? e.target.value : name
-                                  ),
-                                }
-                              : item
+                    <label className="flex-1">
+                      <span className="sr-only">
+                        Integrante {playerIndex + 1} <span className="text-red-600">*</span>
+                      </span>
+                      <input
+                        required
+                        value={player}
+                        placeholder={`Integrante ${playerIndex + 1} *`}
+                        onChange={(e) =>
+                          setTeams((old) =>
+                            old.map((item, i) => {
+                              if (i !== index) return item
+                              const players = item.players.map((name, j) =>
+                                j === playerIndex ? e.target.value : name
+                              )
+                              if (
+                                playerIndex === 0 &&
+                                e.target.value.trim() &&
+                                players.length === 1
+                              ) {
+                                players.push("")
+                              }
+                              return { ...item, players }
+                            })
                           )
-                        )
-                      }
-                      className="w-full rounded-lg bg-stone-50 px-3 py-2 text-sm"
-                    />
-                  </label>
+                        }
+                        className="w-full rounded-lg bg-stone-50 px-3 py-2 text-sm"
+                      />
+                    </label>
+                    {team.players.length > 1 && (
+                      <button
+                        type="button"
+                        aria-label={`Eliminar integrante ${playerIndex + 1}`}
+                        className="grid size-9 shrink-0 place-items-center rounded-lg text-stone-400 transition hover:bg-red-50 hover:text-red-600"
+                        onClick={() =>
+                          setTeams((old) =>
+                            old.map((item, i) =>
+                              i === index
+                                ? {
+                                    ...item,
+                                    players: item.players.filter((_, j) => j !== playerIndex),
+                                  }
+                                : item
+                            )
+                          )
+                        }
+                      >
+                        <Trash2 size={16} aria-hidden="true" />
+                      </button>
+                    )}
+                  </div>
                 ))}
               </div>
               <button
