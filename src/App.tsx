@@ -150,10 +150,10 @@ export default function App() {
     () => localStorage.getItem("people-says-host-token") ?? ""
   )
   const [deviceToken] = useState(() => {
-    const existing = localStorage.getItem("people-says-device-token")
+    const existing = sessionStorage.getItem("people-says-device-token")
     if (existing) return existing
     const created = crypto.randomUUID()
-    localStorage.setItem("people-says-device-token", created)
+    sessionStorage.setItem("people-says-device-token", created)
     return created
   })
   const [joinCode, setJoinCode] = useState(joinCodeFromLocation)
@@ -337,7 +337,7 @@ export default function App() {
       if (!response.ok) throw new Error(data.error)
       setRoomCode(data.code)
       setHostToken(data.hostToken)
-      localStorage.setItem("people-says-device-token", data.deviceToken)
+      sessionStorage.setItem("people-says-device-token", data.deviceToken)
       setState({
         ...data.state,
         questionPrompt: data.question.prompt,
