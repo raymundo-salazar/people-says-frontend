@@ -537,18 +537,21 @@ export default function App() {
               </p>
               <p className="mt-1 text-xs text-stone-500">Este dispositivo</p>
             </div>
-            <select
-              aria-label="Rol del dispositivo"
-              value={currentDeviceRole}
-              onChange={(event) => setCurrentDeviceRole(event.target.value as DeviceRole)}
-              className="rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm font-semibold text-stone-700"
-            >
-              {Object.entries(deviceRoleLabels).map(([role, label]) => (
-                <option key={role} value={role}>
-                  {label}
-                </option>
-              ))}
-            </select>
+            <label className="flex items-center gap-2 text-xs font-medium text-stone-500">
+              Rol del dispositivo
+              <select
+                aria-label="Rol del dispositivo"
+                value={currentDeviceRole}
+                onChange={(event) => setCurrentDeviceRole(event.target.value as DeviceRole)}
+                className="rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm font-semibold text-stone-700"
+              >
+                {Object.entries(deviceRoleLabels).map(([role, label]) => (
+                  <option key={role} value={role}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
           </div>
         </section>
         <div className="grid gap-5 md:grid-cols-2">
