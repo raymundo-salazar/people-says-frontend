@@ -237,7 +237,7 @@ export default function App() {
   }, [state.phase, screen])
   if (screen === "home")
     return (
-      <Shell>
+      <Shell showBack={false}>
         <div className="mx-auto max-w-2xl py-12 text-center">
           <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-emerald-800">
             Para jugar juntos
@@ -287,7 +287,7 @@ export default function App() {
     )
   if (screen === "create")
     return (
-      <Shell>
+      <Shell showBack={false}>
         <WizardProgress step={1} />
         <Heading
           k="01 / Preparación"
@@ -320,9 +320,7 @@ export default function App() {
             ))}
           </div>
           <div className="flex items-center justify-between gap-3 pt-2">
-            <Button ghost onClick={() => setScreen("home")}>
-              ← Atrás
-            </Button>
+            <span aria-hidden="true" />
             <Button disabled={!validGameSetup} onClick={() => setScreen("teams")}>
               Continuar →
             </Button>
