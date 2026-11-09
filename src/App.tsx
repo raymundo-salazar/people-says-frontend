@@ -1097,8 +1097,9 @@ export default function App() {
   if (screen === "joinLobby")
     return (
       <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
-        <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-lg items-center justify-center">
-          <div className="w-full rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm sm:p-8">
+        <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-lg flex-col items-center justify-center">
+          <Brand />
+          <div className="mt-10 w-full rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm sm:p-8">
             <div className="mx-auto grid size-16 place-items-center rounded-xl bg-emerald-50 text-emerald-900">
               <LoaderCircle
                 size={32}
