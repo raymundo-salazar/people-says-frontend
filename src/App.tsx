@@ -113,11 +113,11 @@ export default function App() {
   const revealed = state.revealed ?? []
   const blue = state.scores?.blue ?? 0
   const red = state.scores?.red ?? 0
+  const allowedAnswerCounts = [10, 8, 6, 5, 4]
   const validRounds = rounds.every(
     (round, i) =>
       Number.isInteger(Number(round.answerCount)) &&
-      Number(round.answerCount) >= 4 &&
-      Number(round.answerCount) <= 10 &&
+      allowedAnswerCounts.includes(Number(round.answerCount)) &&
       (i === 0 || Number(round.answerCount) < Number(rounds[i - 1].answerCount))
   )
   const validGameSetup = gameName.trim().length > 0
@@ -476,10 +476,7 @@ export default function App() {
             {rounds.map((value, index) => (
               <div className="contents" key={index}>
                 <span className="flex items-center">{index + 1}</span>
-                <input
-                  type="number"
-                  min="4"
-                  max="10"
+                <select
                   value={value.answerCount}
                   onChange={(e) =>
                     setRounds((old) =>
@@ -489,7 +486,13 @@ export default function App() {
                     )
                   }
                   className="w-full rounded-xl border border-stone-200 px-3 py-2"
-                />
+                >
+                  {allowedAnswerCounts.map((count) => (
+                    <option key={count} value={count}>
+                      {count}
+                    </option>
+                  ))}
+                </select>
                 <select
                   value={value.multiplier}
                   onChange={(e) =>
@@ -512,7 +515,7 @@ export default function App() {
           </div>
           {!validRounds && (
             <p className="mt-4 text-sm text-red-700">
-              Las rondas deben estar entre 4 y 10 y ser descendentes.
+              Las rondas deben usar 10, 8, 6, 5 o 4 preguntas y ser descendentes.
             </p>
           )}
           <div className="mt-6 flex items-center justify-between gap-3">
