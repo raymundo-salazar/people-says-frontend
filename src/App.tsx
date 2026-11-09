@@ -473,11 +473,15 @@ export default function App() {
             Selecciona la respuesta dada por cada equipo.
           </p>
           <div className="mt-7 grid grid-cols-2 gap-3">
-            <Button onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}>
+            <Button
+              className={buzzerWinner === "red" ? "opacity-50" : ""}
+              onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
+            >
               {teams[0].name}
             </Button>
             <Button
               secondary
+              className={buzzerWinner === "blue" ? "opacity-50" : ""}
               onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
             >
               {teams[1].name}
