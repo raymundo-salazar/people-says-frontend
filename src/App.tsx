@@ -1159,8 +1159,12 @@ export default function App() {
   if (screen === "join" && isPrincipalDevice)
     return (
       <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
-        <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center">
-          <div className="w-full max-w-md rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
+        <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-md flex-col items-center justify-center">
+          <Brand />
+          <div className="mt-12 w-full rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
+            <div className="mx-auto grid size-14 place-items-center rounded-xl bg-emerald-900 text-white">
+              <DeviceRoleIcon role="host" active />
+            </div>
             <h1 className="text-lg font-semibold text-emerald-950">
               Este es el dispositivo principal
             </h1>
@@ -1173,6 +1177,16 @@ export default function App() {
               onClick={() => setScreen("lobby", `/${roomCode}/lobby`)}
             >
               Ir al lobby <ArrowRight size={16} aria-hidden="true" />
+            </Button>
+            <Button
+              ghost
+              className="mt-3 w-full text-xs text-red-600 hover:text-red-700"
+              onClick={() => {
+                window.close()
+                window.setTimeout(() => setScreen("home"), 100)
+              }}
+            >
+              <LogOut size={14} aria-hidden="true" /> Salir de la vinculación
             </Button>
           </div>
         </div>
