@@ -13,3 +13,26 @@ select {
 button:not(:disabled) {
   @apply cursor-pointer;
 }
+
+@keyframes device-icon-spin {
+  0% {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  45% {
+    opacity: 1;
+    transform: rotate(162deg);
+  }
+  50% {
+    opacity: 0;
+    transform: rotate(180deg);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(360deg);
+  }
+}
+
+.device-icon-spin {
+  animation: device-icon-spin 3s ease-in-out both;
+}

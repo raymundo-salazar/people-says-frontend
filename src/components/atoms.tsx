@@ -68,7 +68,7 @@ export function DeviceIconAnimation() {
   useEffect(() => {
     const timer = window.setInterval(() => {
       setIndex((current) => (current + 1) % icons.length)
-    }, 1400)
+    }, 1500)
     return () => window.clearInterval(timer)
   }, [])
 
@@ -77,7 +77,7 @@ export function DeviceIconAnimation() {
       key={index}
       size={30}
       strokeWidth={1.5}
-      className="animate-pulse text-stone-300"
+      className="device-icon-spin text-stone-300"
       aria-hidden="true"
     />
   )
