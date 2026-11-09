@@ -72,7 +72,7 @@ const screens: Screen[] = [
 const screenFromLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
   if (segments.length === 2 && segments[1] === "lobby") return "lobby" as Screen
-  if (segments.length === 2 && segments[1] === "join") return "join" as Screen
+  if (segments[0] === "join" || segments[1] === "join") return "join" as Screen
   if (segments.length === 2 && segments[1] === "edit") return "create" as Screen
   if (segments.length === 3 && segments[1] === "edit" && screens.includes(segments[2] as Screen)) {
     return segments[2] as Screen
@@ -88,11 +88,14 @@ const roomCodeFromLocation = () => {
 }
 const joinCodeFromLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
-  return segments.length === 2 && segments[1] === "join" ? segments[0].toUpperCase() : ""
+  return segments.length >= 2 && segments[1] === "join" ? segments[0].toUpperCase() : ""
 }
 const joinStageFromLocation = (): "name" | "role" => {
   const segments = window.location.pathname.split("/").filter(Boolean)
-  return segments[0] === "join" && segments[1] === "role" ? "role" : "name"
+  return (segments[0] === "join" && segments[1] === "role") ||
+    (segments[1] === "join" && segments[2] === "role")
+    ? "role"
+    : "name"
 }
 const isEditLocation = () => window.location.pathname.split("/").filter(Boolean)[1] === "edit"
 const deviceRoleLabels: Record<DeviceRole, string> = {
@@ -258,11 +261,11 @@ export default function App() {
     setScreenState(next)
   }
   const setJoinRoute = (stage: "name" | "role") => {
-    window.history.pushState(
-      { screen: "join", joinStage: stage },
-      "",
-      stage === "role" ? "/join/role" : "/join"
-    )
+    const code = roomCode || joinCode.trim().toUpperCase()
+    const path = code
+      ? `/${code}/join${stage === "role" ? "/role" : ""}`
+      : `/join${stage === "role" ? "/role" : ""}`
+    window.history.pushState({ screen: "join", joinStage: stage }, "", path)
     setJoinStage(stage)
   }
   useEffect(() => {
