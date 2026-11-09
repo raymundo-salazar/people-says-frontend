@@ -1,4 +1,5 @@
 import { X } from "lucide-react"
+import { CountPill } from "./atoms"
 
 export type ParticipantTeamColor = "blue" | "red"
 
@@ -32,9 +33,7 @@ export function ParticipantsSubtitle({ count }: { count: number }) {
   return (
     <div className="mb-2 flex items-center justify-between gap-3">
       <p className="text-xs font-medium text-stone-500">Participantes</p>
-      <span className="rounded-full bg-stone-100 px-2.5 py-1 text-xs font-semibold text-stone-500">
-        {count} {count === 1 ? "participante" : "participantes"}
-      </span>
+      <CountPill count={count} label={count === 1 ? "participante" : "participantes"} />
     </div>
   )
 }

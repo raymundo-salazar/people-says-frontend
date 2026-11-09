@@ -53,6 +53,13 @@ export function Skeleton({ className = "" }: { className?: string }) {
     />
   )
 }
+export function CountPill({ count, label }: { count: number; label: string }) {
+  return (
+    <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold text-stone-500">
+      {count} {label}
+    </span>
+  )
+}
 export function WizardProgress({ step, total = 4 }: { step: number; total?: number }) {
   return (
     <div className="mb-8 flex items-center gap-2" aria-label={`Paso ${step} de ${total}`}>

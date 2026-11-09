@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, ExternalLink, Monitor, X } from "lucide-react"
 import { gameSocket } from "./socket"
 import {
   Button,
+  CountPill,
   Heading,
   Score,
   Shell,
@@ -559,6 +560,13 @@ export default function App() {
             </div>
           </section>
           <section className="rounded-2xl border border-stone-200 bg-white p-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Dispositivos vinculados</h2>
+              <CountPill
+                count={devices.length}
+                label={devices.length === 1 ? "dispositivo" : "dispositivos"}
+              />
+            </div>
             <div className="space-y-2">
               {devices.length === 0 &&
                 [0, 1].map((index) => (
