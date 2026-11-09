@@ -48,6 +48,29 @@ export function Skeleton({ className = "" }: { className?: string }) {
     />
   )
 }
+export function WizardProgress({ step, total = 4 }: { step: number; total?: number }) {
+  return (
+    <div className="mb-8 flex items-center gap-2" aria-label={`Paso ${step} de ${total}`}>
+      {Array.from({ length: total }, (_, index) => {
+        const current = index + 1 === step
+        const complete = index + 1 < step
+        return (
+          <span
+            key={index}
+            className="relative h-1 flex-1 overflow-visible rounded-full bg-stone-200"
+          >
+            <span
+              className={`absolute inset-0 rounded-full ${complete || current ? "bg-emerald-700" : "bg-stone-200"}`}
+            />
+            {current && (
+              <span className="absolute -inset-x-1 -inset-y-1 rounded-full bg-emerald-400 opacity-60 animate-ping" />
+            )}
+          </span>
+        )
+      })}
+    </div>
+  )
+}
 export function Shell({ children, wide = false }: { children: ReactNode; wide?: boolean }) {
   return (
     <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">

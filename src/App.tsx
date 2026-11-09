@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react"
 import { gameSocket } from "./socket"
-import { Button, Heading, Score, Shell, Skeleton, Strikes } from "./components/atoms"
+import {
+  Button,
+  Heading,
+  Score,
+  Shell,
+  Skeleton,
+  Strikes,
+  WizardProgress,
+} from "./components/atoms"
 
 type Screen =
   | "home"
@@ -151,9 +159,18 @@ export default function App() {
       gameSocket.disconnect()
     }
   }, [roomCode, screen, hostToken, deviceToken, buttonRole])
-  const createRoom = async () => {
+  const createRoom = async (finalize = false) => {
     setError("")
-    setLoadingAction("create")
+    const normalizedTeams = teams.map((team) => ({
+      ...team,
+      name: team.name.trim(),
+      players: team.players.map((player) => player.trim()).filter(Boolean),
+    }))
+    if (finalize && normalizedTeams.some((team) => !team.name || team.players.length === 0)) {
+      setError("Completa el nombre y al menos un jugador en cada equipo")
+      return
+    }
+    setLoadingAction(finalize ? "rounds" : "create")
     try {
       const response = await fetch(`${api}/api/rooms`, {
         method: "POST",
@@ -165,7 +182,7 @@ export default function App() {
             answerCount: Number(round.answerCount),
             multiplier: round.multiplier,
           })),
-          teams,
+          teams: normalizedTeams,
         }),
       })
       const data = await response.json()
@@ -180,49 +197,18 @@ export default function App() {
       })
       localStorage.setItem("people-says-room-code", data.code)
       localStorage.setItem("people-says-host-token", data.hostToken)
-      setScreen("teams")
+      setScreen(finalize ? "lobby" : "teams")
     } catch (e) {
       setError(e instanceof Error ? e.message : "No se pudo crear la sala")
     } finally {
       setLoadingAction(null)
     }
   }
-  const saveTeams = async () => {
-    setLoadingAction("teams")
-    const response = await fetch(`${api}/api/rooms/${roomCode}/teams`, {
-      method: "PATCH",
-      headers: { "content-type": "application/json", "x-host-token": hostToken },
-      body: JSON.stringify({ teams }),
-    })
-    if (!response.ok) {
-      setError("No se pudieron guardar los equipos")
-      setLoadingAction(null)
-      return
-    }
-    setState((await response.json()).state)
-    setScreen("rounds")
-    setLoadingAction(null)
-  }
+  const saveTeams = () => setScreen("rounds")
   const saveRounds = async () => {
     if (!validRounds) return
     setLoadingAction("rounds")
-    const response = await fetch(`${api}/api/rooms/${roomCode}/rounds`, {
-      method: "PATCH",
-      headers: { "content-type": "application/json", "x-host-token": hostToken },
-      body: JSON.stringify({
-        rounds: rounds.map((round) => ({
-          answerCount: Number(round.answerCount),
-          multiplier: round.multiplier,
-        })),
-      }),
-    })
-    if (!response.ok) {
-      setError("No se pudo guardar la configuración de rondas")
-      setLoadingAction(null)
-      return
-    }
-    setState((await response.json()).state)
-    setScreen("lobby")
+    await createRoom(true)
     setLoadingAction(null)
   }
   const start = () => {
@@ -297,6 +283,7 @@ export default function App() {
   if (screen === "create")
     return (
       <Shell>
+        <WizardProgress step={1} />
         <Heading
           k="01 / Preparación"
           title="Crear una partida"
@@ -321,9 +308,7 @@ export default function App() {
               </button>
             ))}
           </div>
-          <Button loading={loadingAction === "create"} onClick={createRoom}>
-            Continuar →
-          </Button>
+          <Button onClick={() => setScreen("teams")}>Continuar →</Button>
           {error && <p className="text-sm text-red-700">{error}</p>}
         </div>
       </Shell>
@@ -331,6 +316,7 @@ export default function App() {
   if (screen === "teams")
     return (
       <Shell>
+        <WizardProgress step={2} />
         <Heading
           k="02 / Participantes"
           title="Arma tus equipos"
@@ -396,6 +382,7 @@ export default function App() {
   if (screen === "rounds")
     return (
       <Shell>
+        <WizardProgress step={3} />
         <Heading
           k="03 / Configuración"
           title="Diseña las rondas"
@@ -457,6 +444,7 @@ export default function App() {
   if (screen === "lobby")
     return (
       <Shell>
+        <WizardProgress step={4} />
         <Heading
           k="04 / Sala de espera"
           title="Todo listo para jugar"
