@@ -752,18 +752,15 @@ export default function App() {
           title="Unirse a una sala"
           detail="Introduce el código del presentador."
           aside={
-            <span className="rounded-full bg-stone-100 px-3 py-1 text-sm font-bold tracking-widest text-stone-600">
-              {joinCode || "—"}
-            </span>
+            <div className="rounded-2xl border border-stone-200 bg-white px-5 py-3 text-right">
+              <p className="text-xs font-medium text-stone-500">Código de sala</p>
+              <p className="mt-1 text-2xl font-black tracking-widest text-emerald-900">
+                {joinCode || "—"}
+              </p>
+            </div>
           }
         />
         <div className="mx-auto max-w-4xl space-y-4">
-          <div className="rounded-2xl border border-stone-200 bg-white p-6">
-            <p className="mb-2 block text-xs font-medium text-stone-500">Código de sala</p>
-            <p className="text-left text-5xl font-black tracking-widest text-emerald-900">
-              {joinCode || "—"}
-            </p>
-          </div>
           {joinStage === "name" ? (
             <div className="rounded-2xl border border-stone-200 bg-white p-6">
               <h2 className="text-lg font-semibold">Nombra este dispositivo</h2>
