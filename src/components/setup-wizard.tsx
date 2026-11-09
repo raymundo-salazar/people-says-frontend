@@ -132,7 +132,7 @@ export function TeamsStep({
                       const players = team.players.map((name, currentIndex) =>
                         currentIndex === playerIndex ? value : name
                       )
-                      if (playerIndex === 0 && value.trim() && players.length === 1) {
+                      if (value.trim() && playerIndex === team.players.length - 1) {
                         players.push("")
                       }
                       updateTeam(index, { players })
