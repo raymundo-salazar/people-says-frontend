@@ -335,7 +335,8 @@ export default function App() {
       setCurrentDeviceRole("pending")
       setPendingRegistered(true)
       setRoleWarning(
-        payload.message ?? "Tu rol fue actualizado. Selecciona uno nuevo para continuar."
+        payload.message ??
+          "El dispositivo principal reasignó tu rol. Selecciona otro para continuar."
       )
       setJoinStage("role")
       navigate(`/${roomCode}/join/role`)
@@ -1067,7 +1068,10 @@ export default function App() {
           {roleWarning && (
             <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-5 text-amber-800">
               <AlertTriangle size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
-              <p>{roleWarning}</p>
+              <div>
+                <p className="font-bold">Tu rol ya no está disponible</p>
+                <p className="mt-1">{roleWarning}</p>
+              </div>
             </div>
           )}
           {joinStage === "name" ? (
