@@ -357,7 +357,7 @@ export default function App() {
         setDevices(data.devices ?? [])
       })
       .catch(() => setDevices([]))
-  }, [screen, joinCode])
+  }, [screen, joinStage, joinCode])
   useEffect(() => {
     if (
       screen !== "join" ||
