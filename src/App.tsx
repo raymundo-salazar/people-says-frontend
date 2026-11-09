@@ -5,6 +5,7 @@ import {
   Button,
   CountPill,
   DeviceIconAnimation,
+  DeviceRoleIcon,
   Heading,
   Score,
   Shell,
@@ -601,13 +602,16 @@ export default function App() {
                 label={devices.length + 1 === 1 ? "dispositivo" : "dispositivos"}
               />
             </div>
-            <div className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50/50 p-4">
+            <div className="mt-5 rounded-xl border border-emerald-700 bg-emerald-50 p-4">
               <div className="flex items-center justify-between gap-2">
-                <div>
-                  <p className="text-sm font-bold uppercase tracking-wider text-emerald-800">
-                    {deviceRoleLabels[currentDeviceRole]}
-                  </p>
-                  <p className="mt-1 text-xs text-stone-500">Este dispositivo</p>
+                <div className="flex items-center gap-3">
+                  <DeviceRoleIcon role={currentDeviceRole} active />
+                  <div>
+                    <p className="text-sm font-bold uppercase tracking-wider text-emerald-800">
+                      {deviceRoleLabels[currentDeviceRole]}
+                    </p>
+                    <p className="mt-1 text-xs text-stone-500">Este dispositivo</p>
+                  </div>
                 </div>
                 <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800">
                   <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" /> Listo
@@ -629,11 +633,17 @@ export default function App() {
             ) : (
               <div className="mt-7 space-y-2">
                 {devices.map((device, index) => (
-                  <div key={`${device.role}-${index}`} className="rounded-xl bg-stone-50 p-3">
-                    <p className="text-sm font-bold uppercase tracking-wider text-stone-700">
-                      {device.role}
-                    </p>
-                    <p className="mt-1 text-xs text-stone-500">Dispositivo vinculado</p>
+                  <div
+                    key={`${device.role}-${index}`}
+                    className="flex items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3"
+                  >
+                    <DeviceRoleIcon role={device.role as DeviceRole} />
+                    <div>
+                      <p className="text-sm font-bold uppercase tracking-wider text-stone-700">
+                        {device.role}
+                      </p>
+                      <p className="mt-1 text-xs text-stone-500">Dispositivo vinculado</p>
+                    </div>
                   </div>
                 ))}
               </div>

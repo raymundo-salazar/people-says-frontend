@@ -90,6 +90,25 @@ export function DeviceIconAnimation() {
     </span>
   )
 }
+export function DeviceRoleIcon({
+  role,
+  active = false,
+}: {
+  role: "host" | "display" | "blue_button" | "red_button"
+  active?: boolean
+}) {
+  const icons = { host: Laptop, display: Monitor, blue_button: Smartphone, red_button: Smartphone }
+  const Icon = icons[role]
+
+  return (
+    <span
+      className={`grid aspect-square size-12 shrink-0 place-items-center rounded-lg ${active ? "bg-emerald-900 text-white" : "bg-emerald-50 text-emerald-900"}`}
+      aria-hidden="true"
+    >
+      <Icon size={22} strokeWidth={1.8} />
+    </span>
+  )
+}
 export function WizardProgress({ step, total = 4 }: { step: number; total?: number }) {
   return (
     <div className="mb-8 flex items-center gap-2" aria-label={`Paso ${step} de ${total}`}>
