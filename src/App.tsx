@@ -757,19 +757,17 @@ export default function App() {
               <p className="mt-1 text-2xl font-black tracking-widest text-emerald-900">
                 {joinCode || "—"}
               </p>
+              <Button
+                ghost
+                className="mt-2 text-xs text-red-600 hover:text-red-700"
+                onClick={() => {
+                  window.close()
+                  window.setTimeout(() => setScreen("home"), 100)
+                }}
+              >
+                <X size={14} aria-hidden="true" /> Salir de vinculación
+              </Button>
             </div>
-          }
-          footer={
-            <Button
-              ghost
-              className="text-xs text-red-600 hover:text-red-700"
-              onClick={() => {
-                window.close()
-                window.setTimeout(() => setScreen("home"), 100)
-              }}
-            >
-              <X size={14} aria-hidden="true" /> Salir de vinculación
-            </Button>
           }
         />
         <div className="mx-auto max-w-4xl space-y-4">
