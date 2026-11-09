@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import {
   ArrowLeft,
   ArrowRight,
+  AlertTriangle,
   ClipboardPaste,
   ExternalLink,
   LoaderCircle,
@@ -1063,6 +1064,12 @@ export default function App() {
           }
         />
         <div className="mx-auto max-w-4xl space-y-4">
+          {roleWarning && (
+            <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-5 text-amber-800">
+              <AlertTriangle size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
+              <p>{roleWarning}</p>
+            </div>
+          )}
           {joinStage === "name" ? (
             <div className="rounded-2xl border border-stone-200 bg-white p-6">
               <h2 className="text-lg font-semibold">Nombra este dispositivo</h2>
@@ -1096,11 +1103,6 @@ export default function App() {
           ) : (
             <div className="rounded-2xl border border-stone-200 bg-white p-6">
               <h2 className="text-lg font-semibold">Selecciona el rol</h2>
-              {roleWarning && (
-                <p className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-800">
-                  {roleWarning}
-                </p>
-              )}
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {joinRoles.map((role) => {
                   const occupied = devices.some((device) => device.role === role)
