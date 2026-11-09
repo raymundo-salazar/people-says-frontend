@@ -95,6 +95,13 @@ const deviceRoleLabels: Record<DeviceRole, string> = {
   blue_button: "Pulsador azul",
   red_button: "Pulsador rojo",
 }
+const deviceRoleDescriptions: Record<DeviceRole, string> = {
+  host: "Controla la partida y administra las respuestas.",
+  display: "Muestra el tablero público para todos.",
+  blue_button: "Funciona como pulsador del equipo azul.",
+  red_button: "Funciona como pulsador del equipo rojo.",
+}
+const joinRoles: DeviceRole[] = ["host", "display", "blue_button", "red_button"]
 const api = import.meta.env.VITE_API_URL ?? ""
 const defaultState: State = {
   phase: "lobby",
@@ -153,7 +160,7 @@ export default function App() {
   const [buzzerWinner, setBuzzerWinner] = useState<"blue" | "red" | null>(null)
   const [buttonRole, setButtonRole] = useState<"blue_button" | "red_button">("blue_button")
   const [currentDeviceRole, setCurrentDeviceRole] = useState<DeviceRole>("host")
-  const [devices, setDevices] = useState<Array<{ role: string }>>([])
+  const [devices, setDevices] = useState<Array<{ id?: string; role: string }>>([])
   const [error, setError] = useState("")
   const [copied, setCopied] = useState<"code" | "url" | null>(null)
   const [loadingAction, setLoadingAction] = useState<
@@ -210,15 +217,15 @@ export default function App() {
   const emitAction = (action: Record<string, unknown>) =>
     gameSocket.emit("game:action", { code: roomCode, hostToken, action })
   useEffect(() => {
-    if (!roomCode || !["host", "display", "buzzer"].includes(screen)) return
+    if (!roomCode || !["host", "display", "buzzer", "lobby"].includes(screen)) return
     gameSocket.connect()
-    const role = screen === "buzzer" ? buttonRole : screen
+    const role = screen === "lobby" ? currentDeviceRole : screen === "buzzer" ? buttonRole : screen
     gameSocket.emit("room:join", { code: roomCode, role, hostToken, deviceToken })
     const receive = (payload: { state?: State }) => {
       if (payload.state) setState(payload.state)
     }
-    const presence = (payload: { devices?: Array<{ role: string }> }) =>
-      setDevices(payload.devices ?? [])
+    const presence = (payload: { devices?: Array<{ id?: string; role: string }> }) =>
+      setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
     const failure = (payload: { error?: string }) => setError(payload.error ?? "Error de conexión")
     const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
     gameSocket.on("room:snapshot", receive)
@@ -236,7 +243,17 @@ export default function App() {
       gameSocket.off("buzzer:reset")
       gameSocket.disconnect()
     }
-  }, [roomCode, screen, hostToken, deviceToken, buttonRole])
+  }, [roomCode, screen, hostToken, deviceToken, buttonRole, currentDeviceRole])
+  useEffect(() => {
+    if (screen !== "join" || joinCode.trim().length < 5) return
+    fetch(`${api}/api/rooms/${joinCode.trim().toUpperCase()}`)
+      .then(async (response) => {
+        const data = await response.json()
+        if (!response.ok) throw new Error(data.error)
+        setDevices(data.devices ?? [])
+      })
+      .catch(() => setDevices([]))
+  }, [screen, joinCode])
   useEffect(() => {
     if (!roomCode || !hostToken || !isEditLocation()) return
     setRoomLoading(true)
@@ -394,6 +411,16 @@ export default function App() {
       setError(e instanceof Error ? e.message : "No se pudieron guardar las rondas")
     } finally {
       setLoadingAction(null)
+    }
+  }
+  const selectJoinRole = (role: DeviceRole) => {
+    setRoomCode(joinCode.trim().toUpperCase())
+    setCurrentDeviceRole(role)
+    if (role === "host") setScreen("host")
+    if (role === "display") setScreen("display")
+    if (role === "blue_button" || role === "red_button") {
+      setButtonRole(role)
+      setScreen("buzzer")
     }
   }
   const start = () => {
@@ -683,41 +710,27 @@ export default function App() {
             placeholder="ABCD1234"
             className="w-full rounded-xl border border-stone-200 px-4 py-4 text-center text-2xl tracking-widest"
           />
-          <div className="mt-5 space-y-2">
-            <Button
-              disabled={!validJoinCode}
-              className="w-full"
-              onClick={() => {
-                setRoomCode(joinCode)
-                setScreen("display")
-              }}
-            >
-              Pantalla pública
-            </Button>
-            <Button
-              disabled={!validJoinCode}
-              secondary
-              className="w-full"
-              onClick={() => {
-                setButtonRole("blue_button")
-                setRoomCode(joinCode)
-                setScreen("buzzer")
-              }}
-            >
-              Pulsador azul
-            </Button>
-            <Button
-              disabled={!validJoinCode}
-              secondary
-              className="w-full"
-              onClick={() => {
-                setButtonRole("red_button")
-                setRoomCode(joinCode)
-                setScreen("buzzer")
-              }}
-            >
-              Pulsador rojo
-            </Button>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            {joinRoles.map((role) => {
+              const occupied = devices.some((device) => device.role === role)
+              return (
+                <Button
+                  key={role}
+                  secondary
+                  disabled={!validJoinCode || occupied}
+                  className="h-auto min-h-28 justify-start text-left"
+                  onClick={() => selectJoinRole(role)}
+                >
+                  <DeviceRoleIcon role={role} />
+                  <span className="min-w-0">
+                    <span className="block text-sm font-bold">{deviceRoleLabels[role]}</span>
+                    <span className="mt-1 block whitespace-normal text-xs font-normal leading-5 text-stone-500">
+                      {deviceRoleDescriptions[role]}
+                    </span>
+                  </span>
+                </Button>
+              )
+            })}
           </div>
         </div>
       </Shell>
