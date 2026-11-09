@@ -351,6 +351,13 @@ export default function App() {
   }, [location.pathname])
   const emitAction = (action: Record<string, unknown>) =>
     gameSocket.emit("game:action", { code: roomCode, hostToken, action })
+  const pauseGame = () => emitAction({ type: "pause" })
+  const canPauseGame = Boolean(hostToken) || currentDeviceRole === "host"
+  const pauseControl = canPauseGame ? (
+    <Button secondary onClick={pauseGame}>
+      Pausar partida
+    </Button>
+  ) : null
   useEffect(() => {
     if (!roomCode || !["host", "display", "buzzer", "lobby", "joinLobby"].includes(screen)) return
     gameSocket.connect()
@@ -721,6 +728,18 @@ export default function App() {
       if (currentDeviceRole === "blue_button" || currentDeviceRole === "red_button") {
         setButtonRole(currentDeviceRole)
         setScreen("buzzer")
+      }
+      return
+    }
+    if (
+      state.phase === "lobby" &&
+      ["host", "faceoff", "decision", "steal", "roundResult", "display", "buzzer"].includes(screen)
+    ) {
+      if (hostToken) {
+        setScreen("lobby")
+      } else {
+        navigate(`/${roomCode}/join/lobby`)
+        setScreenState("joinLobby")
       }
       return
     }
@@ -1321,6 +1340,7 @@ export default function App() {
   if (screen === "faceoff")
     return (
       <Shell>
+        <div className="mb-4 flex justify-end">{pauseControl}</div>
         <div className="mx-auto max-w-lg rounded-2xl border border-stone-200 bg-white p-6 text-center">
           <p className="text-xs font-bold uppercase tracking-widest text-emerald-800">
             Cara a cara
@@ -1350,6 +1370,7 @@ export default function App() {
   if (screen === "decision")
     return (
       <Shell>
+        <div className="mb-4 flex justify-end">{pauseControl}</div>
         <div className="mx-auto max-w-lg rounded-2xl border border-stone-200 bg-white p-6 text-center">
           <p className="text-xs font-bold uppercase tracking-widest text-emerald-800">Decisión</p>
           <h1 className="mt-4 text-3xl font-semibold">{teamName}</h1>
@@ -1384,9 +1405,12 @@ export default function App() {
             <p className="text-xs text-stone-500">Ronda {state.roundIndex + 1}</p>
             <p className="font-bold">{state.questionPrompt}</p>
           </div>
-          <Button secondary onClick={() => setScreen("display")}>
-            Ver tablero <Monitor size={16} aria-hidden="true" />
-          </Button>
+          <div className="flex items-center gap-2">
+            {pauseControl}
+            <Button secondary onClick={() => setScreen("display")}>
+              Ver tablero <Monitor size={16} aria-hidden="true" />
+            </Button>
+          </div>
         </div>
         <div className="grid gap-5 lg:grid-cols-[1.35fr_.8fr]">
           <section className="rounded-2xl border border-stone-200 bg-white p-5">
@@ -1437,6 +1461,7 @@ export default function App() {
   if (screen === "steal")
     return (
       <Shell>
+        <div className="mb-4 flex justify-end">{pauseControl}</div>
         <div className="mx-auto max-w-lg rounded-2xl border border-stone-200 bg-white p-6 text-center">
           <p className="text-xs uppercase tracking-widest text-red-700">Robo</p>
           <p className="my-6 text-6xl font-black">{state.pot}</p>
@@ -1485,6 +1510,7 @@ export default function App() {
   if (screen === "roundResult")
     return (
       <Shell>
+        <div className="flex justify-end">{pauseControl}</div>
         <div className="mx-auto max-w-lg pt-10 text-center">
           <p className="text-xs uppercase tracking-widest text-emerald-800">Ronda terminada</p>
           <h1 className="mt-5 text-4xl font-semibold">Marcador actualizado</h1>
@@ -1522,6 +1548,7 @@ export default function App() {
     return (
       <div className="min-h-screen bg-slate-950 px-5 py-10 text-white">
         <div className="mx-auto max-w-4xl">
+          <div className="flex justify-end">{pauseControl}</div>
           <p className="text-center text-2xl font-bold">La gente dice.</p>
           <p className="mx-auto mt-8 max-w-3xl text-center text-3xl font-bold">
             {state.questionPrompt}
