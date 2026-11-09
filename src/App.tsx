@@ -75,6 +75,7 @@ export default function App() {
   )
   const [joinCode, setJoinCode] = useState("")
   const [stealIndex, setStealIndex] = useState(0)
+  const [stealText, setStealText] = useState("")
   const [devices, setDevices] = useState<Array<{ role: string }>>([])
   const [error, setError] = useState("")
   const answers =
@@ -584,10 +585,16 @@ export default function App() {
                 )
             )}
           </select>
+          <input
+            value={stealText}
+            onChange={(e) => setStealText(e.target.value)}
+            placeholder="Escribe la respuesta del equipo"
+            className="mb-5 w-full rounded-xl border border-stone-200 px-3 py-3 text-left"
+          />
           <div className="grid grid-cols-2 gap-3">
             <Button
               onClick={() => {
-                emitAction({ type: "steal_answer", answerIndex: stealIndex })
+                emitAction({ type: "steal_answer", answerIndex: stealIndex, answerText: stealText })
                 setScreen("roundResult")
               }}
             >
