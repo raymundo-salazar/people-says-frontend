@@ -79,7 +79,7 @@ export function ParticipantRow({
         <button
           type="button"
           onClick={onRemove}
-          className={`${filled ? "text-stone-400" : "hidden text-stone-400"} hover:text-red-600`}
+          className="text-stone-400 hover:text-red-600"
           aria-label="Eliminar participante"
         >
           <X size={16} aria-hidden="true" />
