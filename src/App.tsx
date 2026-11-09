@@ -635,6 +635,24 @@ export default function App() {
     navigate(`/${code}/join/lobby`)
     setScreenState("joinLobby")
   }
+  const changeLobbyRole = (role: DeviceRole) => {
+    setCurrentDeviceRole(role)
+    if (role === "blue_button" || role === "red_button") setButtonRole(role)
+    saveDeviceConfig(roomCode, { token: deviceToken, role, name: deviceName, deviceType })
+    gameSocket.emit("room:join", {
+      code: roomCode,
+      role,
+      name: deviceName,
+      deviceType,
+      hostToken,
+      deviceToken,
+    })
+    if (state.phase !== "lobby") {
+      if (role === "host") setScreen("host")
+      if (role === "display") setScreen("display")
+      if (role === "blue_button" || role === "red_button") setScreen("buzzer")
+    }
+  }
   const startNewGame = () => {
     if (savedRoomCode && savedHostToken) {
       setShowResumeDialog(true)
@@ -902,7 +920,7 @@ export default function App() {
               <select
                 aria-label="Rol del dispositivo"
                 value={currentDeviceRole}
-                onChange={(event) => setCurrentDeviceRole(event.target.value as DeviceRole)}
+                onChange={(event) => changeLobbyRole(event.target.value as DeviceRole)}
                 className="rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm font-semibold text-stone-700"
               >
                 {Object.entries(deviceRoleLabels).map(([role, label]) => (
