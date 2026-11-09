@@ -141,13 +141,13 @@ const getDeviceType = (): DeviceType => {
   const userAgent = navigator.userAgent
   if (/SmartTV|Web0S|Tizen|HbbTV|NetCast/i.test(userAgent)) return "tv"
   if (/iPad|Tablet|Android(?!.*Mobile)/i.test(userAgent)) return "tablet"
-  if (/iPhone|iPod|Android.*Mobile/i.test(userAgent)) return "phone"
+  if (/iPhone|iPod|Android.*Mobile/i.test(userAgent)) return "mobile"
   return "desktop"
 }
 const deviceTypeLabels: Record<DeviceType, string> = {
   desktop: "Escritorio",
   tv: "TV",
-  phone: "Teléfono",
+  mobile: "Móvil",
   tablet: "Tablet",
 }
 const api = import.meta.env.VITE_API_URL ?? ""
@@ -211,7 +211,9 @@ export default function App() {
   const [buzzerWinner, setBuzzerWinner] = useState<"blue" | "red" | null>(null)
   const [buttonRole, setButtonRole] = useState<"blue_button" | "red_button">("blue_button")
   const [currentDeviceRole, setCurrentDeviceRole] = useState<DeviceRole>("host")
-  const [devices, setDevices] = useState<Array<{ id?: string; role: string; name?: string }>>([])
+  const [devices, setDevices] = useState<
+    Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
+  >([])
   const [error, setError] = useState("")
   const [copied, setCopied] = useState<"code" | "url" | null>(null)
   const [loadingAction, setLoadingAction] = useState<
@@ -293,8 +295,9 @@ export default function App() {
     const receive = (payload: { state?: State }) => {
       if (payload.state) setState(payload.state)
     }
-    const presence = (payload: { devices?: Array<{ id?: string; role: string; name?: string }> }) =>
-      setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
+    const presence = (payload: {
+      devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
+    }) => setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
     const failure = (payload: { error?: string }) => setError(payload.error ?? "Error de conexión")
     const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
     gameSocket.on("room:snapshot", receive)
@@ -325,8 +328,9 @@ export default function App() {
   }, [screen, joinCode])
   useEffect(() => {
     if (screen !== "join" || joinStage !== "role" || joinCode.trim().length < 5) return
-    const presence = (payload: { devices?: Array<{ id?: string; role: string; name?: string }> }) =>
-      setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
+    const presence = (payload: {
+      devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
+    }) => setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
     gameSocket.connect()
     gameSocket.emit("room:join", {
       code: joinCode.trim().toUpperCase(),
@@ -742,7 +746,9 @@ export default function App() {
                     key={`${device.role}-${index}`}
                     className="flex items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3"
                   >
-                    <DeviceRoleIcon role={device.role as DeviceRole} muted />
+                    <span className="grid aspect-square size-12 shrink-0 place-items-center rounded-lg bg-stone-100">
+                      <DeviceTypeIcon type={device.deviceType ?? "desktop"} />
+                    </span>
                     <div>
                       <p className="text-sm font-bold uppercase tracking-wider text-stone-700">
                         {deviceRoleLabels[device.role as DeviceRole] ?? device.role}
