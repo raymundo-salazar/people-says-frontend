@@ -23,14 +23,14 @@ button:not(:disabled) {
   }
   100% {
     visibility: hidden;
-    transform: rotateY(180deg);
+    transform: rotateY(1260deg);
   }
 }
 
 @keyframes device-icon-back-flip {
   0% {
     visibility: hidden;
-    transform: rotateY(-180deg);
+    transform: rotateY(-1260deg);
   }
   50% {
     visibility: hidden;
@@ -54,7 +54,7 @@ button:not(:disabled) {
   position: absolute;
   inset: 0;
   transform-style: preserve-3d;
-  animation-duration: 1.8s;
+  animation-duration: 1s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: both;
 }
