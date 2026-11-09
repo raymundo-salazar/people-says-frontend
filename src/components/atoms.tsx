@@ -115,13 +115,6 @@ export function DeviceRoleIcon({
     red_button: Circle,
   }
   const Icon = icons[role]
-  const iconColor = active
-    ? "text-white"
-    : role === "blue_button"
-      ? "text-blue-600"
-      : role === "red_button"
-        ? "text-red-600"
-        : "text-emerald-900"
 
   return (
     <span
@@ -131,7 +124,7 @@ export function DeviceRoleIcon({
       <Icon
         size={22}
         strokeWidth={1.8}
-        className={iconColor}
+        className={active ? "text-white" : "text-emerald-900"}
         fill={role.includes("button") ? "currentColor" : "none"}
       />
     </span>
