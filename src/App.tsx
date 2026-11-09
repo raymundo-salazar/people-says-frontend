@@ -114,19 +114,19 @@ export default function App() {
   const blue = state.scores?.blue ?? 0
   const red = state.scores?.red ?? 0
   const allowedAnswerCounts = [10, 8, 6, 5, 4]
-  const validRounds = rounds.every(
-    (round, i) =>
-      Number.isInteger(Number(round.answerCount)) &&
-      allowedAnswerCounts.includes(Number(round.answerCount)) &&
-      (i === 0 || Number(round.answerCount) < Number(rounds[i - 1].answerCount))
-  )
-  const canAddRound = rounds.length < allowedAnswerCounts.length
+  const validRoundCount = rounds.length >= 3 && rounds.length <= 7
+  const validRounds =
+    validRoundCount &&
+    rounds.every(
+      (round, i) =>
+        Number.isInteger(Number(round.answerCount)) &&
+        allowedAnswerCounts.includes(Number(round.answerCount)) &&
+        (i === 0 || Number(round.answerCount) <= Number(rounds[i - 1].answerCount))
+    )
+  const canAddRound = rounds.length < 7
   const addRound = () => {
     if (!canAddRound) return
-    const lastCount = Number(rounds[rounds.length - 1]?.answerCount ?? 10)
-    const nextCount = allowedAnswerCounts.find((count) => count < lastCount)
-    if (!nextCount) return
-    setRounds((old) => [...old, { answerCount: String(nextCount), multiplier: 1 }])
+    setRounds((old) => [...old, { answerCount: "4", multiplier: 1 }])
   }
   const validGameSetup = gameName.trim().length > 0
   const validTeams = teams.every(
@@ -531,7 +531,7 @@ export default function App() {
           </button>
           {!validRounds && (
             <p className="mt-4 text-sm text-red-700">
-              Las rondas deben usar 10, 8, 6, 5 o 4 preguntas y ser descendentes.
+              Configura entre 3 y 7 rondas usando 10, 8, 6, 5 o 4 preguntas en orden descendente.
             </p>
           )}
           <div className="mt-6 flex items-center justify-between gap-3">
