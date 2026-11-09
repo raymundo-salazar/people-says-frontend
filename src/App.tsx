@@ -244,14 +244,22 @@ export default function App() {
   const [hostToken, setHostToken] = useState(
     () => localStorage.getItem("people-says-host-token") ?? ""
   )
-  const [deviceToken] = useState(() => {
+  const [showResumeDialog, setShowResumeDialog] = useState(false)
+  const [deviceToken, setDeviceToken] = useState(() => {
     const existing = sessionStorage.getItem("people-says-device-token")
     if (existing) return existing
+    const shared = localStorage.getItem("people-says-device-token")
+    if (shared) {
+      sessionStorage.setItem("people-says-device-token", shared)
+      return shared
+    }
     if (savedDeviceConfig?.token) {
+      localStorage.setItem("people-says-device-token", savedDeviceConfig.token)
       sessionStorage.setItem("people-says-device-token", savedDeviceConfig.token)
       return savedDeviceConfig.token
     }
     const created = crypto.randomUUID()
+    localStorage.setItem("people-says-device-token", created)
     sessionStorage.setItem("people-says-device-token", created)
     return created
   })
@@ -300,6 +308,8 @@ export default function App() {
     setRounds((old) => [...old, { answerCount: "4", multiplier: 1 }])
   }
   const validGameSetup = gameName.trim().length > 0
+  const savedRoomCode = localStorage.getItem("people-says-room-code") ?? ""
+  const savedHostToken = localStorage.getItem("people-says-host-token") ?? ""
   const validTeams = teams.every(
     (team) => team.name.trim().length > 0 && team.players.some((player) => player.trim().length > 0)
   )
@@ -502,6 +512,8 @@ export default function App() {
       if (!response.ok) throw new Error(data.error)
       setRoomCode(data.code)
       setHostToken(data.hostToken)
+      setDeviceToken(data.deviceToken)
+      localStorage.setItem("people-says-device-token", data.deviceToken)
       sessionStorage.setItem("people-says-device-token", data.deviceToken)
       saveDeviceConfig(data.code, {
         token: data.deviceToken,
@@ -612,6 +624,30 @@ export default function App() {
     navigate(`/${code}/join/lobby`)
     setScreenState("joinLobby")
   }
+  const startNewGame = () => {
+    if (savedRoomCode && savedHostToken) {
+      setShowResumeDialog(true)
+      return
+    }
+    setScreen("create")
+  }
+  const resumeSavedGame = () => {
+    setShowResumeDialog(false)
+    setRoomCode(savedRoomCode)
+    setHostToken(savedHostToken)
+    setScreen("lobby", `/${savedRoomCode}/lobby`)
+  }
+  const discardSavedGame = () => {
+    localStorage.clear()
+    const newDeviceToken = crypto.randomUUID()
+    setDeviceToken(newDeviceToken)
+    localStorage.setItem("people-says-device-token", newDeviceToken)
+    sessionStorage.setItem("people-says-device-token", newDeviceToken)
+    setShowResumeDialog(false)
+    setRoomCode("")
+    setHostToken("")
+    setScreen("create")
+  }
   const changeDeviceConfiguration = () => {
     const code = roomCode || joinCode.trim().toUpperCase()
     saveDeviceConfig(code, {
@@ -719,7 +755,7 @@ export default function App() {
             ¿Qué respondería la mayoría? Forma tus equipos y descubre las respuestas.
           </p>
           <div className="mx-auto mt-10 flex max-w-xs flex-col gap-3">
-            <Button onClick={() => setScreen("create")}>
+            <Button onClick={startNewGame}>
               Crear una partida <ExternalLink size={16} aria-hidden="true" />
             </Button>
             <Button secondary onClick={() => setJoinRoute("name")}>
@@ -733,6 +769,29 @@ export default function App() {
             Instrucciones y reglas
           </button>
         </div>
+        {showResumeDialog && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/40 px-5">
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="resume-game-title"
+              className="w-full max-w-md rounded-2xl bg-white p-6 text-left shadow-xl"
+            >
+              <h2 id="resume-game-title" className="text-xl font-semibold text-stone-900">
+                Tienes una partida guardada
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-stone-500">
+                Encontramos una partida anterior. ¿Quieres retomarla o prefieres comenzar una nueva?
+              </p>
+              <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <Button ghost onClick={discardSavedGame}>
+                  Comenzar una nueva
+                </Button>
+                <Button onClick={resumeSavedGame}>Retomar partida</Button>
+              </div>
+            </div>
+          </div>
+        )}
       </Shell>
     )
   if (screen === "rules")
