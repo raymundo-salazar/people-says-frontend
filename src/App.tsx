@@ -698,39 +698,44 @@ export default function App() {
           title="Unirse a una sala"
           detail="Introduce el código del presentador."
         />
-        <div className="mx-auto max-w-4xl rounded-2xl border border-stone-200 bg-white p-6">
-          <label className="mb-2 block text-xs font-medium text-stone-500">
-            Código de sala <span className="text-red-600">*</span>
-          </label>
-          <input
-            required
-            value={joinCode}
-            onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-            maxLength={8}
-            placeholder="ABCD1234"
-            className="w-full rounded-xl border border-stone-200 px-4 py-4 text-center text-2xl tracking-widest"
-          />
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            {joinRoles.map((role) => {
-              const occupied = devices.some((device) => device.role === role)
-              return (
-                <Button
-                  key={role}
-                  secondary
-                  disabled={!validJoinCode || occupied}
-                  className="h-auto min-h-28 justify-start text-left"
-                  onClick={() => selectJoinRole(role)}
-                >
-                  <DeviceRoleIcon role={role} />
-                  <span className="min-w-0">
-                    <span className="block text-sm font-bold">{deviceRoleLabels[role]}</span>
-                    <span className="mt-1 block whitespace-normal text-xs font-normal leading-5 text-stone-500">
-                      {deviceRoleDescriptions[role]}
+        <div className="mx-auto max-w-4xl space-y-4">
+          <div className="rounded-2xl border border-stone-200 bg-white p-6">
+            <label className="mb-2 block text-xs font-medium text-stone-500">
+              Código de sala <span className="text-red-600">*</span>
+            </label>
+            <input
+              required
+              value={joinCode}
+              onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
+              maxLength={8}
+              placeholder="ABCD1234"
+              className="w-full rounded-xl border border-stone-200 px-4 py-4 text-center text-2xl tracking-widest"
+            />
+          </div>
+          <div className="rounded-2xl border border-stone-200 bg-white p-6">
+            <h2 className="text-lg font-semibold">Selecciona el rol</h2>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              {joinRoles.map((role) => {
+                const occupied = devices.some((device) => device.role === role)
+                return (
+                  <Button
+                    key={role}
+                    secondary
+                    disabled={!validJoinCode || occupied}
+                    className="h-auto min-h-28 justify-start text-left"
+                    onClick={() => selectJoinRole(role)}
+                  >
+                    <DeviceRoleIcon role={role} />
+                    <span className="min-w-0">
+                      <span className="block text-sm font-bold">{deviceRoleLabels[role]}</span>
+                      <span className="mt-1 block whitespace-normal text-xs font-normal leading-5 text-stone-500">
+                        {deviceRoleDescriptions[role]}
+                      </span>
                     </span>
-                  </span>
-                </Button>
-              )
-            })}
+                  </Button>
+                )
+              })}
+            </div>
           </div>
         </div>
       </Shell>
