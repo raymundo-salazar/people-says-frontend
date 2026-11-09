@@ -73,10 +73,18 @@ export default function App() {
   const [hostToken, setHostToken] = useState(
     () => localStorage.getItem("people-says-host-token") ?? ""
   )
+  const [deviceToken] = useState(() => {
+    const existing = localStorage.getItem("people-says-device-token")
+    if (existing) return existing
+    const created = crypto.randomUUID()
+    localStorage.setItem("people-says-device-token", created)
+    return created
+  })
   const [joinCode, setJoinCode] = useState("")
   const [stealIndex, setStealIndex] = useState(0)
   const [stealText, setStealText] = useState("")
   const [buzzerWinner, setBuzzerWinner] = useState<"blue" | "red" | null>(null)
+  const [buttonRole, setButtonRole] = useState<"blue_button" | "red_button">("blue_button")
   const [devices, setDevices] = useState<Array<{ role: string }>>([])
   const [error, setError] = useState("")
   const answers =
@@ -90,8 +98,8 @@ export default function App() {
   useEffect(() => {
     if (!roomCode || !["host", "display", "buzzer"].includes(screen)) return
     gameSocket.connect()
-    const role = screen === "buzzer" ? "blue_button" : screen
-    gameSocket.emit("room:join", { code: roomCode, role, hostToken })
+    const role = screen === "buzzer" ? buttonRole : screen
+    gameSocket.emit("room:join", { code: roomCode, role, hostToken, deviceToken })
     const receive = (payload: { state?: State }) => {
       if (payload.state) setState(payload.state)
     }
@@ -114,7 +122,7 @@ export default function App() {
       gameSocket.off("buzzer:reset")
       gameSocket.disconnect()
     }
-  }, [roomCode, screen, hostToken])
+  }, [roomCode, screen, hostToken, deviceToken, buttonRole])
   const createRoom = async () => {
     setError("")
     try {
@@ -135,6 +143,7 @@ export default function App() {
       if (!response.ok) throw new Error(data.error)
       setRoomCode(data.code)
       setHostToken(data.hostToken)
+      localStorage.setItem("people-says-device-token", data.deviceToken)
       setState({
         ...data.state,
         questionPrompt: data.question.prompt,
@@ -451,11 +460,23 @@ export default function App() {
               secondary
               className="w-full"
               onClick={() => {
+                setButtonRole("blue_button")
                 setRoomCode(joinCode)
                 setScreen("buzzer")
               }}
             >
-              Pulsador
+              Pulsador azul
+            </Button>
+            <Button
+              secondary
+              className="w-full"
+              onClick={() => {
+                setButtonRole("red_button")
+                setRoomCode(joinCode)
+                setScreen("buzzer")
+              }}
+            >
+              Pulsador rojo
             </Button>
           </div>
         </div>
@@ -691,14 +712,14 @@ export default function App() {
           <h1 className="text-3xl font-black">Pulsador</h1>
           <div className="mt-8 grid grid-cols-2 gap-3">
             <button
-              disabled={Boolean(buzzerWinner)}
+              disabled={Boolean(buzzerWinner) || buttonRole !== "blue_button"}
               className="min-h-40 rounded-2xl bg-blue-600 text-xl font-black text-white disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => gameSocket.emit("buzzer:press", { code: roomCode, team: "blue" })}
             >
               AZUL
             </button>
             <button
-              disabled={Boolean(buzzerWinner)}
+              disabled={Boolean(buzzerWinner) || buttonRole !== "red_button"}
               className="min-h-40 rounded-2xl bg-red-600 text-xl font-black text-white disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => gameSocket.emit("buzzer:press", { code: roomCode, team: "red" })}
             >
