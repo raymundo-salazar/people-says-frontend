@@ -726,10 +726,18 @@ export default function App() {
     const code = joinCode.trim().toUpperCase()
     localStorage.setItem("people-says-room-code", code)
     localStorage.removeItem("people-says-host-token")
+    saveDeviceConfig(code, {
+      token: deviceToken,
+      role: "pending",
+      name: deviceName,
+      deviceType,
+    })
     setRoomCode(code)
     setHostToken("")
     setJoinCode(code)
+    setCurrentDeviceRole("pending")
     setJoinRoute("name")
+    setPendingRegistered(true)
     setScreenState("join")
   }
   const keepPreviousSession = () => {
