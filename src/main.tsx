@@ -12,15 +12,15 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/create" element={<App />} />
         <Route path="/teams" element={<App />} />
         <Route path="/rounds" element={<App />} />
+        <Route path="/edit" element={<App />} />
+        <Route path="/edit/teams" element={<App />} />
+        <Route path="/edit/rounds" element={<App />} />
+        <Route path="/lobby" element={<App />} />
         <Route path="/join" element={<App />} />
+        <Route path="/join/device" element={<App />} />
         <Route path="/join/role" element={<App />} />
+        <Route path="/join/lobby" element={<App />} />
         <Route path="/:code/join" element={<App />} />
-        <Route path="/:code/join/role" element={<App />} />
-        <Route path="/:code/join/lobby" element={<App />} />
-        <Route path="/:code/edit" element={<App />} />
-        <Route path="/:code/edit/teams" element={<App />} />
-        <Route path="/:code/edit/rounds" element={<App />} />
-        <Route path="/:code/lobby" element={<App />} />
         <Route path="/rules" element={<App />} />
         <Route path="/host" element={<App />} />
         <Route path="/display" element={<App />} />
