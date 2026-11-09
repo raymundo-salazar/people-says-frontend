@@ -462,9 +462,13 @@ export default function App() {
       <Shell showBack={false}>
         <WizardProgress step={1} />
         <Heading
-          k="01 / Preparación"
-          title="Crear una partida"
-          detail="Selecciona el modo de juego."
+          k={isEditLocation() ? "01 / Edición" : "01 / Preparación"}
+          title={isEditLocation() ? "Editar partida" : "Crear una partida"}
+          detail={
+            isEditLocation()
+              ? "Actualiza la configuración de tu partida."
+              : "Selecciona el modo de juego."
+          }
         />
         <div className="space-y-5 rounded-2xl border border-stone-200 bg-white p-6">
           <label className="block">
