@@ -6,6 +6,7 @@ import {
   ExternalLink,
   LoaderCircle,
   LogIn,
+  LogOut,
   Monitor,
   Settings2,
   X,
@@ -999,6 +1000,16 @@ export default function App() {
             </div>
             <Button secondary className="mt-5 w-full" onClick={changeDeviceConfiguration}>
               <Settings2 size={16} aria-hidden="true" /> Cambiar configuración del dispositivo
+            </Button>
+            <Button
+              ghost
+              className="mt-4 w-full text-xs text-red-600 hover:text-red-700"
+              onClick={() => {
+                window.close()
+                window.setTimeout(() => setScreen("home"), 100)
+              }}
+            >
+              <LogOut size={14} aria-hidden="true" /> Salir de la vinculación
             </Button>
           </div>
         </div>
