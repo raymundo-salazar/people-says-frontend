@@ -885,7 +885,7 @@ export default function App() {
                       if (index > 0) otpRefs.current[index - 1]?.focus()
                     }
                   }}
-                  className="size-14 rounded-xl border border-stone-200 bg-white text-center text-2xl font-bold uppercase outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-stone-100 sm:size-16"
+                  className="size-14 rounded-xl border border-stone-200 bg-white text-center text-3xl font-black uppercase tracking-widest text-emerald-900 outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-stone-100 sm:size-16"
                 />
               ))}
             </div>
