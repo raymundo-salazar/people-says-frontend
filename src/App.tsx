@@ -31,6 +31,7 @@ type Screen =
   | "roundResult"
   | "final"
 type Mode = "classic" | "stage" | "buttons" | "auto"
+type DeviceRole = "host" | "display" | "blue_button" | "red_button"
 type Team = { name: string; color: "blue" | "red"; players: string[] }
 type RoundDraft = { answerCount: string; multiplier: 1 | 2 | 3 }
 type Answer = { text: string; points: number }
@@ -87,6 +88,12 @@ const joinCodeFromLocation = () => {
   return segments.length === 2 && segments[1] === "join" ? segments[0].toUpperCase() : ""
 }
 const isEditLocation = () => window.location.pathname.split("/").filter(Boolean)[1] === "edit"
+const deviceRoleLabels: Record<DeviceRole, string> = {
+  host: "Presentador",
+  display: "Pantalla pública",
+  blue_button: "Pulsador azul",
+  red_button: "Pulsador rojo",
+}
 const api = import.meta.env.VITE_API_URL ?? ""
 const defaultState: State = {
   phase: "lobby",
@@ -144,6 +151,7 @@ export default function App() {
   const [stealText, setStealText] = useState("")
   const [buzzerWinner, setBuzzerWinner] = useState<"blue" | "red" | null>(null)
   const [buttonRole, setButtonRole] = useState<"blue_button" | "red_button">("blue_button")
+  const [currentDeviceRole, setCurrentDeviceRole] = useState<DeviceRole>("host")
   const [devices, setDevices] = useState<Array<{ role: string }>>([])
   const [error, setError] = useState("")
   const [copied, setCopied] = useState<"code" | "url" | null>(null)
@@ -521,6 +529,28 @@ export default function App() {
           title="Todo listo para jugar"
           detail="Comparte el código con los demás dispositivos."
         />
+        <section className="mb-5 rounded-2xl border border-stone-200 bg-white p-4">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-wider text-emerald-800">
+                {deviceRoleLabels[currentDeviceRole]}
+              </p>
+              <p className="mt-1 text-xs text-stone-500">Este dispositivo</p>
+            </div>
+            <select
+              aria-label="Rol del dispositivo"
+              value={currentDeviceRole}
+              onChange={(event) => setCurrentDeviceRole(event.target.value as DeviceRole)}
+              className="rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm font-semibold text-stone-700"
+            >
+              {Object.entries(deviceRoleLabels).map(([role, label]) => (
+                <option key={role} value={role}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </section>
         <div className="grid gap-5 md:grid-cols-2">
           <section className="rounded-2xl border border-stone-200 bg-white p-6 text-center">
             <p className="mb-2 block text-left text-xs font-medium text-stone-500">
@@ -572,7 +602,7 @@ export default function App() {
               <div className="flex items-center justify-between gap-2">
                 <div>
                   <p className="text-sm font-bold uppercase tracking-wider text-emerald-800">
-                    Presentador
+                    {deviceRoleLabels[currentDeviceRole]}
                   </p>
                   <p className="mt-1 text-xs text-stone-500">Este dispositivo</p>
                 </div>
