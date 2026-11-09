@@ -406,7 +406,7 @@ export default function App() {
                       <button
                         type="button"
                         aria-label={`Eliminar integrante ${playerIndex + 1}`}
-                        className="grid size-9 shrink-0 place-items-center rounded-lg text-stone-400 transition hover:bg-red-50 hover:text-red-600"
+                        className="grid size-9 shrink-0 place-items-center rounded-lg text-red-600 transition hover:bg-red-50 hover:text-red-700"
                         onClick={() =>
                           setTeams((old) =>
                             old.map((item, i) =>
