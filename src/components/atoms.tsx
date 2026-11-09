@@ -186,13 +186,26 @@ export function Shell({
     </main>
   )
 }
-export function Heading({ k, title, detail }: { k: string; title: string; detail?: string }) {
+export function Heading({
+  k,
+  title,
+  detail,
+  aside,
+}: {
+  k: string
+  title: string
+  detail?: string
+  aside?: ReactNode
+}) {
   return (
     <div className="mb-8">
       <p className="mb-3 text-[11px] font-semibold uppercase tracking-[.17em] text-emerald-800">
         {k}
       </p>
-      <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
+      <div className="flex items-center justify-between gap-4">
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
+        {aside}
+      </div>
       {detail && <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-500">{detail}</p>}
     </div>
   )

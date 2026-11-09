@@ -751,6 +751,11 @@ export default function App() {
           k="Acceso"
           title="Unirse a una sala"
           detail="Introduce el código del presentador."
+          aside={
+            <span className="rounded-full bg-stone-100 px-3 py-1 text-sm font-bold tracking-widest text-stone-600">
+              {joinCode || "—"}
+            </span>
+          }
         />
         <div className="mx-auto max-w-4xl space-y-4">
           <div className="rounded-2xl border border-stone-200 bg-white p-6">
