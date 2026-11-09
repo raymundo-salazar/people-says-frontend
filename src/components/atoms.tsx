@@ -198,15 +198,15 @@ export function Heading({
   aside?: ReactNode
 }) {
   return (
-    <div className="mb-8">
-      <p className="mb-3 text-[11px] font-semibold uppercase tracking-[.17em] text-emerald-800">
-        {k}
-      </p>
-      <div className="flex items-center justify-between gap-4">
+    <div className="mb-8 flex items-start justify-between gap-6">
+      <div>
+        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[.17em] text-emerald-800">
+          {k}
+        </p>
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
-        {aside}
+        {detail && <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-500">{detail}</p>}
       </div>
-      {detail && <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-500">{detail}</p>}
+      {aside}
     </div>
   )
 }
