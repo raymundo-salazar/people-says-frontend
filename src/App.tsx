@@ -310,6 +310,10 @@ export default function App() {
   const validGameSetup = gameName.trim().length > 0
   const savedRoomCode = localStorage.getItem("people-says-room-code") ?? ""
   const savedHostToken = localStorage.getItem("people-says-host-token") ?? ""
+  const isPrincipalDevice =
+    Boolean(joinCode) &&
+    joinCode.toUpperCase() === savedRoomCode.toUpperCase() &&
+    Boolean(savedHostToken)
   const validTeams = teams.every(
     (team) => team.name.trim().length > 0 && team.players.some((player) => player.trim().length > 0)
   )
@@ -1189,7 +1193,26 @@ export default function App() {
             </div>
           )}
           {error && <p className="mt-3 text-sm text-red-700">{error}</p>}
-          {joinStage === "name" ? (
+          {isPrincipalDevice ? (
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
+              <div className="flex items-start gap-3 text-emerald-900">
+                <AlertTriangle size={22} className="mt-0.5 shrink-0" aria-hidden="true" />
+                <div>
+                  <h2 className="text-lg font-semibold">Este es el dispositivo principal</h2>
+                  <p className="mt-2 text-sm leading-6 text-emerald-800">
+                    Esta sala ya está configurada en este dispositivo como presentador. Regresa al
+                    lobby para continuar administrando la partida.
+                  </p>
+                </div>
+              </div>
+              <Button
+                className="mt-5 w-full"
+                onClick={() => setScreen("lobby", `/${roomCode}/lobby`)}
+              >
+                Ir al lobby <ArrowRight size={16} aria-hidden="true" />
+              </Button>
+            </div>
+          ) : joinStage === "name" ? (
             <div className="rounded-2xl border border-stone-200 bg-white p-6">
               <h2 className="text-lg font-semibold">Nombra este dispositivo</h2>
               <p className="mt-2 text-sm text-stone-500">
