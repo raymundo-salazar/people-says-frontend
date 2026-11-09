@@ -731,7 +731,12 @@ export default function App() {
     emitAction({ type: "start" })
     window.setTimeout(() => {
       setLoadingAction(null)
-      setScreen("faceoff")
+      if (currentDeviceRole === "host") setScreen("host")
+      if (currentDeviceRole === "display") setScreen("display")
+      if (currentDeviceRole === "blue_button" || currentDeviceRole === "red_button") {
+        setButtonRole(currentDeviceRole)
+        setScreen("buzzer")
+      }
     }, 350)
   }
   const reveal = (index: number) => {
@@ -762,10 +767,24 @@ export default function App() {
       return
     }
     if (state.phase === "final") setScreen("final")
+    if (
+      ["faceoff", "decision", "turn", "steal", "round_result", "tiebreaker"].includes(
+        state.phase
+      ) &&
+      ["lobby", "joinLobby"].includes(screen)
+    ) {
+      if (currentDeviceRole === "host") setScreen("host")
+      if (currentDeviceRole === "display") setScreen("display")
+      if (currentDeviceRole === "blue_button" || currentDeviceRole === "red_button") {
+        setButtonRole(currentDeviceRole)
+        setScreen("buzzer")
+      }
+      return
+    }
     if (state.phase === "steal" && screen === "host") setScreen("steal")
     if (state.phase === "decision" && screen === "faceoff") setScreen("decision")
     if (state.phase === "turn" && (screen === "faceoff" || screen === "decision")) setScreen("host")
-  }, [state.phase, screen])
+  }, [state.phase, screen, currentDeviceRole, hostToken, roomCode])
   if (roomLoading && ["create", "teams", "rounds"].includes(screen))
     return (
       <Shell>
