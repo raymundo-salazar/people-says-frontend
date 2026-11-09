@@ -815,6 +815,17 @@ export default function App() {
               </div>
             </div>
           )}
+          <div className="flex justify-end">
+            <Button
+              ghost
+              onClick={() => {
+                window.close()
+                window.setTimeout(() => setScreen("home"), 100)
+              }}
+            >
+              <X size={16} aria-hidden="true" /> Salir de vinculación
+            </Button>
+          </div>
         </div>
       </Shell>
     )
