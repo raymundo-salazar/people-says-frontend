@@ -344,9 +344,15 @@ export default function App() {
         <div className="grid gap-4 md:grid-cols-2">
           {teams.map((team, index) => (
             <section key={team.color} className="rounded-2xl border border-stone-200 bg-white p-5">
-              <label className="mb-2 block text-xs font-medium text-stone-500">
-                Nombre del equipo <span className="text-red-600">*</span>
-              </label>
+              <div className="mb-2 flex items-center justify-between gap-3">
+                <label className="text-xs font-medium text-stone-500">
+                  Nombre del equipo <span className="text-red-600">*</span>
+                </label>
+                <span className="rounded-full bg-stone-100 px-2.5 py-1 text-xs font-semibold text-stone-500">
+                  {team.players.length}{" "}
+                  {team.players.length === 1 ? "participante" : "participantes"}
+                </span>
+              </div>
               <div className="mb-4 flex items-center gap-2">
                 <span
                   className={`size-3 shrink-0 rounded-full ${team.color === "blue" ? "bg-blue-600" : "bg-red-600"}`}
