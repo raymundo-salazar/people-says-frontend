@@ -798,6 +798,11 @@ export default function App() {
       }
       return
     }
+    if (state.phase === "lobby" && screen === "join" && currentDeviceRole !== "pending") {
+      navigate("/join/lobby")
+      setScreenState("joinLobby")
+      return
+    }
     if (state.phase === "final") setScreen("final")
     if (
       ["faceoff", "decision", "turn", "steal", "round_result", "tiebreaker"].includes(
