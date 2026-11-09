@@ -1,5 +1,6 @@
 import { ArrowLeft, ArrowRight, Plus, Trash2 } from "lucide-react"
 import { Button, Heading, Shell, WizardProgress } from "./atoms"
+import { ParticipantRow, ParticipantsSubtitle, TeamNameField } from "./participants"
 
 export type SetupMode = "classic" | "stage" | "buttons" | "auto"
 export type SetupTeam = { name: string; color: "blue" | "red"; players: string[] }
@@ -113,77 +114,37 @@ export function TeamsStep({
           const participantCount = team.players.filter((player) => player.trim()).length
           return (
             <section key={team.color} className="rounded-2xl border border-stone-200 bg-white p-5">
-              <div className="mb-2 flex items-center justify-between gap-3">
-                <label className="text-xs font-medium text-stone-500">
-                  Nombre del equipo <span className="text-red-600">*</span>
-                </label>
-                <span className="rounded-full bg-stone-100 px-2.5 py-1 text-xs font-semibold text-stone-500">
-                  {participantCount} {participantCount === 1 ? "participante" : "participantes"}
-                </span>
-              </div>
-              <div className="mb-4 flex items-center gap-2">
-                <span
-                  className={`size-3 shrink-0 rounded-full ${team.color === "blue" ? "bg-blue-600" : "bg-red-600"}`}
-                  aria-hidden="true"
-                />
-                <input
-                  required
-                  value={team.name}
-                  placeholder="Nombre del equipo *"
-                  onChange={(event) => updateTeam(index, { name: event.target.value })}
-                  className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-lg font-semibold outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100"
-                />
-              </div>
+              <TeamNameField
+                color={team.color}
+                value={team.name}
+                onChange={(name) => updateTeam(index, { name })}
+              />
+              <ParticipantsSubtitle count={participantCount} />
               <div className="space-y-2">
                 {team.players.map((player, playerIndex) => (
-                  <div
+                  <ParticipantRow
                     key={`${team.color}-player-${playerIndex}`}
-                    className="flex items-center gap-2"
-                  >
-                    <span className="w-5 text-center text-sm font-semibold text-stone-400">
-                      {playerIndex + 1}
-                    </span>
-                    <label className="flex-1">
-                      <span className="sr-only">
-                        Integrante {playerIndex + 1} <span className="text-red-600">*</span>
-                      </span>
-                      <input
-                        required
-                        value={player}
-                        placeholder={`Integrante ${playerIndex + 1} *`}
-                        onChange={(event) => {
-                          const players = team.players.map((name, currentIndex) =>
-                            currentIndex === playerIndex ? event.target.value : name
-                          )
-                          if (
-                            playerIndex === 0 &&
-                            event.target.value.trim() &&
-                            players.length === 1
-                          ) {
-                            players.push("")
-                          }
-                          updateTeam(index, { players })
-                        }}
-                        className="w-full rounded-lg bg-stone-50 px-3 py-2 text-sm"
-                      />
-                    </label>
-                    {team.players.length > 1 && (
-                      <button
-                        type="button"
-                        aria-label={`Eliminar integrante ${playerIndex + 1}`}
-                        className="grid size-9 shrink-0 place-items-center rounded-lg text-red-600 transition hover:bg-red-50 hover:text-red-700"
-                        onClick={() =>
-                          updateTeam(index, {
-                            players: team.players.filter(
-                              (_, currentIndex) => currentIndex !== playerIndex
-                            ),
-                          })
-                        }
-                      >
-                        <Trash2 size={16} aria-hidden="true" />
-                      </button>
-                    )}
-                  </div>
+                    color={team.color}
+                    index={playerIndex}
+                    value={player}
+                    canRemove={team.players.length > 1}
+                    onChange={(value) => {
+                      const players = team.players.map((name, currentIndex) =>
+                        currentIndex === playerIndex ? value : name
+                      )
+                      if (playerIndex === 0 && value.trim() && players.length === 1) {
+                        players.push("")
+                      }
+                      updateTeam(index, { players })
+                    }}
+                    onRemove={() =>
+                      updateTeam(index, {
+                        players: team.players.filter(
+                          (_, currentIndex) => currentIndex !== playerIndex
+                        ),
+                      })
+                    }
+                  />
                 ))}
               </div>
               <button
