@@ -369,8 +369,14 @@ export default function App() {
       hostToken,
       deviceToken,
     })
-    const receive = (payload: { state?: State }) => {
+    const receive = (payload: {
+      state?: State
+      devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
+    }) => {
       if (payload.state) setState(payload.state)
+      if (payload.devices) {
+        setDevices(payload.devices.filter((device) => device.id !== deviceToken))
+      }
     }
     const presence = (payload: {
       devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
@@ -418,17 +424,21 @@ export default function App() {
     }
   }, [roomCode, screen, hostToken, deviceToken, buttonRole, currentDeviceRole, deviceName])
   useEffect(() => {
-    if (!["joinInvite", "join", "joinLobby"].includes(screen) || joinCode.trim().length < 5) return
-    fetch(`${api}/api/rooms/${joinCode.trim().toUpperCase()}`)
+    if (screen !== "lobby" && !["joinInvite", "join", "joinLobby"].includes(screen)) return
+    const code = roomCode || joinCode.trim().toUpperCase()
+    if (code.length < 5) return
+    fetch(`${api}/api/rooms/${code}`)
       .then(async (response) => {
         const data = await response.json()
         if (!response.ok) throw new Error(data.error)
         setGameName(data.name ?? "La gente dice")
         setState((old) => ({ ...old, ...data.state }))
-        setDevices(data.devices ?? [])
+        setDevices(
+          (data.devices ?? []).filter((device: { id?: string }) => device.id !== deviceToken)
+        )
       })
       .catch(() => setDevices([]))
-  }, [screen, joinStage, joinCode])
+  }, [screen, joinStage, joinCode, roomCode])
   useEffect(() => {
     if (
       screen !== "join" ||
