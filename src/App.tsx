@@ -7,6 +7,7 @@ import {
   LoaderCircle,
   LogIn,
   Monitor,
+  Settings2,
   X,
 } from "lucide-react"
 import { gameSocket } from "./socket"
@@ -543,6 +544,20 @@ export default function App() {
     )
     setScreenState("joinLobby")
   }
+  const changeDeviceConfiguration = () => {
+    const code = roomCode || joinCode.trim().toUpperCase()
+    gameSocket.emit("room:join", {
+      code,
+      role: "pending",
+      name: deviceName,
+      deviceType,
+      deviceToken,
+    })
+    setCurrentDeviceRole("pending")
+    setJoinStage("name")
+    window.history.pushState({ screen: "join", joinStage: "name" }, "", `/${code}/join`)
+    setScreenState("join")
+  }
   const pasteJoinCode = async () => {
     const pasted = await navigator.clipboard.readText()
     setJoinCode(
@@ -979,6 +994,9 @@ export default function App() {
                 <span className="text-right font-semibold text-emerald-700">Vinculado</span>
               </div>
             </div>
+            <Button secondary className="mt-5 w-full" onClick={changeDeviceConfiguration}>
+              <Settings2 size={16} aria-hidden="true" /> Cambiar configuración del dispositivo
+            </Button>
           </div>
         </div>
       </main>
