@@ -78,6 +78,7 @@ const roomCodeFromLocation = () => {
     ? segments[0]
     : ""
 }
+const isEditLocation = () => window.location.pathname.split("/").filter(Boolean)[1] === "edit"
 const api = import.meta.env.VITE_API_URL ?? ""
 const defaultState: State = {
   phase: "lobby",
@@ -119,6 +120,7 @@ export default function App() {
   const [roomCode, setRoomCode] = useState(
     () => roomCodeFromLocation() || localStorage.getItem("people-says-room-code") || ""
   )
+  const [roomLoading, setRoomLoading] = useState(() => isEditLocation())
   const [hostToken, setHostToken] = useState(
     () => localStorage.getItem("people-says-host-token") ?? ""
   )
@@ -173,6 +175,7 @@ export default function App() {
           ? `/${roomCode}/lobby`
           : `/${next}`)
     window.history.pushState({ screen: next }, "", nextPath)
+    setRoomLoading(nextPath.includes("/edit"))
     setScreenState(next)
   }
   useEffect(() => {
@@ -211,11 +214,13 @@ export default function App() {
     }
   }, [roomCode, screen, hostToken, deviceToken, buttonRole])
   useEffect(() => {
-    if (!roomCode || !hostToken || !["create", "teams", "rounds", "lobby"].includes(screen)) return
+    if (!roomCode || !hostToken || !isEditLocation()) return
+    setRoomLoading(true)
     fetch(`${api}/api/rooms/${roomCode}`, { headers: { "x-host-token": hostToken } })
       .then(async (response) => {
         const data = await response.json()
         if (!response.ok) throw new Error(data.error)
+        setGameName(data.name ?? "")
         setMode(data.mode)
         setState((old) => ({ ...old, ...data.state }))
         if (data.state?.teams) {
@@ -241,6 +246,7 @@ export default function App() {
       .catch((error: unknown) =>
         setError(error instanceof Error ? error.message : "No se pudo cargar la partida")
       )
+      .finally(() => setRoomLoading(false))
   }, [roomCode, hostToken, screen])
   const createRoom = async (finalize = false) => {
     setError("")
@@ -283,6 +289,29 @@ export default function App() {
       setScreen(finalize ? "lobby" : "teams", finalize ? `/${data.code}/lobby` : undefined)
     } catch (e) {
       setError(e instanceof Error ? e.message : "No se pudo crear la sala")
+    } finally {
+      setLoadingAction(null)
+    }
+  }
+  const saveGameConfig = async () => {
+    if (!validGameSetup) return
+    if (!roomCode) {
+      setScreen("teams")
+      return
+    }
+    setLoadingAction("create")
+    try {
+      const response = await fetch(`${api}/api/rooms/${roomCode}`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json", "x-host-token": hostToken },
+        body: JSON.stringify({ name: gameName.trim(), mode }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error)
+      setMode(data.mode)
+      setScreen("teams")
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No se pudo guardar la configuración")
     } finally {
       setLoadingAction(null)
     }
@@ -362,6 +391,20 @@ export default function App() {
     if (state.phase === "decision" && screen === "faceoff") setScreen("decision")
     if (state.phase === "turn" && (screen === "faceoff" || screen === "decision")) setScreen("host")
   }, [state.phase, screen])
+  if (roomLoading && ["create", "teams", "rounds"].includes(screen))
+    return (
+      <Shell>
+        <WizardProgress step={screen === "create" ? 1 : screen === "teams" ? 2 : 3} />
+        <Skeleton className="mb-3 h-3 w-32" />
+        <Skeleton className="h-10 w-2/3" />
+        <Skeleton className="mt-3 h-5 w-full max-w-xl" />
+        <div className="mt-8 rounded-2xl border border-stone-200 bg-white p-6">
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="mt-4 h-12 w-full" />
+          <Skeleton className="mt-4 h-12 w-2/3" />
+        </div>
+      </Shell>
+    )
   if (screen === "home")
     return (
       <Shell showBack={false}>
@@ -450,7 +493,11 @@ export default function App() {
           </div>
           <div className="flex items-center justify-between gap-3 pt-2">
             <span aria-hidden="true" />
-            <Button disabled={!validGameSetup} onClick={() => setScreen("teams")}>
+            <Button
+              disabled={!validGameSetup}
+              loading={loadingAction === "create"}
+              onClick={saveGameConfig}
+            >
               Continuar <ArrowRight size={16} aria-hidden="true" />
             </Button>
           </div>
