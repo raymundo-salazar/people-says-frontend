@@ -35,6 +35,12 @@ export function Shell({ children, wide = false }: { children: ReactNode; wide?: 
     <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
       <div className={`mx-auto ${wide ? "max-w-6xl" : "max-w-4xl"}`}>
         <header className="mb-12 flex items-center justify-between">
+          <button
+            onClick={() => window.history.back()}
+            className="text-xs font-semibold text-stone-500 hover:text-emerald-800"
+          >
+            ← Regresar
+          </button>
           <Brand />
           <span className="text-xs text-stone-400">Juego de respuestas populares</span>
         </header>

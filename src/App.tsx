@@ -20,6 +20,7 @@ type Screen =
   | "final"
 type Mode = "classic" | "stage" | "buttons" | "auto"
 type Team = { name: string; color: "blue" | "red"; players: string[] }
+type RoundDraft = { answerCount: string; multiplier: 1 | 2 | 3 }
 type Answer = { text: string; points: number }
 type State = {
   phase: string
@@ -58,15 +59,23 @@ const modes: { id: Mode; title: string; detail: string }[] = [
 ]
 
 export default function App() {
-  const [screen, setScreen] = useState<Screen>("home")
+  const [screen, setScreenState] = useState<Screen>(
+    () => (window.location.hash.replace("#", "") as Screen) || "home"
+  )
   const [mode, setMode] = useState<Mode>("classic")
   const [state, setState] = useState<State>(defaultState)
+  const [gameName, setGameName] = useState("")
   const [teams, setTeams] = useState<Team[]>([
-    { name: "Equipo Azul", color: "blue", players: ["Ana", "Carlos"] },
-    { name: "Equipo Rojo", color: "red", players: ["Sofía", "Pedro"] },
+    { name: "", color: "blue", players: [""] },
+    { name: "", color: "red", players: [""] },
   ])
-  const [rounds, setRounds] = useState([10, 8, 6, 5, 4])
-  const [multipliers, setMultipliers] = useState([1, 1, 1, 1, 1])
+  const [rounds, setRounds] = useState<RoundDraft[]>([
+    { answerCount: "10", multiplier: 1 },
+    { answerCount: "8", multiplier: 1 },
+    { answerCount: "6", multiplier: 1 },
+    { answerCount: "5", multiplier: 2 },
+    { answerCount: "4", multiplier: 3 },
+  ])
   const [roomCode, setRoomCode] = useState(
     () => localStorage.getItem("people-says-room-code") ?? ""
   )
@@ -92,7 +101,23 @@ export default function App() {
   const revealed = state.revealed ?? []
   const blue = state.scores?.blue ?? 0
   const red = state.scores?.red ?? 0
-  const validRounds = rounds.every((n, i) => n >= 4 && n <= 10 && (i === 0 || n < rounds[i - 1]))
+  const validRounds = rounds.every(
+    (round, i) =>
+      Number.isInteger(Number(round.answerCount)) &&
+      Number(round.answerCount) >= 4 &&
+      Number(round.answerCount) <= 10 &&
+      (i === 0 || Number(round.answerCount) < Number(rounds[i - 1].answerCount))
+  )
+  const setScreen = (next: Screen) => {
+    window.history.pushState({ screen: next }, "", `#${next}`)
+    setScreenState(next)
+  }
+  useEffect(() => {
+    const onPopState = () =>
+      setScreenState((window.location.hash.replace("#", "") as Screen) || "home")
+    window.addEventListener("popstate", onPopState)
+    return () => window.removeEventListener("popstate", onPopState)
+  }, [])
   const emitAction = (action: Record<string, unknown>) =>
     gameSocket.emit("game:action", { code: roomCode, hostToken, action })
   useEffect(() => {
@@ -131,10 +156,10 @@ export default function App() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           mode,
-          name: "Noche de amigos",
-          rounds: rounds.map((answerCount, index) => ({
-            answerCount,
-            multiplier: multipliers[index] as 1 | 2 | 3,
+          name: gameName.trim() || undefined,
+          rounds: rounds.map((round) => ({
+            answerCount: Number(round.answerCount),
+            multiplier: round.multiplier,
           })),
           teams,
         }),
@@ -175,9 +200,9 @@ export default function App() {
       method: "PATCH",
       headers: { "content-type": "application/json", "x-host-token": hostToken },
       body: JSON.stringify({
-        rounds: rounds.map((answerCount, index) => ({
-          answerCount,
-          multiplier: multipliers[index],
+        rounds: rounds.map((round) => ({
+          answerCount: Number(round.answerCount),
+          multiplier: round.multiplier,
         })),
       }),
     })
@@ -263,7 +288,9 @@ export default function App() {
         />
         <div className="space-y-5 rounded-2xl border border-stone-200 bg-white p-6">
           <input
-            defaultValue="Noche de amigos"
+            value={gameName}
+            onChange={(e) => setGameName(e.target.value)}
+            placeholder="Nombre de la partida"
             className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm"
           />
           <div className="grid gap-3 sm:grid-cols-2">
@@ -331,7 +358,7 @@ export default function App() {
                 onClick={() =>
                   setTeams((old) =>
                     old.map((item, i) =>
-                      i === index ? { ...item, players: [...item.players, "Nuevo jugador"] } : item
+                      i === index ? { ...item, players: [...item.players, ""] } : item
                     )
                   )
                 }
@@ -355,28 +382,36 @@ export default function App() {
           detail="Cada ronda usa una pregunta con 4 a 10 respuestas."
         />
         <div className="rounded-2xl border border-stone-200 bg-white p-6">
-          <div className="space-y-3">
+          <div className="grid grid-cols-[1fr_2fr_1fr] gap-x-3 gap-y-2 text-sm">
+            <p className="font-semibold text-stone-500">Número de ronda</p>
+            <p className="font-semibold text-stone-500">Cantidad de preguntas</p>
+            <p className="font-semibold text-stone-500">Multiplicador</p>
             {rounds.map((value, index) => (
-              <div className="flex items-center gap-3" key={index}>
-                <span className="w-6 text-sm">{index + 1}</span>
+              <div className="contents" key={index}>
+                <span className="flex items-center">{index + 1}</span>
                 <input
                   type="number"
                   min="4"
                   max="10"
-                  value={value}
+                  value={value.answerCount}
                   onChange={(e) =>
                     setRounds((old) =>
-                      old.map((item, i) => (i === index ? Number(e.target.value) : item))
+                      old.map((item, i) =>
+                        i === index ? { ...item, answerCount: e.target.value } : item
+                      )
                     )
                   }
                   className="w-full rounded-xl border border-stone-200 px-3 py-2"
                 />
-                <span className="text-sm text-stone-500">respuestas</span>
                 <select
-                  value={multipliers[index]}
+                  value={value.multiplier}
                   onChange={(e) =>
-                    setMultipliers((old) =>
-                      old.map((item, i) => (i === index ? Number(e.target.value) : item))
+                    setRounds((old) =>
+                      old.map((item, i) =>
+                        i === index
+                          ? { ...item, multiplier: Number(e.target.value) as 1 | 2 | 3 }
+                          : item
+                      )
                     )
                   }
                   className="rounded-xl border border-stone-200 px-2 py-2 text-sm"
