@@ -175,6 +175,27 @@ const deviceTypeLabels: Record<DeviceType, string> = {
   mobile: "Móvil",
   tablet: "Tablet",
 }
+type SavedDeviceConfig = {
+  token: string
+  role: DeviceRole
+  name: string
+  deviceType: DeviceType
+}
+const deviceConfigKey = (code: string) => `people-says-device-config:${code.toUpperCase()}`
+const getSavedDeviceConfig = (): SavedDeviceConfig | null => {
+  const code = roomCodeFromLocation()
+  if (!code) return null
+  const raw = localStorage.getItem(deviceConfigKey(code))
+  if (!raw) return null
+  try {
+    return JSON.parse(raw) as SavedDeviceConfig
+  } catch {
+    return null
+  }
+}
+const saveDeviceConfig = (code: string, config: SavedDeviceConfig) => {
+  localStorage.setItem(deviceConfigKey(code), JSON.stringify(config))
+}
 const api = import.meta.env.VITE_API_URL ?? ""
 const defaultState: State = {
   phase: "lobby",
@@ -200,6 +221,7 @@ const modes: { id: Mode; title: string; detail: string }[] = [
 export default function App() {
   const location = useLocation()
   const navigate = useNavigate()
+  const savedDeviceConfig = getSavedDeviceConfig()
   const [screen, setScreenState] = useState<Screen>(screenFromLocation)
   const [mode, setMode] = useState<Mode>("classic")
   const [state, setState] = useState<State>(defaultState)
@@ -225,13 +247,19 @@ export default function App() {
   const [deviceToken] = useState(() => {
     const existing = sessionStorage.getItem("people-says-device-token")
     if (existing) return existing
+    if (savedDeviceConfig?.token) {
+      sessionStorage.setItem("people-says-device-token", savedDeviceConfig.token)
+      return savedDeviceConfig.token
+    }
     const created = crypto.randomUUID()
     sessionStorage.setItem("people-says-device-token", created)
     return created
   })
   const [joinCode, setJoinCode] = useState(joinCodeFromLocation)
-  const [deviceName, setDeviceName] = useState(getDefaultDeviceName)
-  const [deviceType] = useState<DeviceType>(getDeviceType)
+  const [deviceName, setDeviceName] = useState(
+    () => savedDeviceConfig?.name || getDefaultDeviceName()
+  )
+  const [deviceType] = useState<DeviceType>(() => savedDeviceConfig?.deviceType ?? getDeviceType())
   const [joinStage, setJoinStage] = useState<"name" | "role">(joinStageFromLocation)
   const [pendingRegistered, setPendingRegistered] = useState(false)
   const [roleWarning, setRoleWarning] = useState("")
@@ -240,7 +268,9 @@ export default function App() {
   const [stealText, setStealText] = useState("")
   const [buzzerWinner, setBuzzerWinner] = useState<"blue" | "red" | null>(null)
   const [buttonRole, setButtonRole] = useState<"blue_button" | "red_button">("blue_button")
-  const [currentDeviceRole, setCurrentDeviceRole] = useState<DeviceRole>("host")
+  const [currentDeviceRole, setCurrentDeviceRole] = useState<DeviceRole>(
+    () => savedDeviceConfig?.role ?? "host"
+  )
   const [devices, setDevices] = useState<
     Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
   >([])
@@ -338,6 +368,12 @@ export default function App() {
     const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
     const roleReplaced = (payload: { message?: string }) => {
       setCurrentDeviceRole("pending")
+      saveDeviceConfig(roomCode, {
+        token: deviceToken,
+        role: "pending",
+        name: deviceName,
+        deviceType,
+      })
       setPendingRegistered(true)
       setRoleWarning(
         payload.message ??
@@ -467,6 +503,12 @@ export default function App() {
       setRoomCode(data.code)
       setHostToken(data.hostToken)
       sessionStorage.setItem("people-says-device-token", data.deviceToken)
+      saveDeviceConfig(data.code, {
+        token: data.deviceToken,
+        role: "host",
+        name: deviceName,
+        deviceType,
+      })
       setState({
         ...data.state,
         questionPrompt: data.question.prompt,
@@ -561,15 +603,23 @@ export default function App() {
     }
   }
   const selectJoinRole = (role: DeviceRole) => {
-    setRoomCode(joinCode.trim().toUpperCase())
+    const code = joinCode.trim().toUpperCase()
+    setRoomCode(code)
     setCurrentDeviceRole(role)
+    saveDeviceConfig(code, { token: deviceToken, role, name: deviceName, deviceType })
     setRoleWarning("")
     if (role === "blue_button" || role === "red_button") setButtonRole(role)
-    navigate(`/${joinCode.trim().toUpperCase()}/join/lobby`)
+    navigate(`/${code}/join/lobby`)
     setScreenState("joinLobby")
   }
   const changeDeviceConfiguration = () => {
     const code = roomCode || joinCode.trim().toUpperCase()
+    saveDeviceConfig(code, {
+      token: deviceToken,
+      role: "pending",
+      name: deviceName,
+      deviceType,
+    })
     gameSocket.emit("room:join", {
       code,
       role: "pending",
