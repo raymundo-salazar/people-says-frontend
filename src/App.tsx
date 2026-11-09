@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 import {
   ArrowLeft,
   ArrowRight,
@@ -196,6 +197,8 @@ const modes: { id: Mode; title: string; detail: string }[] = [
 ]
 
 export default function App() {
+  const location = useLocation()
+  const navigate = useNavigate()
   const [screen, setScreenState] = useState<Screen>(screenFromLocation)
   const [mode, setMode] = useState<Mode>("classic")
   const [state, setState] = useState<State>(defaultState)
@@ -283,7 +286,7 @@ export default function App() {
         : next === "lobby" && roomCode
           ? `/${roomCode}/lobby`
           : `/${next}`)
-    window.history.pushState({ screen: next }, "", nextPath)
+    navigate(nextPath)
     setRoomLoading(nextPath.includes("/edit"))
     setScreenState(next)
   }
@@ -293,17 +296,13 @@ export default function App() {
     const path = code
       ? `/${code}/join${stage === "role" ? "/role" : ""}`
       : `/join${stage === "role" ? "/role" : ""}`
-    window.history.pushState({ screen: "join", joinStage: stage }, "", path)
+    navigate(path)
     setJoinStage(stage)
   }
   useEffect(() => {
-    const onPopState = () => {
-      setScreenState(screenFromLocation())
-      setJoinStage(joinStageFromLocation())
-    }
-    window.addEventListener("popstate", onPopState)
-    return () => window.removeEventListener("popstate", onPopState)
-  }, [])
+    setScreenState(screenFromLocation())
+    setJoinStage(joinStageFromLocation())
+  }, [location.pathname])
   const emitAction = (action: Record<string, unknown>) =>
     gameSocket.emit("game:action", { code: roomCode, hostToken, action })
   useEffect(() => {
@@ -545,11 +544,7 @@ export default function App() {
     setRoomCode(joinCode.trim().toUpperCase())
     setCurrentDeviceRole(role)
     if (role === "blue_button" || role === "red_button") setButtonRole(role)
-    window.history.pushState(
-      { screen: "joinLobby" },
-      "",
-      `/${joinCode.trim().toUpperCase()}/join/lobby`
-    )
+    navigate(`/${joinCode.trim().toUpperCase()}/join/lobby`)
     setScreenState("joinLobby")
   }
   const changeDeviceConfiguration = () => {
@@ -564,7 +559,7 @@ export default function App() {
     setCurrentDeviceRole("pending")
     setPendingRegistered(true)
     setJoinStage("name")
-    window.history.pushState({ screen: "join", joinStage: "name" }, "", `/${code}/join`)
+    navigate(`/${code}/join`)
     setScreenState("join")
   }
   const pasteJoinCode = async () => {

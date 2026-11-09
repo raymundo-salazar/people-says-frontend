@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react"
+import { useNavigate } from "react-router-dom"
 import {
   ArrowLeft,
   Circle,
@@ -190,13 +191,15 @@ export function Shell({
   showBack?: boolean
   onBack?: () => void
 }) {
+  const navigate = useNavigate()
+
   return (
     <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
       <div className={`mx-auto ${wide ? "max-w-6xl" : "max-w-4xl"}`}>
         <header className="mb-12 flex items-center justify-between">
           {showBack ? (
             <button
-              onClick={onBack ?? (() => window.history.back())}
+              onClick={onBack ?? (() => navigate(-1))}
               className="text-xs font-semibold text-stone-500 hover:text-emerald-800"
             >
               <ArrowLeft size={14} /> Regresar
