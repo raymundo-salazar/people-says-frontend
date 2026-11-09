@@ -1,5 +1,5 @@
-import type { ReactNode } from "react"
-import { ArrowLeft, X as XIcon } from "lucide-react"
+import { useEffect, useState, type ReactNode } from "react"
+import { ArrowLeft, Laptop, Monitor, Smartphone, Tablet, X as XIcon } from "lucide-react"
 
 export function Brand() {
   return (
@@ -58,6 +58,28 @@ export function CountPill({ count, label }: { count: number; label: string }) {
     <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold text-stone-500">
       {count} {label}
     </span>
+  )
+}
+export function DeviceIconAnimation() {
+  const icons = [Monitor, Laptop, Tablet, Smartphone]
+  const [index, setIndex] = useState(0)
+  const Icon = icons[index]
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setIndex((current) => (current + 1) % icons.length)
+    }, 1400)
+    return () => window.clearInterval(timer)
+  }, [])
+
+  return (
+    <Icon
+      key={index}
+      size={30}
+      strokeWidth={1.5}
+      className="animate-pulse text-stone-300"
+      aria-hidden="true"
+    />
   )
 }
 export function WizardProgress({ step, total = 4 }: { step: number; total?: number }) {

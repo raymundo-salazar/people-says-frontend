@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
-import { ArrowLeft, ArrowRight, ExternalLink, Monitor, Smartphone, X } from "lucide-react"
+import { ArrowLeft, ArrowRight, ExternalLink, Monitor, X } from "lucide-react"
 import { gameSocket } from "./socket"
 import {
   Button,
   CountPill,
+  DeviceIconAnimation,
   Heading,
   Score,
   Shell,
@@ -569,12 +570,7 @@ export default function App() {
             </div>
             {devices.length === 0 ? (
               <div className="mt-7 flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-stone-200 bg-stone-50 px-5 text-center">
-                <Smartphone
-                  size={30}
-                  strokeWidth={1.5}
-                  className="text-stone-300"
-                  aria-hidden="true"
-                />
+                <DeviceIconAnimation />
                 <h3 className="mt-4 text-sm font-semibold">Aún no hay dispositivos vinculados</h3>
                 <p className="mt-2 max-w-xs text-xs leading-5 text-stone-500">
                   Comparte el enlace o QR para conectar una pantalla pública o los botones de cada
