@@ -56,8 +56,8 @@ const defaultState: State = {
   scores: { blue: 0, red: 0 },
   control: null,
   teams: [
-    { name: "Equipo Azul", players: ["Ana"] },
-    { name: "Equipo Rojo", players: ["Sofía"] },
+    { name: "Azul", players: ["Ana"] },
+    { name: "Rojo", players: ["Sofía"] },
   ],
 }
 const modes: { id: Mode; title: string; detail: string }[] = [
@@ -75,8 +75,8 @@ export default function App() {
   const [state, setState] = useState<State>(defaultState)
   const [gameName, setGameName] = useState("")
   const [teams, setTeams] = useState<Team[]>([
-    { name: "", color: "blue", players: [""] },
-    { name: "", color: "red", players: [""] },
+    { name: "Azul", color: "blue", players: [""] },
+    { name: "Rojo", color: "red", players: [""] },
   ])
   const [rounds, setRounds] = useState<RoundDraft[]>([
     { answerCount: "10", multiplier: 1 },
@@ -347,17 +347,23 @@ export default function App() {
               <label className="mb-2 block text-xs font-medium text-stone-500">
                 Nombre del equipo <span className="text-red-600">*</span>
               </label>
-              <input
-                required
-                value={team.name}
-                placeholder="Nombre del equipo *"
-                onChange={(e) =>
-                  setTeams((old) =>
-                    old.map((item, i) => (i === index ? { ...item, name: e.target.value } : item))
-                  )
-                }
-                className="mb-4 w-full bg-transparent text-lg font-semibold outline-none"
-              />
+              <div className="mb-4 flex items-center gap-2">
+                <span
+                  className={`size-3 shrink-0 rounded-full ${team.color === "blue" ? "bg-blue-600" : "bg-red-600"}`}
+                  aria-hidden="true"
+                />
+                <input
+                  required
+                  value={team.name}
+                  placeholder="Nombre del equipo *"
+                  onChange={(e) =>
+                    setTeams((old) =>
+                      old.map((item, i) => (i === index ? { ...item, name: e.target.value } : item))
+                    )
+                  }
+                  className="w-full bg-transparent text-lg font-semibold outline-none"
+                />
+              </div>
               <div className="space-y-2">
                 {team.players.map((player, playerIndex) => (
                   <label key={`${player}-${playerIndex}`} className="block">
