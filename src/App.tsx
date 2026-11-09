@@ -349,8 +349,10 @@ export default function App() {
                   Nombre del equipo <span className="text-red-600">*</span>
                 </label>
                 <span className="rounded-full bg-stone-100 px-2.5 py-1 text-xs font-semibold text-stone-500">
-                  {team.players.length}{" "}
-                  {team.players.length === 1 ? "participante" : "participantes"}
+                  {team.players.filter((player) => player.trim()).length}{" "}
+                  {team.players.filter((player) => player.trim()).length === 1
+                    ? "participante"
+                    : "participantes"}
                 </span>
               </div>
               <div className="mb-4 flex items-center gap-2">
