@@ -150,6 +150,12 @@ export function DeviceRoleIcon({
     </span>
   )
 }
+export type DeviceType = "desktop" | "tv" | "phone" | "tablet"
+export function DeviceTypeIcon({ type }: { type: DeviceType }) {
+  const icons = { desktop: Laptop, tv: Tv, phone: Smartphone, tablet: Tablet }
+  const Icon = icons[type]
+  return <Icon size={22} strokeWidth={1.8} className="text-emerald-900" aria-hidden="true" />
+}
 export function WizardProgress({ step, total = 4 }: { step: number; total?: number }) {
   return (
     <div className="mb-8 flex items-center gap-2" aria-label={`Paso ${step} de ${total}`}>

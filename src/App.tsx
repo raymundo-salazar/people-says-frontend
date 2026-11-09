@@ -12,7 +12,9 @@ import {
   Skeleton,
   Strikes,
   WizardProgress,
+  DeviceTypeIcon,
 } from "./components/atoms"
+import type { DeviceType } from "./components/atoms"
 import { GameSetupStep, RoundsStep, TeamsStep } from "./components/setup-wizard"
 
 type Screen =
@@ -132,6 +134,19 @@ const getDefaultDeviceName = () => {
           : "Navegador"
   return `${browser} · ${platform}`
 }
+const getDeviceType = (): DeviceType => {
+  const userAgent = navigator.userAgent
+  if (/SmartTV|Web0S|Tizen|HbbTV|NetCast/i.test(userAgent)) return "tv"
+  if (/iPad|Tablet|Android(?!.*Mobile)/i.test(userAgent)) return "tablet"
+  if (/iPhone|iPod|Android.*Mobile/i.test(userAgent)) return "phone"
+  return "desktop"
+}
+const deviceTypeLabels: Record<DeviceType, string> = {
+  desktop: "Escritorio",
+  tv: "TV",
+  phone: "Teléfono",
+  tablet: "Tablet",
+}
 const api = import.meta.env.VITE_API_URL ?? ""
 const defaultState: State = {
   phase: "lobby",
@@ -186,6 +201,7 @@ export default function App() {
   })
   const [joinCode, setJoinCode] = useState(joinCodeFromLocation)
   const [deviceName, setDeviceName] = useState(getDefaultDeviceName)
+  const [deviceType] = useState<DeviceType>(getDeviceType)
   const [joinStage, setJoinStage] = useState<"name" | "role">(joinStageFromLocation)
   const [stealIndex, setStealIndex] = useState(0)
   const [stealText, setStealText] = useState("")
@@ -263,7 +279,14 @@ export default function App() {
     if (!roomCode || !["host", "display", "buzzer", "lobby"].includes(screen)) return
     gameSocket.connect()
     const role = screen === "lobby" ? currentDeviceRole : screen === "buzzer" ? buttonRole : screen
-    gameSocket.emit("room:join", { code: roomCode, role, name: deviceName, hostToken, deviceToken })
+    gameSocket.emit("room:join", {
+      code: roomCode,
+      role,
+      name: deviceName,
+      deviceType,
+      hostToken,
+      deviceToken,
+    })
     const receive = (payload: { state?: State }) => {
       if (payload.state) setState(payload.state)
     }
@@ -306,6 +329,7 @@ export default function App() {
       code: joinCode.trim().toUpperCase(),
       role: "pending",
       name: deviceName,
+      deviceType,
       deviceToken,
     })
     gameSocket.on("room:presence", presence)
@@ -313,7 +337,7 @@ export default function App() {
       gameSocket.off("room:presence", presence)
       gameSocket.disconnect()
     }
-  }, [screen, joinStage, joinCode, deviceName, deviceToken])
+  }, [screen, joinStage, joinCode, deviceName, deviceType, deviceToken])
   useEffect(() => {
     if (!roomCode || !hostToken || !isEditLocation()) return
     setRoomLoading(true)
@@ -793,13 +817,21 @@ export default function App() {
               <p className="mt-2 text-sm text-stone-500">
                 Este nombre aparecerá en la lista de dispositivos vinculados.
               </p>
-              <input
-                value={deviceName}
-                onChange={(event) => setDeviceName(event.target.value)}
-                placeholder="Nombre del dispositivo"
-                className="mt-5 w-full rounded-xl border border-stone-200 px-4 py-3 text-sm"
-                autoComplete="off"
-              />
+              <div className="mt-5 flex items-center gap-3 rounded-xl border border-stone-200 p-3">
+                <span className="grid aspect-square size-12 shrink-0 place-items-center rounded-lg bg-emerald-50">
+                  <DeviceTypeIcon type={deviceType} />
+                </span>
+                <input
+                  value={deviceName}
+                  onChange={(event) => setDeviceName(event.target.value)}
+                  placeholder="Nombre del dispositivo"
+                  className="min-w-0 flex-1 bg-transparent text-sm outline-none"
+                  autoComplete="off"
+                />
+                <span className="shrink-0 text-xs font-semibold text-stone-500">
+                  {deviceTypeLabels[deviceType]}
+                </span>
+              </div>
               <div className="mt-5 flex justify-end">
                 <Button
                   disabled={!deviceName.trim() || !validJoinCode}
