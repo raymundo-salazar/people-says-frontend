@@ -76,6 +76,7 @@ export default function App() {
   const [joinCode, setJoinCode] = useState("")
   const [stealIndex, setStealIndex] = useState(0)
   const [stealText, setStealText] = useState("")
+  const [buzzerWinner, setBuzzerWinner] = useState<"blue" | "red" | null>(null)
   const [devices, setDevices] = useState<Array<{ role: string }>>([])
   const [error, setError] = useState("")
   const answers =
@@ -97,15 +98,20 @@ export default function App() {
     const presence = (payload: { devices?: Array<{ role: string }> }) =>
       setDevices(payload.devices ?? [])
     const failure = (payload: { error?: string }) => setError(payload.error ?? "Error de conexión")
+    const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
     gameSocket.on("room:snapshot", receive)
     gameSocket.on("game:state", receive)
     gameSocket.on("room:presence", presence)
     gameSocket.on("game:error", failure)
+    gameSocket.on("buzzer:winner", buzzer)
+    gameSocket.on("buzzer:reset", () => setBuzzerWinner(null))
     return () => {
       gameSocket.off("room:snapshot", receive)
       gameSocket.off("game:state", receive)
       gameSocket.off("room:presence", presence)
       gameSocket.off("game:error", failure)
+      gameSocket.off("buzzer:winner", buzzer)
+      gameSocket.off("buzzer:reset")
       gameSocket.disconnect()
     }
   }, [roomCode, screen, hostToken])
@@ -681,18 +687,25 @@ export default function App() {
           <h1 className="text-3xl font-black">Pulsador</h1>
           <div className="mt-8 grid grid-cols-2 gap-3">
             <button
-              className="min-h-40 rounded-2xl bg-blue-600 text-xl font-black text-white"
+              disabled={Boolean(buzzerWinner)}
+              className="min-h-40 rounded-2xl bg-blue-600 text-xl font-black text-white disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => gameSocket.emit("buzzer:press", { code: roomCode, team: "blue" })}
             >
               AZUL
             </button>
             <button
-              className="min-h-40 rounded-2xl bg-red-600 text-xl font-black text-white"
+              disabled={Boolean(buzzerWinner)}
+              className="min-h-40 rounded-2xl bg-red-600 text-xl font-black text-white disabled:cursor-not-allowed disabled:opacity-40"
               onClick={() => gameSocket.emit("buzzer:press", { code: roomCode, team: "red" })}
             >
               ROJO
             </button>
           </div>
+          <p className="mt-6 text-sm font-semibold text-emerald-800">
+            {buzzerWinner
+              ? `Ganó el Equipo ${buzzerWinner === "blue" ? "Azul" : "Rojo"}`
+              : "Esperando el primer pulsador…"}
+          </p>
         </div>
       </Shell>
     )
