@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { ArrowLeft, ArrowRight, ExternalLink, Monitor, Trash2, X } from "lucide-react"
+import { ArrowLeft, ArrowRight, ExternalLink, Monitor, Plus, Trash2, X } from "lucide-react"
 import { gameSocket } from "./socket"
 import {
   Button,
@@ -120,6 +120,14 @@ export default function App() {
       allowedAnswerCounts.includes(Number(round.answerCount)) &&
       (i === 0 || Number(round.answerCount) < Number(rounds[i - 1].answerCount))
   )
+  const canAddRound = rounds.length < allowedAnswerCounts.length
+  const addRound = () => {
+    if (!canAddRound) return
+    const lastCount = Number(rounds[rounds.length - 1]?.answerCount ?? 10)
+    const nextCount = allowedAnswerCounts.find((count) => count < lastCount)
+    if (!nextCount) return
+    setRounds((old) => [...old, { answerCount: String(nextCount), multiplier: 1 }])
+  }
   const validGameSetup = gameName.trim().length > 0
   const validTeams = teams.every(
     (team) => team.name.trim().length > 0 && team.players.some((player) => player.trim().length > 0)
@@ -513,6 +521,14 @@ export default function App() {
               </div>
             ))}
           </div>
+          <button
+            type="button"
+            disabled={!canAddRound}
+            onClick={addRound}
+            className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-emerald-800 disabled:cursor-not-allowed disabled:text-stone-400"
+          >
+            <Plus size={16} aria-hidden="true" /> Agregar ronda
+          </button>
           {!validRounds && (
             <p className="mt-4 text-sm text-red-700">
               Las rondas deben usar 10, 8, 6, 5 o 4 preguntas y ser descendentes.
