@@ -329,7 +329,12 @@ export default function App() {
     const presence = (payload: {
       devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
     }) => setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
-    const failure = (payload: { error?: string }) => setError(payload.error ?? "Error de conexión")
+    const failure = (payload: { error?: string }) =>
+      setError(
+        payload.error === "controller_not_connected"
+          ? "El presentador aún no está conectado a la sala. Intenta de nuevo en un momento."
+          : (payload.error ?? "Error de conexión")
+      )
     const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
     const roleReplaced = (payload: { message?: string }) => {
       setCurrentDeviceRole("pending")
@@ -1074,6 +1079,7 @@ export default function App() {
               </div>
             </div>
           )}
+          {error && <p className="mt-3 text-sm text-red-700">{error}</p>}
           {joinStage === "name" ? (
             <div className="rounded-2xl border border-stone-200 bg-white p-6">
               <h2 className="text-lg font-semibold">Nombra este dispositivo</h2>
