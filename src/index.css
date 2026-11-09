@@ -16,12 +16,15 @@ button:not(:disabled) {
 
 @keyframes device-icon-front-flip {
   0% {
+    filter: blur(0);
     transform: rotateY(0deg);
   }
   50% {
+    filter: blur(2px);
     visibility: hidden;
   }
   100% {
+    filter: blur(0);
     visibility: hidden;
     transform: rotateY(1260deg);
   }
@@ -29,16 +32,20 @@ button:not(:disabled) {
 
 @keyframes device-icon-back-flip {
   0% {
+    filter: blur(2px);
     visibility: hidden;
     transform: rotateY(-1260deg);
   }
   50% {
+    filter: blur(2px);
     visibility: hidden;
   }
   51% {
+    filter: blur(2px);
     visibility: visible;
   }
   100% {
+    filter: blur(0);
     visibility: visible;
     transform: rotateY(0deg);
   }
