@@ -698,7 +698,7 @@ export default function App() {
           title="Unirse a una sala"
           detail="Introduce el código del presentador."
         />
-        <div className="mx-auto max-w-md rounded-2xl border border-stone-200 bg-white p-6">
+        <div className="mx-auto max-w-4xl rounded-2xl border border-stone-200 bg-white p-6">
           <label className="mb-2 block text-xs font-medium text-stone-500">
             Código de sala <span className="text-red-600">*</span>
           </label>
