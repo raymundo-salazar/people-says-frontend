@@ -1159,19 +1159,34 @@ export default function App() {
   if (screen === "join" && isPrincipalDevice)
     return (
       <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
-        <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-md flex-col items-center justify-center">
-          <Brand />
-          <div className="mt-12 w-full rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
-            <div className="mx-auto grid size-14 place-items-center rounded-xl bg-emerald-900 text-white">
+        <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-lg items-center justify-center">
+          <div className="w-full rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm sm:p-8">
+            <div className="mx-auto grid size-16 place-items-center rounded-xl bg-emerald-900 text-white">
               <DeviceRoleIcon role="host" active />
             </div>
-            <h1 className="text-lg font-semibold text-emerald-950">
-              Este es el dispositivo principal
-            </h1>
-            <p className="mt-2 text-sm leading-6 text-emerald-800">
-              Esta sala ya está configurada en este dispositivo como presentador. Regresa al lobby
-              para continuar administrando la partida.
+            <div className="mx-auto mt-5 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
+              <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" />
+              Dispositivo principal
+            </div>
+            <h1 className="mt-5 text-3xl font-semibold tracking-tight">Sala configurada</h1>
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-stone-500">
+              Este dispositivo administra la partida. Regresa al lobby para continuar.
             </p>
+            <div className="mt-7 rounded-xl border border-stone-200 bg-stone-50 p-4 text-left">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                <span className="text-stone-500">Partida</span>
+                <span className="text-right font-semibold text-stone-900">{gameName}</span>
+                <span className="text-stone-500">Nombre del dispositivo</span>
+                <span className="text-right font-semibold text-stone-900">{deviceName}</span>
+                <span className="text-stone-500">Rol</span>
+                <span className="text-right font-semibold text-stone-900">Presentador</span>
+                <span className="text-stone-500">Conexión</span>
+                <span className="inline-flex items-center justify-end gap-1.5 font-semibold text-emerald-700">
+                  <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" />
+                  Vinculado
+                </span>
+              </div>
+            </div>
             <Button
               className="mt-5 w-full"
               onClick={() => setScreen("lobby", `/${roomCode}/lobby`)}
@@ -1180,7 +1195,7 @@ export default function App() {
             </Button>
             <Button
               ghost
-              className="mt-3 w-full text-xs text-red-600 hover:text-red-700"
+              className="mt-4 w-full text-xs text-red-600 hover:text-red-700"
               onClick={() => {
                 window.close()
                 window.setTimeout(() => setScreen("home"), 100)
