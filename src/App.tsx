@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { ArrowLeft, ArrowRight, ExternalLink, Monitor, X } from "lucide-react"
+import { ArrowLeft, ArrowRight, CheckCircle2, ExternalLink, Monitor, X } from "lucide-react"
 import { gameSocket } from "./socket"
 import {
   Button,
@@ -564,17 +564,33 @@ export default function App() {
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold">Dispositivos vinculados</h2>
               <CountPill
-                count={devices.length}
-                label={devices.length === 1 ? "dispositivo" : "dispositivos"}
+                count={devices.length + 1}
+                label={devices.length + 1 === 1 ? "dispositivo" : "dispositivos"}
               />
+            </div>
+            <div className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50/50 p-4">
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-wider text-emerald-800">
+                    Este dispositivo
+                  </p>
+                  <p className="mt-1 text-xs text-stone-500">Presentador</p>
+                </div>
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800">
+                  <CheckCircle2 size={14} aria-hidden="true" /> Listo
+                </span>
+              </div>
             </div>
             {devices.length === 0 ? (
               <div className="mt-7 flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-stone-200 bg-stone-50 px-5 text-center">
                 <DeviceIconAnimation />
-                <h3 className="mt-4 text-sm font-semibold">Aún no hay dispositivos vinculados</h3>
+                <h3 className="mt-4 text-sm font-semibold">Esperando nuevos dispositivos</h3>
                 <p className="mt-2 max-w-xs text-xs leading-5 text-stone-500">
                   Comparte el enlace o QR para conectar una pantalla pública o los botones de cada
                   equipo.
+                </p>
+                <p className="mt-4 text-xs font-semibold text-stone-500">
+                  1/4 dispositivos vinculados.
                 </p>
               </div>
             ) : (
