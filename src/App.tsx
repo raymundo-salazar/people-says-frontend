@@ -229,6 +229,7 @@ export default function App() {
   const [deviceName, setDeviceName] = useState(getDefaultDeviceName)
   const [deviceType] = useState<DeviceType>(getDeviceType)
   const [joinStage, setJoinStage] = useState<"name" | "role">(joinStageFromLocation)
+  const [pendingRegistered, setPendingRegistered] = useState(false)
   const otpRefs = useRef<Array<HTMLInputElement | null>>([])
   const [stealIndex, setStealIndex] = useState(0)
   const [stealText, setStealText] = useState("")
@@ -287,6 +288,7 @@ export default function App() {
     setScreenState(next)
   }
   const setJoinRoute = (stage: "name" | "role") => {
+    if (stage === "name") setPendingRegistered(false)
     const code = roomCode || joinCode.trim().toUpperCase()
     const path = code
       ? `/${code}/join${stage === "role" ? "/role" : ""}`
@@ -357,7 +359,12 @@ export default function App() {
       .catch(() => setDevices([]))
   }, [screen, joinCode])
   useEffect(() => {
-    if (screen !== "join" || joinStage !== "role" || joinCode.trim().length < 5) return
+    if (
+      screen !== "join" ||
+      (joinStage !== "role" && !pendingRegistered) ||
+      joinCode.trim().length < 5
+    )
+      return
     const presence = (payload: {
       devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
     }) => setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
@@ -374,7 +381,7 @@ export default function App() {
       gameSocket.off("room:presence", presence)
       gameSocket.disconnect()
     }
-  }, [screen, joinStage, joinCode, deviceName, deviceType, deviceToken])
+  }, [screen, joinStage, pendingRegistered, joinCode, deviceName, deviceType, deviceToken])
   useEffect(() => {
     if (!roomCode || !hostToken || !isEditLocation()) return
     setRoomLoading(true)
@@ -555,6 +562,7 @@ export default function App() {
       deviceToken,
     })
     setCurrentDeviceRole("pending")
+    setPendingRegistered(true)
     setJoinStage("name")
     window.history.pushState({ screen: "join", joinStage: "name" }, "", `/${code}/join`)
     setScreenState("join")
