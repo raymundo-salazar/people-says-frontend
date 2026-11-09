@@ -1066,8 +1066,8 @@ export default function App() {
         />
         <div className="mx-auto max-w-4xl space-y-4">
           {roleWarning && (
-            <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-5 text-amber-800">
-              <AlertTriangle size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
+            <div className="flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-5 text-amber-800">
+              <AlertTriangle size={22} className="shrink-0" aria-hidden="true" />
               <div>
                 <p className="font-bold">Tu rol ya no está disponible</p>
                 <p className="mt-1">{roleWarning}</p>
