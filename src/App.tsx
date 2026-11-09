@@ -261,7 +261,9 @@ export default function App() {
     sessionStorage.setItem("people-says-device-token", created)
     return created
   })
-  const [joinCode, setJoinCode] = useState(joinCodeFromLocation)
+  const [joinCode, setJoinCode] = useState(
+    () => joinCodeFromLocation() || localStorage.getItem("people-says-room-code") || ""
+  )
   const [deviceName, setDeviceName] = useState(
     () => savedDeviceConfig?.name || getDefaultDeviceName()
   )
