@@ -60,11 +60,8 @@ export function WizardProgress({ step, total = 4 }: { step: number; total?: numb
             className="relative h-1 flex-1 overflow-visible rounded-full bg-stone-200"
           >
             <span
-              className={`absolute inset-0 rounded-full ${complete || current ? "bg-emerald-700" : "bg-stone-200"}`}
+              className={`absolute inset-0 rounded-full ${current ? "bg-emerald-700" : complete ? "bg-emerald-200" : "bg-stone-200"}`}
             />
-            {current && (
-              <span className="absolute -inset-x-1 -inset-y-1 rounded-full bg-emerald-400 opacity-60 animate-ping" />
-            )}
           </span>
         )
       })}
