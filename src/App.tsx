@@ -119,6 +119,11 @@ export default function App() {
       Number(round.answerCount) <= 10 &&
       (i === 0 || Number(round.answerCount) < Number(rounds[i - 1].answerCount))
   )
+  const validGameSetup = gameName.trim().length > 0
+  const validTeams = teams.every(
+    (team) => team.name.trim().length > 0 && team.players.some((player) => player.trim().length > 0)
+  )
+  const validJoinCode = joinCode.trim().length >= 5
   const setScreen = (next: Screen) => {
     window.history.pushState({ screen: next }, "", `#${next}`)
     setScreenState(next)
@@ -290,12 +295,18 @@ export default function App() {
           detail="Selecciona el modo de juego."
         />
         <div className="space-y-5 rounded-2xl border border-stone-200 bg-white p-6">
-          <input
-            value={gameName}
-            onChange={(e) => setGameName(e.target.value)}
-            placeholder="Nombre de la partida"
-            className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm"
-          />
+          <label className="block">
+            <span className="mb-2 block text-xs font-medium text-stone-500">
+              Nombre de la partida <span className="text-red-600">*</span>
+            </span>
+            <input
+              required
+              value={gameName}
+              onChange={(e) => setGameName(e.target.value)}
+              placeholder="Nombre de la partida"
+              className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm"
+            />
+          </label>
           <div className="grid gap-3 sm:grid-cols-2">
             {modes.map((item) => (
               <button
@@ -308,7 +319,9 @@ export default function App() {
               </button>
             ))}
           </div>
-          <Button onClick={() => setScreen("teams")}>Continuar →</Button>
+          <Button disabled={!validGameSetup} onClick={() => setScreen("teams")}>
+            Continuar →
+          </Button>
           {error && <p className="text-sm text-red-700">{error}</p>}
         </div>
       </Shell>
@@ -325,8 +338,13 @@ export default function App() {
         <div className="grid gap-4 md:grid-cols-2">
           {teams.map((team, index) => (
             <section key={team.color} className="rounded-2xl border border-stone-200 bg-white p-5">
+              <label className="mb-2 block text-xs font-medium text-stone-500">
+                Nombre del equipo <span className="text-red-600">*</span>
+              </label>
               <input
+                required
                 value={team.name}
+                placeholder="Nombre del equipo *"
                 onChange={(e) =>
                   setTeams((old) =>
                     old.map((item, i) => (i === index ? { ...item, name: e.target.value } : item))
@@ -336,25 +354,31 @@ export default function App() {
               />
               <div className="space-y-2">
                 {team.players.map((player, playerIndex) => (
-                  <input
-                    key={`${player}-${playerIndex}`}
-                    value={player}
-                    onChange={(e) =>
-                      setTeams((old) =>
-                        old.map((item, i) =>
-                          i === index
-                            ? {
-                                ...item,
-                                players: item.players.map((name, j) =>
-                                  j === playerIndex ? e.target.value : name
-                                ),
-                              }
-                            : item
+                  <label key={`${player}-${playerIndex}`} className="block">
+                    <span className="sr-only">
+                      Integrante {playerIndex + 1} <span className="text-red-600">*</span>
+                    </span>
+                    <input
+                      required
+                      value={player}
+                      placeholder={`Integrante ${playerIndex + 1} *`}
+                      onChange={(e) =>
+                        setTeams((old) =>
+                          old.map((item, i) =>
+                            i === index
+                              ? {
+                                  ...item,
+                                  players: item.players.map((name, j) =>
+                                    j === playerIndex ? e.target.value : name
+                                  ),
+                                }
+                              : item
+                          )
                         )
-                      )
-                    }
-                    className="w-full rounded-lg bg-stone-50 px-3 py-2 text-sm"
-                  />
+                      }
+                      className="w-full rounded-lg bg-stone-50 px-3 py-2 text-sm"
+                    />
+                  </label>
                 ))}
               </div>
               <button
@@ -373,7 +397,7 @@ export default function App() {
           ))}
         </div>
         <div className="mt-5 flex justify-end">
-          <Button loading={loadingAction === "teams"} onClick={saveTeams}>
+          <Button disabled={!validTeams} loading={loadingAction === "teams"} onClick={saveTeams}>
             Continuar →
           </Button>
         </div>
@@ -488,7 +512,11 @@ export default function App() {
           detail="Introduce el código del presentador."
         />
         <div className="mx-auto max-w-md rounded-2xl border border-stone-200 bg-white p-6">
+          <label className="mb-2 block text-xs font-medium text-stone-500">
+            Código de sala <span className="text-red-600">*</span>
+          </label>
           <input
+            required
             value={joinCode}
             onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
             maxLength={8}
@@ -497,6 +525,7 @@ export default function App() {
           />
           <div className="mt-5 space-y-2">
             <Button
+              disabled={!validJoinCode}
               className="w-full"
               onClick={() => {
                 setRoomCode(joinCode)
@@ -506,6 +535,7 @@ export default function App() {
               Pantalla pública
             </Button>
             <Button
+              disabled={!validJoinCode}
               secondary
               className="w-full"
               onClick={() => {
@@ -517,6 +547,7 @@ export default function App() {
               Pulsador azul
             </Button>
             <Button
+              disabled={!validJoinCode}
               secondary
               className="w-full"
               onClick={() => {

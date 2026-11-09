@@ -10,3 +10,6 @@ input,
 select {
   font: inherit;
 }
+button:not(:disabled) {
+  @apply cursor-pointer;
+}

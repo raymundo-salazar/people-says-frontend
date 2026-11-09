@@ -16,19 +16,21 @@ export function Button({
   onClick,
   className = "",
   loading = false,
+  disabled = false,
 }: {
   children: ReactNode
   secondary?: boolean
   onClick?: () => void
   className?: string
   loading?: boolean
+  disabled?: boolean
 }) {
   return (
     <button
       onClick={onClick}
-      disabled={loading}
+      disabled={loading || disabled}
       aria-busy={loading}
-      className={`${secondary ? "border border-stone-300 bg-white text-stone-800 hover:bg-stone-100" : "bg-emerald-900 text-white hover:bg-emerald-800"} inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition disabled:cursor-wait disabled:opacity-60 ${className}`}
+      className={`${secondary ? "border border-stone-300 bg-white text-stone-800 hover:bg-stone-100" : "bg-emerald-900 text-white hover:bg-emerald-800"} inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60 ${className}`}
     >
       {loading && (
         <span
