@@ -40,6 +40,7 @@ type Screen =
   | "rounds"
   | "lobby"
   | "join"
+  | "joinInvite"
   | "joinLobby"
   | "host"
   | "faceoff"
@@ -76,6 +77,7 @@ const screens: Screen[] = [
   "rounds",
   "lobby",
   "join",
+  "joinInvite",
   "joinLobby",
   "host",
   "faceoff",
@@ -88,24 +90,22 @@ const screens: Screen[] = [
 ]
 const screenFromLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
-  if (segments.length === 2 && segments[1] === "lobby") return "lobby" as Screen
-  if (segments.length === 3 && segments[1] === "join" && segments[2] === "lobby") {
+  if (segments.length === 2 && segments[1] === "join") return "joinInvite" as Screen
+  if (segments.length === 2 && segments[0] === "join" && segments[1] === "lobby") {
     return "joinLobby" as Screen
   }
-  if (segments[0] === "join" || segments[1] === "join") return "join" as Screen
-  if (segments.length === 2 && segments[1] === "edit") return "create" as Screen
-  if (segments.length === 3 && segments[1] === "edit" && screens.includes(segments[2] as Screen)) {
-    return segments[2] as Screen
+  if (segments[0] === "join" && ["device", "role"].includes(segments[1])) return "join" as Screen
+  if (segments[0] === "join") return "join" as Screen
+  if (segments[0] === "edit" && screens.includes(segments[1] as Screen)) {
+    return segments[1] as Screen
   }
+  if (segments[0] === "edit") return "create" as Screen
   const candidate = segments[0] as Screen | undefined
   return candidate && screens.includes(candidate) ? candidate : "home"
 }
 const roomCodeFromLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
-  return segments.length >= 2 &&
-    (segments[1] === "lobby" || segments[1] === "edit" || segments[1] === "join")
-    ? segments[0]
-    : ""
+  return segments.length === 2 && segments[1] === "join" ? segments[0].toUpperCase() : ""
 }
 const joinCodeFromLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
@@ -113,16 +113,13 @@ const joinCodeFromLocation = () => {
 }
 const joinStageFromLocation = (): "name" | "role" => {
   const segments = window.location.pathname.split("/").filter(Boolean)
-  return (segments[0] === "join" && segments[1] === "role") ||
-    (segments[1] === "join" && segments[2] === "role")
-    ? "role"
-    : "name"
+  return segments[0] === "join" && segments[1] === "role" ? "role" : "name"
 }
 const isJoinEntryLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
   return segments.length === 1 && segments[0] === "join"
 }
-const isEditLocation = () => window.location.pathname.split("/").filter(Boolean)[1] === "edit"
+const isEditLocation = () => window.location.pathname.split("/").filter(Boolean)[0] === "edit"
 const deviceRoleLabels: Record<DeviceRole, string> = {
   host: "Presentador",
   display: "Pantalla pública",
@@ -182,8 +179,7 @@ type SavedDeviceConfig = {
   deviceType: DeviceType
 }
 const deviceConfigKey = (code: string) => `people-says-device-config:${code.toUpperCase()}`
-const getSavedDeviceConfig = (): SavedDeviceConfig | null => {
-  const code = roomCodeFromLocation()
+const getSavedDeviceConfigForCode = (code: string): SavedDeviceConfig | null => {
   if (!code) return null
   const raw = localStorage.getItem(deviceConfigKey(code))
   if (!raw) return null
@@ -193,6 +189,8 @@ const getSavedDeviceConfig = (): SavedDeviceConfig | null => {
     return null
   }
 }
+const getSavedDeviceConfig = (): SavedDeviceConfig | null =>
+  getSavedDeviceConfigForCode(roomCodeFromLocation())
 const saveDeviceConfig = (code: string, config: SavedDeviceConfig) => {
   localStorage.setItem(deviceConfigKey(code), JSON.stringify(config))
 }
@@ -327,21 +325,18 @@ export default function App() {
   const setScreen = (next: Screen, path?: string) => {
     const nextPath =
       path ??
-      (roomCode && ["create", "teams", "rounds"].includes(next)
-        ? `/${roomCode}/edit${next === "create" ? "" : `/${next}`}`
-        : next === "lobby" && roomCode
-          ? `/${roomCode}/lobby`
-          : `/${next}`)
+      (next === "create" || next === "teams" || next === "rounds"
+        ? hostToken
+          ? `/edit${next === "create" ? "" : `/${next}`}`
+          : `/${next}`
+        : `/${next}`)
     navigate(nextPath)
     setRoomLoading(nextPath.includes("/edit"))
     setScreenState(next)
   }
   const setJoinRoute = (stage: "name" | "role") => {
     if (stage === "name") setPendingRegistered(false)
-    const code = roomCode || joinCode.trim().toUpperCase()
-    const path = code
-      ? `/${code}/join${stage === "role" ? "/role" : ""}`
-      : `/join${stage === "role" ? "/role" : ""}`
+    const path = `/join/${stage === "role" ? "role" : "device"}`
     navigate(path)
     setJoinStage(stage)
   }
@@ -401,7 +396,7 @@ export default function App() {
           "El dispositivo principal reasignó tu rol. Selecciona otro para continuar."
       )
       setJoinStage("role")
-      navigate(`/${roomCode}/join/role`)
+      navigate("/join/role")
       setScreenState("join")
     }
     gameSocket.on("room:snapshot", receive)
@@ -423,7 +418,7 @@ export default function App() {
     }
   }, [roomCode, screen, hostToken, deviceToken, buttonRole, currentDeviceRole, deviceName])
   useEffect(() => {
-    if (!["join", "joinLobby"].includes(screen) || joinCode.trim().length < 5) return
+    if (!["joinInvite", "join", "joinLobby"].includes(screen) || joinCode.trim().length < 5) return
     fetch(`${api}/api/rooms/${joinCode.trim().toUpperCase()}`)
       .then(async (response) => {
         const data = await response.json()
@@ -539,7 +534,7 @@ export default function App() {
       })
       localStorage.setItem("people-says-room-code", data.code)
       localStorage.setItem("people-says-host-token", data.hostToken)
-      setScreen(finalize ? "lobby" : "teams", finalize ? `/${data.code}/lobby` : undefined)
+      setScreen(finalize ? "lobby" : "teams")
     } catch (e) {
       setError(e instanceof Error ? e.message : "No se pudo crear la sala")
     } finally {
@@ -632,7 +627,8 @@ export default function App() {
     saveDeviceConfig(code, { token: deviceToken, role, name: deviceName, deviceType })
     setRoleWarning("")
     if (role === "blue_button" || role === "red_button") setButtonRole(role)
-    navigate(`/${code}/join/lobby`)
+    localStorage.setItem("people-says-room-code", code)
+    navigate("/join/lobby")
     setScreenState("joinLobby")
   }
   const changeLobbyRole = (role: DeviceRole) => {
@@ -695,7 +691,7 @@ export default function App() {
     setCurrentDeviceRole("pending")
     setPendingRegistered(true)
     setJoinStage("name")
-    navigate(`/${code}/join`)
+    navigate("/join/device")
     setScreenState("join")
   }
   const pasteJoinCode = async () => {
@@ -725,6 +721,34 @@ export default function App() {
     } finally {
       setLoadingAction(null)
     }
+  }
+  const acceptJoinInvitation = () => {
+    const code = joinCode.trim().toUpperCase()
+    localStorage.setItem("people-says-room-code", code)
+    localStorage.removeItem("people-says-host-token")
+    setRoomCode(code)
+    setHostToken("")
+    setJoinCode(code)
+    setJoinRoute("name")
+    setScreenState("join")
+  }
+  const keepPreviousSession = () => {
+    if (!savedRoomCode) return
+    const savedConfig = getSavedDeviceConfigForCode(savedRoomCode)
+    setRoomCode(savedRoomCode)
+    setJoinCode(savedRoomCode)
+    setHostToken(savedHostToken)
+    setCurrentDeviceRole(savedConfig?.role ?? (savedHostToken ? "host" : "pending"))
+    if (savedHostToken) {
+      setScreen("lobby")
+    } else {
+      navigate("/join/lobby")
+      setScreenState("joinLobby")
+    }
+  }
+  const leaveInvitation = () => {
+    window.close()
+    window.setTimeout(() => setScreen("home"), 100)
   }
   const start = () => {
     setLoadingAction("start")
@@ -761,7 +785,7 @@ export default function App() {
       if (hostToken) {
         setScreen("lobby")
       } else {
-        navigate(`/${roomCode}/join/lobby`)
+        navigate("/join/lobby")
         setScreenState("joinLobby")
       }
       return
@@ -1071,6 +1095,65 @@ export default function App() {
           </Button>
         </div>
       </Shell>
+    )
+  if (screen === "joinInvite")
+    return (
+      <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
+        <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-lg flex-col items-center justify-center">
+          <Brand />
+          <div className="mt-10 w-full rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm sm:p-8">
+            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-800">
+              Invitación a partida
+            </p>
+            <h1 className="mt-4 text-3xl font-semibold tracking-tight">
+              ¿Quieres unirte a esta partida?
+            </h1>
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-stone-500">
+              Confirma que deseas conectarte a esta sesión.
+            </p>
+            <div className="mt-7 rounded-xl border border-stone-200 bg-stone-50 p-4 text-left">
+              <p className="text-xs font-medium text-stone-500">Código de partida</p>
+              <p className="mt-2 text-4xl font-black tracking-widest text-emerald-900">
+                {joinCode || "—"}
+              </p>
+            </div>
+            {savedRoomCode && savedRoomCode !== joinCode && (
+              <div className="mt-4 rounded-xl border border-yellow-200 bg-yellow-50 p-4 text-left">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wider text-yellow-800">
+                      Partida actual
+                    </p>
+                    <p className="mt-1 text-2xl font-black tracking-widest text-yellow-950">
+                      {savedRoomCode}
+                    </p>
+                  </div>
+                  <span className="text-xs font-semibold text-yellow-800">
+                    {savedHostToken ? "Conectado" : "Desconectado"}
+                  </span>
+                </div>
+              </div>
+            )}
+            <div className="mt-6 space-y-3">
+              <Button className="w-full" onClick={acceptJoinInvitation}>
+                Sí, unirme a la partida <ArrowRight size={16} aria-hidden="true" />
+              </Button>
+              {savedRoomCode && savedRoomCode !== joinCode && (
+                <Button secondary className="w-full" onClick={keepPreviousSession}>
+                  No, quedarme en la anterior
+                </Button>
+              )}
+              <Button
+                ghost
+                className="w-full text-red-600 hover:text-red-700"
+                onClick={leaveInvitation}
+              >
+                <LogOut size={14} aria-hidden="true" /> Salir de la partida
+              </Button>
+            </div>
+          </div>
+        </div>
+      </main>
     )
   if (screen === "join" && isJoinEntryLocation())
     return (
