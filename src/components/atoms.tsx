@@ -60,26 +60,24 @@ export function CountPill({ count, label }: { count: number; label: string }) {
     </span>
   )
 }
+const deviceIcons = [Monitor, Laptop, Tablet, Smartphone]
 export function DeviceIconAnimation() {
-  const icons = [Monitor, Laptop, Tablet, Smartphone]
   const [index, setIndex] = useState(0)
-  const Icon = icons[index]
+  const Icon = deviceIcons[index]
+  const NextIcon = deviceIcons[(index + 1) % deviceIcons.length]
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setIndex((current) => (current + 1) % icons.length)
-    }, 1500)
+      setIndex((current) => (current + 1) % deviceIcons.length)
+    }, 3000)
     return () => window.clearInterval(timer)
   }, [])
 
   return (
-    <Icon
-      key={index}
-      size={30}
-      strokeWidth={1.5}
-      className="device-icon-spin text-stone-300"
-      aria-hidden="true"
-    />
+    <span className="device-icon-perspective relative block size-8" aria-hidden="true">
+      <Icon size={30} strokeWidth={1.5} className="device-icon-front text-stone-300" />
+      <NextIcon size={30} strokeWidth={1.5} className="device-icon-back text-stone-300" />
+    </span>
   )
 }
 export function WizardProgress({ step, total = 4 }: { step: number; total?: number }) {

@@ -14,25 +14,55 @@ button:not(:disabled) {
   @apply cursor-pointer;
 }
 
-@keyframes device-icon-spin {
+@keyframes device-icon-front-flip {
   0% {
-    opacity: 1;
-    transform: rotate(0deg);
-  }
-  45% {
-    opacity: 1;
-    transform: rotate(162deg);
+    transform: rotateY(0deg);
   }
   50% {
-    opacity: 0;
-    transform: rotate(180deg);
+    visibility: hidden;
   }
   100% {
-    opacity: 0;
-    transform: rotate(360deg);
+    visibility: hidden;
+    transform: rotateY(180deg);
   }
 }
 
-.device-icon-spin {
-  animation: device-icon-spin 3s ease-in-out both;
+@keyframes device-icon-back-flip {
+  0% {
+    visibility: hidden;
+    transform: rotateY(-180deg);
+  }
+  50% {
+    visibility: hidden;
+  }
+  51% {
+    visibility: visible;
+  }
+  100% {
+    visibility: visible;
+    transform: rotateY(0deg);
+  }
+}
+
+.device-icon-perspective {
+  perspective: 500px;
+}
+
+.device-icon-front,
+.device-icon-back {
+  backface-visibility: hidden;
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  animation-duration: 3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+.device-icon-front {
+  animation-name: device-icon-front-flip;
+}
+
+.device-icon-back {
+  animation-name: device-icon-back-flip;
 }
