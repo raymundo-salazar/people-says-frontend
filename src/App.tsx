@@ -701,7 +701,7 @@ export default function App() {
         <div className="mx-auto max-w-4xl space-y-4">
           <div className="rounded-2xl border border-stone-200 bg-white p-6">
             <p className="mb-2 block text-xs font-medium text-stone-500">Código de sala</p>
-            <p className="text-center text-5xl font-black tracking-widest text-emerald-900">
+            <p className="text-left text-5xl font-black tracking-widest text-emerald-900">
               {joinCode || "—"}
             </p>
           </div>
