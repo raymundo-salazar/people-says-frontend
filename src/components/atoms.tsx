@@ -13,6 +13,7 @@ export function Brand() {
 export function Button({
   children,
   secondary = false,
+  ghost = false,
   onClick,
   className = "",
   loading = false,
@@ -20,6 +21,7 @@ export function Button({
 }: {
   children: ReactNode
   secondary?: boolean
+  ghost?: boolean
   onClick?: () => void
   className?: string
   loading?: boolean
@@ -30,7 +32,7 @@ export function Button({
       onClick={onClick}
       disabled={loading || disabled}
       aria-busy={loading}
-      className={`${secondary ? "border border-stone-300 bg-white text-stone-800 hover:bg-stone-100" : "bg-emerald-900 text-white hover:bg-emerald-800"} inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60 ${className}`}
+      className={`${ghost ? "border-0 bg-transparent p-0 text-inherit shadow-none hover:bg-transparent" : secondary ? "border border-stone-300 bg-white text-stone-800 hover:bg-stone-100" : "bg-emerald-900 text-white hover:bg-emerald-800"} inline-flex items-center justify-center gap-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60 ${ghost ? "" : "min-h-11 rounded-xl px-5 py-3"} ${className}`}
     >
       {loading && (
         <span
