@@ -104,9 +104,11 @@ export function DeviceIconAnimation() {
 export function DeviceRoleIcon({
   role,
   active = false,
+  muted = false,
 }: {
   role: "host" | "display" | "blue_button" | "red_button" | "pending"
   active?: boolean
+  muted?: boolean
 }) {
   const icons = {
     host: MicVocal,
@@ -119,13 +121,13 @@ export function DeviceRoleIcon({
 
   return (
     <span
-      className={`grid aspect-square size-12 shrink-0 place-items-center rounded-lg ${active ? "bg-emerald-900 text-white" : "bg-emerald-50 text-emerald-900"}`}
+      className={`grid aspect-square size-12 shrink-0 place-items-center rounded-lg ${active ? "bg-emerald-900 text-white" : muted ? "bg-stone-100 text-stone-500" : "bg-emerald-50 text-emerald-900"}`}
       aria-hidden="true"
     >
       <Icon
         size={22}
         strokeWidth={1.8}
-        className={active ? "text-white" : "text-emerald-900"}
+        className={active ? "text-white" : muted ? "text-stone-500" : "text-emerald-900"}
         fill={role.includes("button") ? "currentColor" : "none"}
       />
     </span>

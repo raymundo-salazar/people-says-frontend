@@ -104,6 +104,30 @@ const deviceRoleDescriptions: Record<DeviceRole, string> = {
   pending: "Este dispositivo aún no tiene un rol asignado.",
 }
 const joinRoles: DeviceRole[] = ["host", "display", "blue_button", "red_button"]
+const getDefaultDeviceName = () => {
+  const userAgent = navigator.userAgent
+  const platform = /iPhone|iPad|iPod/.test(userAgent)
+    ? "iPhone/iPad"
+    : /Android/.test(userAgent)
+      ? "Android"
+      : /Mac/.test(userAgent)
+        ? "Mac"
+        : /Windows/.test(userAgent)
+          ? "Windows"
+          : /Linux/.test(userAgent)
+            ? "Linux"
+            : "Dispositivo"
+  const browser = /Edg/.test(userAgent)
+    ? "Edge"
+    : /Chrome/.test(userAgent)
+      ? "Chrome"
+      : /Safari/.test(userAgent)
+        ? "Safari"
+        : /Firefox/.test(userAgent)
+          ? "Firefox"
+          : "Navegador"
+  return `${browser} · ${platform}`
+}
 const api = import.meta.env.VITE_API_URL ?? ""
 const defaultState: State = {
   phase: "lobby",
@@ -157,12 +181,14 @@ export default function App() {
     return created
   })
   const [joinCode, setJoinCode] = useState(joinCodeFromLocation)
+  const [deviceName, setDeviceName] = useState(getDefaultDeviceName)
+  const [joinStage, setJoinStage] = useState<"name" | "role">("name")
   const [stealIndex, setStealIndex] = useState(0)
   const [stealText, setStealText] = useState("")
   const [buzzerWinner, setBuzzerWinner] = useState<"blue" | "red" | null>(null)
   const [buttonRole, setButtonRole] = useState<"blue_button" | "red_button">("blue_button")
   const [currentDeviceRole, setCurrentDeviceRole] = useState<DeviceRole>("host")
-  const [devices, setDevices] = useState<Array<{ id?: string; role: string }>>([])
+  const [devices, setDevices] = useState<Array<{ id?: string; role: string; name?: string }>>([])
   const [error, setError] = useState("")
   const [copied, setCopied] = useState<"code" | "url" | null>(null)
   const [loadingAction, setLoadingAction] = useState<
@@ -222,11 +248,11 @@ export default function App() {
     if (!roomCode || !["host", "display", "buzzer", "lobby"].includes(screen)) return
     gameSocket.connect()
     const role = screen === "lobby" ? currentDeviceRole : screen === "buzzer" ? buttonRole : screen
-    gameSocket.emit("room:join", { code: roomCode, role, hostToken, deviceToken })
+    gameSocket.emit("room:join", { code: roomCode, role, name: deviceName, hostToken, deviceToken })
     const receive = (payload: { state?: State }) => {
       if (payload.state) setState(payload.state)
     }
-    const presence = (payload: { devices?: Array<{ id?: string; role: string }> }) =>
+    const presence = (payload: { devices?: Array<{ id?: string; role: string; name?: string }> }) =>
       setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
     const failure = (payload: { error?: string }) => setError(payload.error ?? "Error de conexión")
     const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
@@ -245,7 +271,7 @@ export default function App() {
       gameSocket.off("buzzer:reset")
       gameSocket.disconnect()
     }
-  }, [roomCode, screen, hostToken, deviceToken, buttonRole, currentDeviceRole])
+  }, [roomCode, screen, hostToken, deviceToken, buttonRole, currentDeviceRole, deviceName])
   useEffect(() => {
     if (screen !== "join" || joinCode.trim().length < 5) return
     fetch(`${api}/api/rooms/${joinCode.trim().toUpperCase()}`)
@@ -257,13 +283,14 @@ export default function App() {
       .catch(() => setDevices([]))
   }, [screen, joinCode])
   useEffect(() => {
-    if (screen !== "join" || joinCode.trim().length < 5) return
-    const presence = (payload: { devices?: Array<{ id?: string; role: string }> }) =>
+    if (screen !== "join" || joinStage !== "role" || joinCode.trim().length < 5) return
+    const presence = (payload: { devices?: Array<{ id?: string; role: string; name?: string }> }) =>
       setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
     gameSocket.connect()
     gameSocket.emit("room:join", {
       code: joinCode.trim().toUpperCase(),
       role: "pending",
+      name: deviceName,
       deviceToken,
     })
     gameSocket.on("room:presence", presence)
@@ -271,7 +298,7 @@ export default function App() {
       gameSocket.off("room:presence", presence)
       gameSocket.disconnect()
     }
-  }, [screen, joinCode, deviceToken])
+  }, [screen, joinStage, joinCode, deviceName, deviceToken])
   useEffect(() => {
     if (!roomCode || !hostToken || !isEditLocation()) return
     setRoomLoading(true)
@@ -583,7 +610,7 @@ export default function App() {
                 <p className="text-sm font-bold uppercase tracking-wider text-emerald-800">
                   {deviceRoleLabels[currentDeviceRole]}
                 </p>
-                <p className="mt-1 text-xs text-stone-500">Este dispositivo</p>
+                <p className="mt-1 text-xs text-stone-500">{deviceName}</p>
               </div>
             </div>
             <label className="flex items-center gap-2 text-xs font-medium text-stone-500">
@@ -666,7 +693,7 @@ export default function App() {
                 </span>
               </div>
             </div>
-            {devices.length === 0 ? (
+            {devices.length + 1 < 4 ? (
               <div className="mt-7 flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-stone-200 bg-stone-50 px-5 text-center">
                 <DeviceIconAnimation />
                 <h3 className="mt-4 text-sm font-semibold">Esperando nuevos dispositivos</h3>
@@ -675,7 +702,7 @@ export default function App() {
                   equipo.
                 </p>
                 <p className="mt-4 text-xs font-semibold text-stone-500">
-                  1/4 dispositivos vinculados.
+                  {devices.length + 1}/4 dispositivos vinculados.
                 </p>
               </div>
             ) : (
@@ -685,13 +712,22 @@ export default function App() {
                     key={`${device.role}-${index}`}
                     className="flex items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3"
                   >
-                    <DeviceRoleIcon role={device.role as DeviceRole} />
+                    <DeviceRoleIcon role={device.role as DeviceRole} muted />
                     <div>
                       <p className="text-sm font-bold uppercase tracking-wider text-stone-700">
                         {deviceRoleLabels[device.role as DeviceRole] ?? device.role}
                       </p>
-                      <p className="mt-1 text-xs text-stone-500">Dispositivo vinculado</p>
+                      <p className="mt-1 text-xs text-stone-500">{device.name ?? "Dispositivo"}</p>
                     </div>
+                    <span
+                      className={`ml-auto inline-flex items-center gap-1 text-[11px] font-bold ${device.role === "pending" ? "text-stone-400" : "text-emerald-800"}`}
+                    >
+                      <span
+                        className={`size-2 rounded-full ${device.role === "pending" ? "bg-stone-400" : "bg-emerald-600"}`}
+                        aria-hidden="true"
+                      />
+                      {device.role === "pending" ? "Pendiente" : "Listo"}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -723,31 +759,60 @@ export default function App() {
               {joinCode || "—"}
             </p>
           </div>
-          <div className="rounded-2xl border border-stone-200 bg-white p-6">
-            <h2 className="text-lg font-semibold">Selecciona el rol</h2>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              {joinRoles.map((role) => {
-                const occupied = devices.some((device) => device.role === role)
-                return (
-                  <Button
-                    key={role}
-                    secondary
-                    disabled={!validJoinCode || occupied}
-                    className="h-auto min-h-28 justify-start text-left"
-                    onClick={() => selectJoinRole(role)}
-                  >
-                    <DeviceRoleIcon role={role} />
-                    <span className="min-w-0">
-                      <span className="block text-sm font-bold">{deviceRoleLabels[role]}</span>
-                      <span className="mt-1 block whitespace-normal text-xs font-normal leading-5 text-stone-500">
-                        {deviceRoleDescriptions[role]}
-                      </span>
-                    </span>
-                  </Button>
-                )
-              })}
+          {joinStage === "name" ? (
+            <div className="rounded-2xl border border-stone-200 bg-white p-6">
+              <h2 className="text-lg font-semibold">Nombra este dispositivo</h2>
+              <p className="mt-2 text-sm text-stone-500">
+                Este nombre aparecerá en la lista de dispositivos vinculados.
+              </p>
+              <input
+                value={deviceName}
+                onChange={(event) => setDeviceName(event.target.value)}
+                placeholder="Nombre del dispositivo"
+                className="mt-5 w-full rounded-xl border border-stone-200 px-4 py-3 text-sm"
+                autoComplete="off"
+              />
+              <div className="mt-5 flex justify-end">
+                <Button
+                  disabled={!deviceName.trim() || !validJoinCode}
+                  onClick={() => setJoinStage("role")}
+                >
+                  Siguiente <ArrowRight size={16} aria-hidden="true" />
+                </Button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="rounded-2xl border border-stone-200 bg-white p-6">
+              <h2 className="text-lg font-semibold">Selecciona el rol</h2>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {joinRoles.map((role) => {
+                  const occupied = devices.some((device) => device.role === role)
+                  return (
+                    <Button
+                      key={role}
+                      secondary
+                      disabled={!validJoinCode || occupied}
+                      className="h-auto min-h-28 justify-start text-left"
+                      onClick={() => selectJoinRole(role)}
+                    >
+                      <DeviceRoleIcon role={role} />
+                      <span className="min-w-0">
+                        <span className="block text-sm font-bold">{deviceRoleLabels[role]}</span>
+                        <span className="mt-1 block whitespace-normal text-xs font-normal leading-5 text-stone-500">
+                          {deviceRoleDescriptions[role]}
+                        </span>
+                      </span>
+                    </Button>
+                  )
+                })}
+              </div>
+              <div className="mt-5">
+                <Button ghost onClick={() => setJoinStage("name")}>
+                  <ArrowLeft size={16} aria-hidden="true" /> Atrás
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </Shell>
     )
