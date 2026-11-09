@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { ArrowLeft, ArrowRight, ExternalLink, Monitor, X } from "lucide-react"
+import { ArrowLeft, ArrowRight, ExternalLink, Monitor, Smartphone, X } from "lucide-react"
 import { gameSocket } from "./socket"
 import {
   Button,
@@ -567,19 +567,32 @@ export default function App() {
                 label={devices.length === 1 ? "dispositivo" : "dispositivos"}
               />
             </div>
-            <div className="space-y-2">
-              {devices.length === 0 &&
-                [0, 1].map((index) => (
-                  <div key={`device-skeleton-${index}`} className="rounded-xl bg-stone-50 p-3">
-                    <Skeleton className="h-4 w-2/3" />
+            {devices.length === 0 ? (
+              <div className="mt-7 flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-stone-200 bg-stone-50 px-5 text-center">
+                <Smartphone
+                  size={30}
+                  strokeWidth={1.5}
+                  className="text-stone-300"
+                  aria-hidden="true"
+                />
+                <h3 className="mt-4 text-sm font-semibold">Aún no hay dispositivos vinculados</h3>
+                <p className="mt-2 max-w-xs text-xs leading-5 text-stone-500">
+                  Comparte el enlace o QR para conectar una pantalla pública o los botones de cada
+                  equipo.
+                </p>
+              </div>
+            ) : (
+              <div className="mt-7 space-y-2">
+                {devices.map((device, index) => (
+                  <div
+                    key={`${device.role}-${index}`}
+                    className="rounded-xl bg-stone-50 p-3 text-sm"
+                  >
+                    {device.role}
                   </div>
                 ))}
-              {devices.map((device, index) => (
-                <div key={`${device.role}-${index}`} className="rounded-xl bg-stone-50 p-3 text-sm">
-                  {device.role}
-                </div>
-              ))}
-            </div>
+              </div>
+            )}
           </section>
         </div>
         <div className="mt-5 flex items-center justify-between gap-3">
