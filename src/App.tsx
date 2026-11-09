@@ -532,11 +532,14 @@ export default function App() {
         />
         <section className="mb-5 rounded-2xl border border-stone-200 bg-white p-4">
           <div className="flex items-center justify-between gap-4">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-wider text-emerald-800">
-                {deviceRoleLabels[currentDeviceRole]}
-              </p>
-              <p className="mt-1 text-xs text-stone-500">Este dispositivo</p>
+            <div className="flex items-center gap-3">
+              <DeviceRoleIcon role={currentDeviceRole} />
+              <div>
+                <p className="text-sm font-bold uppercase tracking-wider text-emerald-800">
+                  {deviceRoleLabels[currentDeviceRole]}
+                </p>
+                <p className="mt-1 text-xs text-stone-500">Este dispositivo</p>
+              </div>
             </div>
             <label className="flex items-center gap-2 text-xs font-medium text-stone-500">
               Rol del dispositivo
