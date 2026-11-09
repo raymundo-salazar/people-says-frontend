@@ -709,7 +709,7 @@ export default function App() {
               </div>
             </div>
             {devices.length > 0 && (
-              <div className="mt-7 space-y-2">
+              <div className="mt-2 space-y-2">
                 {devices.map((device, index) => (
                   <div
                     key={`${device.role}-${index}`}
@@ -736,7 +736,7 @@ export default function App() {
               </div>
             )}
             {devices.length + 1 < 4 && (
-              <div className="mt-7 flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-stone-200 bg-stone-50 px-5 text-center">
+              <div className="mt-2 flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-stone-200 bg-stone-50 px-5 text-center">
                 <DeviceIconAnimation />
                 <h3 className="mt-4 text-sm font-semibold">Esperando nuevos dispositivos</h3>
                 <p className="mt-2 max-w-xs text-xs leading-5 text-stone-500">
