@@ -11,6 +11,7 @@ import {
   Tv,
   X as XIcon,
 } from "lucide-react"
+import { cx } from "../lib/cx"
 
 export function Brand() {
   return (
@@ -44,7 +45,16 @@ export function Button({
       onClick={onClick}
       disabled={loading || disabled}
       aria-busy={loading}
-      className={`${ghost ? "border-0 bg-transparent p-0 text-inherit shadow-none hover:bg-transparent" : secondary ? "border border-stone-300 bg-white text-stone-800 hover:bg-stone-100" : "bg-emerald-900 text-white hover:bg-emerald-800"} inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold leading-none transition disabled:cursor-not-allowed disabled:opacity-60 ${ghost ? "" : "min-h-11 rounded-xl px-5 py-3"} ${className}`}
+      className={cx(
+        ghost
+          ? "border-0 bg-transparent p-0 text-inherit shadow-none hover:bg-transparent"
+          : secondary
+            ? "border border-stone-300 bg-white text-stone-800 hover:bg-stone-100"
+            : "bg-emerald-900 text-white hover:bg-emerald-800",
+        "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold leading-none transition disabled:cursor-not-allowed disabled:opacity-60",
+        !ghost && "min-h-11 rounded-xl px-5 py-3",
+        className
+      )}
     >
       {loading && (
         <span
@@ -59,7 +69,7 @@ export function Button({
 export function Skeleton({ className = "" }: { className?: string }) {
   return (
     <span
-      className={`block animate-pulse rounded-lg bg-stone-200 ${className}`}
+      className={cx("block animate-pulse rounded-lg bg-stone-200", className)}
       aria-hidden="true"
     />
   )
@@ -121,7 +131,14 @@ export function DeviceRoleIcon({
 
   return (
     <span
-      className={`grid aspect-square size-12 shrink-0 place-items-center rounded-lg ${active ? "bg-emerald-900 text-white" : muted ? "bg-stone-100 text-stone-500" : "bg-emerald-50 text-emerald-900"}`}
+      className={cx(
+        "grid aspect-square size-12 shrink-0 place-items-center rounded-lg",
+        active
+          ? "bg-emerald-900 text-white"
+          : muted
+            ? "bg-stone-100 text-stone-500"
+            : "bg-emerald-50 text-emerald-900"
+      )}
       aria-hidden="true"
     >
       <Icon
@@ -145,7 +162,10 @@ export function WizardProgress({ step, total = 4 }: { step: number; total?: numb
             className="relative h-1 flex-1 overflow-visible rounded-full bg-stone-200"
           >
             <span
-              className={`absolute inset-0 rounded-full ${current ? "bg-emerald-700" : complete ? "bg-emerald-200" : "bg-stone-200"}`}
+              className={cx(
+                "absolute inset-0 rounded-full",
+                current ? "bg-emerald-700" : complete ? "bg-emerald-200" : "bg-stone-200"
+              )}
             />
           </span>
         )
