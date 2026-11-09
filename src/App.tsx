@@ -1111,7 +1111,7 @@ export default function App() {
             <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-stone-500">
               Confirma que deseas conectarte a esta sesión.
             </p>
-            <div className="mt-7 rounded-xl border border-stone-200 bg-stone-50 p-4 text-left">
+            <div className="mt-7 rounded-xl border border-stone-200 bg-stone-50 p-4 text-center">
               <p className="text-xs font-medium text-stone-500">Código de partida</p>
               <p className="mt-2 text-4xl font-black tracking-widest text-emerald-900">
                 {joinCode || "—"}
