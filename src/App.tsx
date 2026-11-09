@@ -759,6 +759,23 @@ export default function App() {
     window.setTimeout(() => setScreen("home"), 100)
   }
   const start = () => {
+    const roles = [currentDeviceRole, ...devices.map((device) => device.role)]
+    const roleSet = new Set(roles)
+    const validCombination =
+      (roles.length === 1 && roleSet.has("host")) ||
+      (roles.length === 2 && roleSet.size === 2 && roleSet.has("host") && roleSet.has("display")) ||
+      (roles.length === 4 &&
+        roleSet.size === 4 &&
+        ["host", "display", "blue_button", "red_button"].every((role) => roleSet.has(role)))
+    if (!validCombination) {
+      setError(
+        roles.length === 3
+          ? "Para iniciar necesitas 1, 2 o 4 dispositivos. Con 3 dispositivos no se puede comenzar."
+          : "La sala debe tener Presentador; con 2 dispositivos agrega Pantalla pública, o completa los 4 roles."
+      )
+      return
+    }
+    setError("")
     setLoadingAction("start")
     emitAction({ type: "start" })
     window.setTimeout(() => {
@@ -1107,6 +1124,7 @@ export default function App() {
             Iniciar partida <ArrowRight size={16} aria-hidden="true" />
           </Button>
         </div>
+        {error && <p className="mt-4 text-right text-sm text-red-700">{error}</p>}
       </Shell>
     )
   if (screen === "joinInvite")
