@@ -69,14 +69,24 @@ export function DeviceIconAnimation() {
   useEffect(() => {
     const timer = window.setInterval(() => {
       setIndex((current) => (current + 1) % deviceIcons.length)
-    }, 3000)
+    }, 1800)
     return () => window.clearInterval(timer)
   }, [])
 
   return (
     <span className="device-icon-perspective relative block size-8" aria-hidden="true">
-      <Icon size={30} strokeWidth={1.5} className="device-icon-front text-stone-300" />
-      <NextIcon size={30} strokeWidth={1.5} className="device-icon-back text-stone-300" />
+      <Icon
+        key={`front-${index}`}
+        size={30}
+        strokeWidth={1.5}
+        className="device-icon-front text-stone-300"
+      />
+      <NextIcon
+        key={`back-${index}`}
+        size={30}
+        strokeWidth={1.5}
+        className="device-icon-back text-stone-300"
+      />
     </span>
   )
 }
