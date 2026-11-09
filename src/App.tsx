@@ -845,9 +845,13 @@ export default function App() {
                     key={`${device.role}-${index}`}
                     className="flex items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3"
                   >
-                    <span className="grid aspect-square size-12 shrink-0 place-items-center rounded-lg bg-stone-100">
-                      <DeviceTypeIcon type={device.deviceType ?? "desktop"} />
-                    </span>
+                    {device.role === "pending" ? (
+                      <span className="grid aspect-square size-12 shrink-0 place-items-center rounded-lg bg-stone-100">
+                        <DeviceTypeIcon type={device.deviceType ?? "desktop"} />
+                      </span>
+                    ) : (
+                      <DeviceRoleIcon role={device.role as DeviceRole} muted />
+                    )}
                     <div>
                       <p className="text-sm font-bold uppercase tracking-wider text-stone-700">
                         {deviceRoleLabels[device.role as DeviceRole] ?? device.role}
