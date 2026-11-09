@@ -638,6 +638,7 @@ export default function App() {
     setCurrentDeviceRole(role)
     saveDeviceConfig(code, { token: deviceToken, role, name: deviceName, deviceType })
     setRoleWarning("")
+    setError("")
     if (role === "blue_button" || role === "red_button") setButtonRole(role)
     localStorage.setItem("people-says-room-code", code)
     navigate("/join/lobby")
