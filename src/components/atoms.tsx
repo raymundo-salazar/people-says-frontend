@@ -1,5 +1,16 @@
 import { useEffect, useState, type ReactNode } from "react"
-import { ArrowLeft, Laptop, Monitor, Smartphone, Tablet, Tv, X as XIcon } from "lucide-react"
+import {
+  ArrowLeft,
+  Circle,
+  Laptop,
+  MicVocal,
+  Monitor,
+  Presentation,
+  Smartphone,
+  Tablet,
+  Tv,
+  X as XIcon,
+} from "lucide-react"
 
 export function Brand() {
   return (
@@ -97,7 +108,12 @@ export function DeviceRoleIcon({
   role: "host" | "display" | "blue_button" | "red_button"
   active?: boolean
 }) {
-  const icons = { host: Laptop, display: Monitor, blue_button: Smartphone, red_button: Smartphone }
+  const icons = {
+    host: MicVocal,
+    display: Presentation,
+    blue_button: Circle,
+    red_button: Circle,
+  }
   const Icon = icons[role]
 
   return (
@@ -105,7 +121,7 @@ export function DeviceRoleIcon({
       className={`grid aspect-square size-12 shrink-0 place-items-center rounded-lg ${active ? "bg-emerald-900 text-white" : "bg-emerald-50 text-emerald-900"}`}
       aria-hidden="true"
     >
-      <Icon size={22} strokeWidth={1.8} />
+      <Icon size={22} strokeWidth={1.8} fill={role.includes("button") ? "currentColor" : "none"} />
     </span>
   )
 }
