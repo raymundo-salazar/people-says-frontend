@@ -700,17 +700,10 @@ export default function App() {
         />
         <div className="mx-auto max-w-4xl space-y-4">
           <div className="rounded-2xl border border-stone-200 bg-white p-6">
-            <label className="mb-2 block text-xs font-medium text-stone-500">
-              Código de sala <span className="text-red-600">*</span>
-            </label>
-            <input
-              required
-              value={joinCode}
-              onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-              maxLength={8}
-              placeholder="ABCD1234"
-              className="w-full rounded-xl border border-stone-200 px-4 py-4 text-center text-2xl tracking-widest"
-            />
+            <p className="mb-2 block text-xs font-medium text-stone-500">Código de sala</p>
+            <p className="text-center text-5xl font-black tracking-widest text-emerald-900">
+              {joinCode || "—"}
+            </p>
           </div>
           <div className="rounded-2xl border border-stone-200 bg-white p-6">
             <h2 className="text-lg font-semibold">Selecciona el rol</h2>
