@@ -15,19 +15,37 @@ export function Button({
   secondary = false,
   onClick,
   className = "",
+  loading = false,
 }: {
   children: ReactNode
   secondary?: boolean
   onClick?: () => void
   className?: string
+  loading?: boolean
 }) {
   return (
     <button
       onClick={onClick}
-      className={`${secondary ? "border border-stone-300 bg-white text-stone-800 hover:bg-stone-100" : "bg-emerald-900 text-white hover:bg-emerald-800"} inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold transition ${className}`}
+      disabled={loading}
+      aria-busy={loading}
+      className={`${secondary ? "border border-stone-300 bg-white text-stone-800 hover:bg-stone-100" : "bg-emerald-900 text-white hover:bg-emerald-800"} inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition disabled:cursor-wait disabled:opacity-60 ${className}`}
     >
-      {children}
+      {loading && (
+        <span
+          className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+          aria-hidden="true"
+        />
+      )}
+      <span>{loading ? "Cargando…" : children}</span>
     </button>
+  )
+}
+export function Skeleton({ className = "" }: { className?: string }) {
+  return (
+    <span
+      className={`block animate-pulse rounded-lg bg-stone-200 ${className}`}
+      aria-hidden="true"
+    />
   )
 }
 export function Shell({ children, wide = false }: { children: ReactNode; wide?: boolean }) {

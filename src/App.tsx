@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { gameSocket } from "./socket"
-import { Button, Heading, Score, Shell, Strikes } from "./components/atoms"
+import { Button, Heading, Score, Shell, Skeleton, Strikes } from "./components/atoms"
 
 type Screen =
   | "home"
@@ -96,6 +96,9 @@ export default function App() {
   const [buttonRole, setButtonRole] = useState<"blue_button" | "red_button">("blue_button")
   const [devices, setDevices] = useState<Array<{ role: string }>>([])
   const [error, setError] = useState("")
+  const [loadingAction, setLoadingAction] = useState<
+    "create" | "teams" | "rounds" | "start" | null
+  >(null)
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
@@ -150,6 +153,7 @@ export default function App() {
   }, [roomCode, screen, hostToken, deviceToken, buttonRole])
   const createRoom = async () => {
     setError("")
+    setLoadingAction("create")
     try {
       const response = await fetch(`${api}/api/rooms`, {
         method: "POST",
@@ -179,9 +183,12 @@ export default function App() {
       setScreen("teams")
     } catch (e) {
       setError(e instanceof Error ? e.message : "No se pudo crear la sala")
+    } finally {
+      setLoadingAction(null)
     }
   }
   const saveTeams = async () => {
+    setLoadingAction("teams")
     const response = await fetch(`${api}/api/rooms/${roomCode}/teams`, {
       method: "PATCH",
       headers: { "content-type": "application/json", "x-host-token": hostToken },
@@ -189,13 +196,16 @@ export default function App() {
     })
     if (!response.ok) {
       setError("No se pudieron guardar los equipos")
+      setLoadingAction(null)
       return
     }
     setState((await response.json()).state)
     setScreen("rounds")
+    setLoadingAction(null)
   }
   const saveRounds = async () => {
     if (!validRounds) return
+    setLoadingAction("rounds")
     const response = await fetch(`${api}/api/rooms/${roomCode}/rounds`, {
       method: "PATCH",
       headers: { "content-type": "application/json", "x-host-token": hostToken },
@@ -208,14 +218,20 @@ export default function App() {
     })
     if (!response.ok) {
       setError("No se pudo guardar la configuración de rondas")
+      setLoadingAction(null)
       return
     }
     setState((await response.json()).state)
     setScreen("lobby")
+    setLoadingAction(null)
   }
   const start = () => {
+    setLoadingAction("start")
     emitAction({ type: "start" })
-    setScreen("faceoff")
+    window.setTimeout(() => {
+      setLoadingAction(null)
+      setScreen("faceoff")
+    }, 350)
   }
   const reveal = (index: number) => {
     if (!revealed.includes(index)) emitAction({ type: "reveal_answer", index })
@@ -305,7 +321,9 @@ export default function App() {
               </button>
             ))}
           </div>
-          <Button onClick={createRoom}>Continuar →</Button>
+          <Button loading={loadingAction === "create"} onClick={createRoom}>
+            Continuar →
+          </Button>
           {error && <p className="text-sm text-red-700">{error}</p>}
         </div>
       </Shell>
@@ -369,7 +387,9 @@ export default function App() {
           ))}
         </div>
         <div className="mt-5 flex justify-end">
-          <Button onClick={saveTeams}>Continuar →</Button>
+          <Button loading={loadingAction === "teams"} onClick={saveTeams}>
+            Continuar →
+          </Button>
         </div>
       </Shell>
     )
@@ -428,7 +448,7 @@ export default function App() {
               Las rondas deben estar entre 4 y 10 y ser descendentes.
             </p>
           )}
-          <Button className="mt-6" onClick={saveRounds}>
+          <Button loading={loadingAction === "rounds"} className="mt-6" onClick={saveRounds}>
             Guardar configuración →
           </Button>
         </div>
@@ -452,13 +472,19 @@ export default function App() {
           </section>
           <section className="rounded-2xl border border-stone-200 bg-white p-6">
             <div className="space-y-2">
+              {devices.length === 0 &&
+                [0, 1].map((index) => (
+                  <div key={`device-skeleton-${index}`} className="rounded-xl bg-stone-50 p-3">
+                    <Skeleton className="h-4 w-2/3" />
+                  </div>
+                ))}
               {devices.map((device, index) => (
                 <div key={`${device.role}-${index}`} className="rounded-xl bg-stone-50 p-3 text-sm">
                   {device.role}
                 </div>
               ))}
             </div>
-            <Button className="mt-5 w-full" onClick={start}>
+            <Button loading={loadingAction === "start"} className="mt-5 w-full" onClick={start}>
               Iniciar partida →
             </Button>
           </section>
@@ -724,6 +750,10 @@ export default function App() {
             {state.questionPrompt}
           </p>
           <div className="mx-auto mt-8 max-w-2xl space-y-2">
+            {answers.length === 0 &&
+              [0, 1, 2, 3, 4].map((index) => (
+                <Skeleton key={`answer-skeleton-${index}`} className="h-16 bg-white/10" />
+              ))}
             {answers.map((answer, index) => (
               <div key={`${answer.text}-${index}`} className="flex rounded-xl bg-white/10 p-4">
                 <span className="w-10">{index + 1}</span>
