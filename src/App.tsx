@@ -502,10 +502,11 @@ export default function App() {
           detail="Cada ronda usa una pregunta con 4 a 10 respuestas."
         />
         <div className="rounded-2xl border border-stone-200 bg-white p-6">
-          <div className="grid grid-cols-[1fr_2fr_1fr] gap-x-3 gap-y-2 text-sm">
+          <div className="grid grid-cols-[1fr_2fr_1fr_auto] gap-x-3 gap-y-2 text-sm">
             <p className="font-semibold text-stone-500">Número de ronda</p>
             <p className="font-semibold text-stone-500">Cantidad de preguntas</p>
             <p className="font-semibold text-stone-500">Multiplicador</p>
+            <span aria-hidden="true" />
             {rounds.map((value, index) => (
               <div className="contents" key={index}>
                 <span className="flex items-center">{index + 1}</span>
@@ -543,6 +544,20 @@ export default function App() {
                   <option value="2">x2</option>
                   <option value="3">x3</option>
                 </select>
+                {rounds.length > 3 ? (
+                  <button
+                    type="button"
+                    aria-label={`Eliminar ronda ${index + 1}`}
+                    className="grid size-9 place-items-center rounded-lg text-red-600 transition hover:bg-red-50 hover:text-red-700"
+                    onClick={() =>
+                      setRounds((old) => old.filter((_, roundIndex) => roundIndex !== index))
+                    }
+                  >
+                    <Trash2 size={16} aria-hidden="true" />
+                  </button>
+                ) : (
+                  <span aria-hidden="true" />
+                )}
               </div>
             ))}
           </div>
