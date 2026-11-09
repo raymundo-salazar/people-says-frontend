@@ -279,7 +279,7 @@ export default function App() {
             habilitan el robo.
           </p>
           <p>El equipo con más puntos al final gana. En empate se juega una ronda adicional.</p>
-          <Button secondary onClick={() => setScreen("home")}>
+          <Button ghost onClick={() => setScreen("home")}>
             Volver
           </Button>
         </div>
@@ -320,7 +320,7 @@ export default function App() {
             ))}
           </div>
           <div className="flex items-center justify-between gap-3 pt-2">
-            <Button secondary onClick={() => setScreen("home")}>
+            <Button ghost onClick={() => setScreen("home")}>
               ← Atrás
             </Button>
             <Button disabled={!validGameSetup} onClick={() => setScreen("teams")}>
@@ -402,7 +402,7 @@ export default function App() {
           ))}
         </div>
         <div className="mt-5 flex items-center justify-between gap-3">
-          <Button secondary onClick={() => setScreen("create")}>
+          <Button ghost onClick={() => setScreen("create")}>
             ← Atrás
           </Button>
           <Button disabled={!validTeams} loading={loadingAction === "teams"} onClick={saveTeams}>
@@ -468,7 +468,7 @@ export default function App() {
             </p>
           )}
           <div className="mt-6 flex items-center justify-between gap-3">
-            <Button secondary onClick={() => setScreen("teams")}>
+            <Button ghost onClick={() => setScreen("teams")}>
               ← Atrás
             </Button>
             <Button loading={loadingAction === "rounds"} onClick={saveRounds}>
@@ -512,7 +512,7 @@ export default function App() {
           </section>
         </div>
         <div className="mt-5 flex items-center justify-between gap-3">
-          <Button secondary onClick={() => setScreen("rounds")}>
+          <Button ghost onClick={() => setScreen("rounds")}>
             ← Atrás
           </Button>
           <Button loading={loadingAction === "start"} onClick={start}>
