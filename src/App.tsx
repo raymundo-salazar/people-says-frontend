@@ -708,19 +708,6 @@ export default function App() {
                 </span>
               </div>
             </div>
-            {devices.length + 1 < 4 && (
-              <div className="mt-7 flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-stone-200 bg-stone-50 px-5 text-center">
-                <DeviceIconAnimation />
-                <h3 className="mt-4 text-sm font-semibold">Esperando nuevos dispositivos</h3>
-                <p className="mt-2 max-w-xs text-xs leading-5 text-stone-500">
-                  Comparte el enlace o QR para conectar una pantalla pública o los botones de cada
-                  equipo.
-                </p>
-                <p className="mt-4 text-xs font-semibold text-stone-500">
-                  {devices.length + 1}/4 dispositivos vinculados.
-                </p>
-              </div>
-            )}
             {devices.length > 0 && (
               <div className="mt-7 space-y-2">
                 {devices.map((device, index) => (
@@ -746,6 +733,19 @@ export default function App() {
                     </span>
                   </div>
                 ))}
+              </div>
+            )}
+            {devices.length + 1 < 4 && (
+              <div className="mt-7 flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-stone-200 bg-stone-50 px-5 text-center">
+                <DeviceIconAnimation />
+                <h3 className="mt-4 text-sm font-semibold">Esperando nuevos dispositivos</h3>
+                <p className="mt-2 max-w-xs text-xs leading-5 text-stone-500">
+                  Comparte el enlace o QR para conectar una pantalla pública o los botones de cada
+                  equipo.
+                </p>
+                <p className="mt-4 text-xs font-semibold text-stone-500">
+                  {devices.length + 1}/4 dispositivos vinculados.
+                </p>
               </div>
             )}
           </section>
