@@ -319,9 +319,14 @@ export default function App() {
               </button>
             ))}
           </div>
-          <Button disabled={!validGameSetup} onClick={() => setScreen("teams")}>
-            Continuar →
-          </Button>
+          <div className="flex items-center justify-between gap-3 pt-2">
+            <Button secondary onClick={() => setScreen("home")}>
+              ← Atrás
+            </Button>
+            <Button disabled={!validGameSetup} onClick={() => setScreen("teams")}>
+              Continuar →
+            </Button>
+          </div>
           {error && <p className="text-sm text-red-700">{error}</p>}
         </div>
       </Shell>
@@ -396,7 +401,10 @@ export default function App() {
             </section>
           ))}
         </div>
-        <div className="mt-5 flex justify-end">
+        <div className="mt-5 flex items-center justify-between gap-3">
+          <Button secondary onClick={() => setScreen("create")}>
+            ← Atrás
+          </Button>
           <Button disabled={!validTeams} loading={loadingAction === "teams"} onClick={saveTeams}>
             Continuar →
           </Button>
@@ -459,9 +467,14 @@ export default function App() {
               Las rondas deben estar entre 4 y 10 y ser descendentes.
             </p>
           )}
-          <Button loading={loadingAction === "rounds"} className="mt-6" onClick={saveRounds}>
-            Guardar configuración →
-          </Button>
+          <div className="mt-6 flex items-center justify-between gap-3">
+            <Button secondary onClick={() => setScreen("teams")}>
+              ← Atrás
+            </Button>
+            <Button loading={loadingAction === "rounds"} onClick={saveRounds}>
+              Guardar configuración →
+            </Button>
+          </div>
         </div>
       </Shell>
     )
@@ -496,10 +509,15 @@ export default function App() {
                 </div>
               ))}
             </div>
-            <Button loading={loadingAction === "start"} className="mt-5 w-full" onClick={start}>
-              Iniciar partida →
-            </Button>
           </section>
+        </div>
+        <div className="mt-5 flex items-center justify-between gap-3">
+          <Button secondary onClick={() => setScreen("rounds")}>
+            ← Atrás
+          </Button>
+          <Button loading={loadingAction === "start"} onClick={start}>
+            Iniciar partida →
+          </Button>
         </div>
       </Shell>
     )
