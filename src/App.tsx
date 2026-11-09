@@ -521,7 +521,9 @@ export default function App() {
         />
         <div className="grid gap-5 md:grid-cols-2">
           <section className="rounded-2xl border border-stone-200 bg-white p-6 text-center">
-            <p className="text-xs text-stone-500">Código de sala</p>
+            <p className="mb-2 block text-left text-xs font-medium text-stone-500">
+              Código de sala
+            </p>
             <div className="mt-2 flex items-center justify-center gap-3">
               <p className="text-5xl font-black tracking-widest text-emerald-900">{roomCode}</p>
               <Button secondary onClick={() => copyText(roomCode, "code")}>
@@ -555,9 +557,6 @@ export default function App() {
                 Escanea el código QR para unirte a la sala
               </p>
             </div>
-            <p className="mt-5 text-xs text-stone-500">
-              {devices.length}/4 dispositivos conectados
-            </p>
           </section>
           <section className="rounded-2xl border border-stone-200 bg-white p-6">
             <div className="space-y-2">
