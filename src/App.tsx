@@ -844,7 +844,7 @@ export default function App() {
             <h1 className="text-3xl font-semibold tracking-tight">Unirse a una sala</h1>
             <p className="mt-3 text-sm text-stone-500">Escribe el código de 8 caracteres.</p>
             <div
-              className="mt-8 flex justify-center gap-2"
+              className="mx-auto mt-8 grid max-w-xs grid-cols-4 gap-3 sm:flex sm:max-w-none sm:justify-center sm:gap-2"
               onPaste={(event) => {
                 event.preventDefault()
                 const pasted = event.clipboardData
@@ -885,7 +885,7 @@ export default function App() {
                       if (index > 0) otpRefs.current[index - 1]?.focus()
                     }
                   }}
-                  className="size-14 rounded-xl border border-stone-200 bg-white text-center text-3xl font-black uppercase tracking-widest text-emerald-900 outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-stone-100 sm:size-16"
+                  className="size-16 rounded-xl border border-stone-200 bg-white text-center text-3xl font-black uppercase tracking-widest text-emerald-900 outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-stone-100 sm:size-14"
                 />
               ))}
             </div>
