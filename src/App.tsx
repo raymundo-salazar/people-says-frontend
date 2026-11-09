@@ -45,6 +45,33 @@ type State = {
   control: "blue" | "red" | null
   teams: [{ name: string; players: string[] }, { name: string; players: string[] }]
 }
+const screens: Screen[] = [
+  "home",
+  "rules",
+  "create",
+  "teams",
+  "rounds",
+  "lobby",
+  "join",
+  "host",
+  "faceoff",
+  "decision",
+  "display",
+  "buzzer",
+  "steal",
+  "roundResult",
+  "final",
+]
+const screenFromLocation = () => {
+  const segments = window.location.pathname.split("/").filter(Boolean)
+  if (segments.length === 2 && segments[1] === "lobby") return "lobby" as Screen
+  const candidate = segments[0] as Screen | undefined
+  return candidate && screens.includes(candidate) ? candidate : "home"
+}
+const roomCodeFromLocation = () => {
+  const segments = window.location.pathname.split("/").filter(Boolean)
+  return segments.length === 2 && segments[1] === "lobby" ? segments[0] : ""
+}
 const api = import.meta.env.VITE_API_URL ?? ""
 const defaultState: State = {
   phase: "lobby",
@@ -68,9 +95,7 @@ const modes: { id: Mode; title: string; detail: string }[] = [
 ]
 
 export default function App() {
-  const [screen, setScreenState] = useState<Screen>(
-    () => (window.location.hash.replace("#", "") as Screen) || "home"
-  )
+  const [screen, setScreenState] = useState<Screen>(screenFromLocation)
   const [mode, setMode] = useState<Mode>("classic")
   const [state, setState] = useState<State>(defaultState)
   const [gameName, setGameName] = useState("")
@@ -86,7 +111,7 @@ export default function App() {
     { answerCount: "4", multiplier: 3 },
   ])
   const [roomCode, setRoomCode] = useState(
-    () => localStorage.getItem("people-says-room-code") ?? ""
+    () => roomCodeFromLocation() || localStorage.getItem("people-says-room-code") || ""
   )
   const [hostToken, setHostToken] = useState(
     () => localStorage.getItem("people-says-host-token") ?? ""
@@ -133,13 +158,13 @@ export default function App() {
     (team) => team.name.trim().length > 0 && team.players.some((player) => player.trim().length > 0)
   )
   const validJoinCode = joinCode.trim().length >= 5
-  const setScreen = (next: Screen) => {
-    window.history.pushState({ screen: next }, "", `#${next}`)
+  const setScreen = (next: Screen, path?: string) => {
+    const nextPath = path ?? (next === "lobby" && roomCode ? `/${roomCode}/lobby` : `/${next}`)
+    window.history.pushState({ screen: next }, "", nextPath)
     setScreenState(next)
   }
   useEffect(() => {
-    const onPopState = () =>
-      setScreenState((window.location.hash.replace("#", "") as Screen) || "home")
+    const onPopState = () => setScreenState(screenFromLocation())
     window.addEventListener("popstate", onPopState)
     return () => window.removeEventListener("popstate", onPopState)
   }, [])
@@ -211,7 +236,7 @@ export default function App() {
       })
       localStorage.setItem("people-says-room-code", data.code)
       localStorage.setItem("people-says-host-token", data.hostToken)
-      setScreen(finalize ? "lobby" : "teams")
+      setScreen(finalize ? "lobby" : "teams", finalize ? `/${data.code}/lobby` : undefined)
     } catch (e) {
       setError(e instanceof Error ? e.message : "No se pudo crear la sala")
     } finally {
