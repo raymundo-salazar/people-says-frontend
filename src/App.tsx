@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { ArrowLeft, ArrowRight, ExternalLink, Monitor, X } from "lucide-react"
 import { gameSocket } from "./socket"
 import {
   Button,
@@ -251,7 +252,9 @@ export default function App() {
             ¿Qué respondería la mayoría? Forma tus equipos y descubre las respuestas.
           </p>
           <div className="mx-auto mt-10 flex max-w-xs flex-col gap-3">
-            <Button onClick={() => setScreen("create")}>Crear una partida ↗</Button>
+            <Button onClick={() => setScreen("create")}>
+              Crear una partida <ExternalLink size={16} aria-hidden="true" />
+            </Button>
             <Button secondary onClick={() => setScreen("join")}>
               Unirme con código
             </Button>
@@ -322,7 +325,7 @@ export default function App() {
           <div className="flex items-center justify-between gap-3 pt-2">
             <span aria-hidden="true" />
             <Button disabled={!validGameSetup} onClick={() => setScreen("teams")}>
-              Continuar →
+              Continuar <ArrowRight size={16} aria-hidden="true" />
             </Button>
           </div>
           {error && <p className="text-sm text-red-700">{error}</p>}
@@ -401,10 +404,10 @@ export default function App() {
         </div>
         <div className="mt-5 flex items-center justify-between gap-3">
           <Button ghost onClick={() => setScreen("create")}>
-            ← Atrás
+            <ArrowLeft size={16} aria-hidden="true" /> Atrás
           </Button>
           <Button disabled={!validTeams} loading={loadingAction === "teams"} onClick={saveTeams}>
-            Continuar →
+            Continuar <ArrowRight size={16} aria-hidden="true" />
           </Button>
         </div>
       </Shell>
@@ -467,10 +470,10 @@ export default function App() {
           )}
           <div className="mt-6 flex items-center justify-between gap-3">
             <Button ghost onClick={() => setScreen("teams")}>
-              ← Atrás
+              <ArrowLeft size={16} aria-hidden="true" /> Atrás
             </Button>
             <Button loading={loadingAction === "rounds"} onClick={saveRounds}>
-              Guardar configuración →
+              Guardar configuración <ArrowRight size={16} aria-hidden="true" />
             </Button>
           </div>
         </div>
@@ -511,10 +514,10 @@ export default function App() {
         </div>
         <div className="mt-5 flex items-center justify-between gap-3">
           <Button ghost onClick={() => setScreen("rounds")}>
-            ← Atrás
+            <ArrowLeft size={16} aria-hidden="true" /> Atrás
           </Button>
           <Button loading={loadingAction === "start"} onClick={start}>
-            Iniciar partida →
+            Iniciar partida <ArrowRight size={16} aria-hidden="true" />
           </Button>
         </div>
       </Shell>
@@ -645,7 +648,7 @@ export default function App() {
             <p className="font-bold">{state.questionPrompt}</p>
           </div>
           <Button secondary onClick={() => setScreen("display")}>
-            Ver tablero →
+            Ver tablero <Monitor size={16} aria-hidden="true" />
           </Button>
         </div>
         <div className="grid gap-5 lg:grid-cols-[1.35fr_.8fr]">
@@ -663,7 +666,9 @@ export default function App() {
             ))}
             <div className="mt-5 flex items-center justify-between rounded-xl border border-red-200 bg-red-50 p-4">
               <Strikes count={Math.max(state.strikes.blue, state.strikes.red)} />
-              <Button onClick={() => emitAction({ type: "strike", team: teamId })}>× Strike</Button>
+              <Button onClick={() => emitAction({ type: "strike", team: teamId })}>
+                <X size={16} aria-hidden="true" /> Strike
+              </Button>
             </div>
           </section>
           <aside className="space-y-4">
@@ -674,7 +679,7 @@ export default function App() {
             </div>
             {state.phase === "steal" && (
               <Button className="w-full" onClick={() => setScreen("steal")}>
-                Resolver robo →
+                Resolver robo <ArrowRight size={16} aria-hidden="true" />
               </Button>
             )}
             {state.phase === "round_result" && (
@@ -685,7 +690,7 @@ export default function App() {
                   setScreen("roundResult")
                 }}
               >
-                Cerrar ronda →
+                Cerrar ronda <ArrowRight size={16} aria-hidden="true" />
               </Button>
             )}
           </aside>
@@ -755,7 +760,7 @@ export default function App() {
               setScreen("host")
             }}
           >
-            Siguiente ronda →
+            Siguiente ronda <ArrowRight size={16} aria-hidden="true" />
           </Button>
         </div>
       </Shell>

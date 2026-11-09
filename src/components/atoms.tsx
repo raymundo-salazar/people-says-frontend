@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { ArrowLeft, X as XIcon } from "lucide-react"
 
 export function Brand() {
   return (
@@ -90,7 +91,7 @@ export function Shell({
               onClick={() => window.history.back()}
               className="text-xs font-semibold text-stone-500 hover:text-emerald-800"
             >
-              ← Regresar
+              <ArrowLeft size={14} /> Regresar
             </button>
           ) : (
             <span />
@@ -140,7 +141,7 @@ export function Strikes({ count = 0, light = false }: { count?: number; light?: 
           key={i}
           className={`grid size-11 place-items-center rounded-xl border-2 text-2xl font-black ${i < count ? "border-red-600 bg-red-600 text-white" : light ? "border-white/20 bg-white/10 text-white/30" : "border-stone-200 bg-stone-50 text-stone-300"}`}
         >
-          ×
+          <XIcon size={22} strokeWidth={3} aria-hidden="true" />
         </span>
       ))}
     </div>
