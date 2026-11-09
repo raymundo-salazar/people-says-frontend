@@ -4,6 +4,7 @@ import {
   ArrowRight,
   ClipboardPaste,
   ExternalLink,
+  LoaderCircle,
   LogIn,
   Monitor,
   X,
@@ -35,6 +36,7 @@ type Screen =
   | "rounds"
   | "lobby"
   | "join"
+  | "joinLobby"
   | "host"
   | "faceoff"
   | "decision"
@@ -70,6 +72,7 @@ const screens: Screen[] = [
   "rounds",
   "lobby",
   "join",
+  "joinLobby",
   "host",
   "faceoff",
   "decision",
@@ -82,6 +85,9 @@ const screens: Screen[] = [
 const screenFromLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
   if (segments.length === 2 && segments[1] === "lobby") return "lobby" as Screen
+  if (segments.length === 3 && segments[1] === "join" && segments[2] === "lobby") {
+    return "joinLobby" as Screen
+  }
   if (segments[0] === "join" || segments[1] === "join") return "join" as Screen
   if (segments.length === 2 && segments[1] === "edit") return "create" as Screen
   if (segments.length === 3 && segments[1] === "edit" && screens.includes(segments[2] as Screen)) {
@@ -92,7 +98,8 @@ const screenFromLocation = () => {
 }
 const roomCodeFromLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
-  return segments.length >= 2 && (segments[1] === "lobby" || segments[1] === "edit")
+  return segments.length >= 2 &&
+    (segments[1] === "lobby" || segments[1] === "edit" || segments[1] === "join")
     ? segments[0]
     : ""
 }
@@ -296,9 +303,13 @@ export default function App() {
   const emitAction = (action: Record<string, unknown>) =>
     gameSocket.emit("game:action", { code: roomCode, hostToken, action })
   useEffect(() => {
-    if (!roomCode || !["host", "display", "buzzer", "lobby"].includes(screen)) return
+    if (!roomCode || !["host", "display", "buzzer", "lobby", "joinLobby"].includes(screen)) return
     gameSocket.connect()
-    const role = screen === "lobby" ? currentDeviceRole : screen === "buzzer" ? buttonRole : screen
+    const role = ["lobby", "joinLobby"].includes(screen)
+      ? currentDeviceRole
+      : screen === "buzzer"
+        ? buttonRole
+        : screen
     gameSocket.emit("room:join", {
       code: roomCode,
       role,
@@ -332,11 +343,13 @@ export default function App() {
     }
   }, [roomCode, screen, hostToken, deviceToken, buttonRole, currentDeviceRole, deviceName])
   useEffect(() => {
-    if (screen !== "join" || joinCode.trim().length < 5) return
+    if (!["join", "joinLobby"].includes(screen) || joinCode.trim().length < 5) return
     fetch(`${api}/api/rooms/${joinCode.trim().toUpperCase()}`)
       .then(async (response) => {
         const data = await response.json()
         if (!response.ok) throw new Error(data.error)
+        setGameName(data.name ?? "La gente dice")
+        setState((old) => ({ ...old, ...data.state }))
         setDevices(data.devices ?? [])
       })
       .catch(() => setDevices([]))
@@ -522,12 +535,13 @@ export default function App() {
   const selectJoinRole = (role: DeviceRole) => {
     setRoomCode(joinCode.trim().toUpperCase())
     setCurrentDeviceRole(role)
-    if (role === "host") setScreen("host")
-    if (role === "display") setScreen("display")
-    if (role === "blue_button" || role === "red_button") {
-      setButtonRole(role)
-      setScreen("buzzer")
-    }
+    if (role === "blue_button" || role === "red_button") setButtonRole(role)
+    window.history.pushState(
+      { screen: "joinLobby" },
+      "",
+      `/${joinCode.trim().toUpperCase()}/join/lobby`
+    )
+    setScreenState("joinLobby")
   }
   const pasteJoinCode = async () => {
     const pasted = await navigator.clipboard.readText()
@@ -571,6 +585,15 @@ export default function App() {
   const teamId = state.control ?? "blue"
   const teamName = teamId === "blue" ? teams[0].name : teams[1].name
   useEffect(() => {
+    if (screen === "joinLobby" && state.phase !== "lobby") {
+      if (currentDeviceRole === "host") setScreen("host")
+      if (currentDeviceRole === "display") setScreen("display")
+      if (currentDeviceRole === "blue_button" || currentDeviceRole === "red_button") {
+        setButtonRole(currentDeviceRole)
+        setScreen("buzzer")
+      }
+      return
+    }
     if (state.phase === "final") setScreen("final")
     if (state.phase === "steal" && screen === "host") setScreen("steal")
     if (state.phase === "decision" && screen === "faceoff") setScreen("decision")
@@ -910,6 +933,52 @@ export default function App() {
               <LogIn size={16} aria-hidden="true" /> Unirme a la sala
             </Button>
             {error && <p className="mt-4 text-sm text-red-700">{error}</p>}
+          </div>
+        </div>
+      </main>
+    )
+  if (screen === "joinLobby")
+    return (
+      <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
+        <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-lg items-center justify-center">
+          <div className="w-full rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm sm:p-8">
+            <div className="mx-auto grid size-16 place-items-center rounded-xl bg-emerald-50 text-emerald-900">
+              <LoaderCircle
+                size={32}
+                strokeWidth={1.8}
+                className="animate-spin"
+                aria-hidden="true"
+              />
+            </div>
+            <div className="mx-auto mt-5 inline-flex items-center gap-2 rounded-full bg-yellow-50 px-3 py-1 text-xs font-semibold text-yellow-800">
+              <span
+                className="size-2 animate-pulse rounded-full bg-yellow-500"
+                aria-hidden="true"
+              />
+              En sala de espera
+            </div>
+            <h1 className="mt-5 text-3xl font-semibold tracking-tight">Esperando inicio...</h1>
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-stone-500">
+              Tu dispositivo ya está vinculado. La partida comenzará en breve.
+            </p>
+            <div className="mt-7 rounded-xl border border-stone-200 bg-stone-50 p-4 text-left">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                <span className="text-stone-500">Partida</span>
+                <span className="text-right font-semibold text-stone-900">{gameName}</span>
+                <span className="text-stone-500">Nombre del dispositivo</span>
+                <span className="text-right font-semibold text-stone-900">{deviceName}</span>
+                <span className="text-stone-500">Tipo de dispositivo</span>
+                <span className="flex items-center justify-end gap-2 font-semibold text-stone-900">
+                  <DeviceTypeIcon type={deviceType} /> {deviceTypeLabels[deviceType]}
+                </span>
+                <span className="text-stone-500">Rol</span>
+                <span className="text-right font-semibold text-stone-900">
+                  {deviceRoleLabels[currentDeviceRole]}
+                </span>
+                <span className="text-stone-500">Conexión</span>
+                <span className="text-right font-semibold text-emerald-700">Vinculado</span>
+              </div>
+            </div>
           </div>
         </div>
       </main>
