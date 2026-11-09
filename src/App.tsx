@@ -844,7 +844,7 @@ export default function App() {
                       className={`ml-auto inline-flex items-center gap-1 text-[11px] font-bold ${device.role === "pending" ? "text-stone-400" : "text-emerald-800"}`}
                     >
                       <span
-                        className={`size-2 rounded-full ${device.role === "pending" ? "bg-stone-400" : "bg-emerald-600"}`}
+                        className={`size-2 rounded-full ${device.role === "pending" ? "animate-pulse bg-stone-400" : "bg-emerald-600"}`}
                         aria-hidden="true"
                       />
                       {device.role === "pending" ? "Pendiente" : "Listo"}
