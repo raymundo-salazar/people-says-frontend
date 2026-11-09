@@ -88,6 +88,10 @@ const joinCodeFromLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
   return segments.length === 2 && segments[1] === "join" ? segments[0].toUpperCase() : ""
 }
+const joinStageFromLocation = (): "name" | "role" => {
+  const segments = window.location.pathname.split("/").filter(Boolean)
+  return segments[0] === "join" && segments[1] === "role" ? "role" : "name"
+}
 const isEditLocation = () => window.location.pathname.split("/").filter(Boolean)[1] === "edit"
 const deviceRoleLabels: Record<DeviceRole, string> = {
   host: "Presentador",
@@ -182,7 +186,7 @@ export default function App() {
   })
   const [joinCode, setJoinCode] = useState(joinCodeFromLocation)
   const [deviceName, setDeviceName] = useState(getDefaultDeviceName)
-  const [joinStage, setJoinStage] = useState<"name" | "role">("name")
+  const [joinStage, setJoinStage] = useState<"name" | "role">(joinStageFromLocation)
   const [stealIndex, setStealIndex] = useState(0)
   const [stealText, setStealText] = useState("")
   const [buzzerWinner, setBuzzerWinner] = useState<"blue" | "red" | null>(null)
@@ -237,8 +241,19 @@ export default function App() {
     setRoomLoading(nextPath.includes("/edit"))
     setScreenState(next)
   }
+  const setJoinRoute = (stage: "name" | "role") => {
+    window.history.pushState(
+      { screen: "join", joinStage: stage },
+      "",
+      stage === "role" ? "/join/role" : "/join"
+    )
+    setJoinStage(stage)
+  }
   useEffect(() => {
-    const onPopState = () => setScreenState(screenFromLocation())
+    const onPopState = () => {
+      setScreenState(screenFromLocation())
+      setJoinStage(joinStageFromLocation())
+    }
     window.addEventListener("popstate", onPopState)
     return () => window.removeEventListener("popstate", onPopState)
   }, [])
@@ -520,7 +535,7 @@ export default function App() {
             <Button onClick={() => setScreen("create")}>
               Crear una partida <ExternalLink size={16} aria-hidden="true" />
             </Button>
-            <Button secondary onClick={() => setScreen("join")}>
+            <Button secondary onClick={() => setJoinRoute("name")}>
               Unirme con código
             </Button>
           </div>
@@ -685,7 +700,7 @@ export default function App() {
                     <p className="text-sm font-bold uppercase tracking-wider text-emerald-800">
                       {deviceRoleLabels[currentDeviceRole]}
                     </p>
-                    <p className="mt-1 text-xs text-stone-500">Este dispositivo</p>
+                    <p className="mt-1 text-xs text-stone-500">{deviceName}</p>
                   </div>
                 </div>
                 <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800">
@@ -693,7 +708,7 @@ export default function App() {
                 </span>
               </div>
             </div>
-            {devices.length + 1 < 4 ? (
+            {devices.length + 1 < 4 && (
               <div className="mt-7 flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-stone-200 bg-stone-50 px-5 text-center">
                 <DeviceIconAnimation />
                 <h3 className="mt-4 text-sm font-semibold">Esperando nuevos dispositivos</h3>
@@ -705,7 +720,8 @@ export default function App() {
                   {devices.length + 1}/4 dispositivos vinculados.
                 </p>
               </div>
-            ) : (
+            )}
+            {devices.length > 0 && (
               <div className="mt-7 space-y-2">
                 {devices.map((device, index) => (
                   <div
@@ -787,7 +803,7 @@ export default function App() {
               <div className="mt-5 flex justify-end">
                 <Button
                   disabled={!deviceName.trim() || !validJoinCode}
-                  onClick={() => setJoinStage("role")}
+                  onClick={() => setJoinRoute("role")}
                 >
                   Siguiente <ArrowRight size={16} aria-hidden="true" />
                 </Button>
@@ -819,7 +835,7 @@ export default function App() {
                 })}
               </div>
               <div className="mt-5">
-                <Button ghost onClick={() => setJoinStage("name")}>
+                <Button ghost onClick={() => setJoinRoute("name")}>
                   <ArrowLeft size={16} aria-hidden="true" /> Atrás
                 </Button>
               </div>
