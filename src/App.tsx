@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { ArrowLeft, ArrowRight, CheckCircle2, ExternalLink, Monitor, X } from "lucide-react"
+import { ArrowLeft, ArrowRight, ExternalLink, Monitor, X } from "lucide-react"
 import { gameSocket } from "./socket"
 import {
   Button,
@@ -577,7 +577,7 @@ export default function App() {
                   <p className="mt-1 text-xs text-stone-500">Presentador</p>
                 </div>
                 <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800">
-                  <CheckCircle2 size={14} aria-hidden="true" /> Listo
+                  <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" /> Listo
                 </span>
               </div>
             </div>
