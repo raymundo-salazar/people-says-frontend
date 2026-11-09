@@ -657,7 +657,7 @@ export default function App() {
     setShowResumeDialog(false)
     setRoomCode("")
     setHostToken("")
-    setScreen("create")
+    setScreen("create", "/create")
   }
   const changeDeviceConfiguration = () => {
     const code = roomCode || joinCode.trim().toUpperCase()
