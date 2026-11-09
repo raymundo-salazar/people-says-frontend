@@ -759,6 +759,18 @@ export default function App() {
               </p>
             </div>
           }
+          footer={
+            <Button
+              ghost
+              className="text-xs text-red-600 hover:text-red-700"
+              onClick={() => {
+                window.close()
+                window.setTimeout(() => setScreen("home"), 100)
+              }}
+            >
+              <X size={14} aria-hidden="true" /> Salir de vinculación
+            </Button>
+          }
         />
         <div className="mx-auto max-w-4xl space-y-4">
           {joinStage === "name" ? (
@@ -815,17 +827,6 @@ export default function App() {
               </div>
             </div>
           )}
-          <div className="flex justify-end">
-            <Button
-              ghost
-              onClick={() => {
-                window.close()
-                window.setTimeout(() => setScreen("home"), 100)
-              }}
-            >
-              <X size={16} aria-hidden="true" /> Salir de vinculación
-            </Button>
-          </div>
         </div>
       </Shell>
     )
