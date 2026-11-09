@@ -991,7 +991,10 @@ export default function App() {
                   {deviceRoleLabels[currentDeviceRole]}
                 </span>
                 <span className="text-stone-500">Conexión</span>
-                <span className="text-right font-semibold text-emerald-700">Vinculado</span>
+                <span className="inline-flex items-center justify-end gap-1.5 font-semibold text-emerald-700">
+                  <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" />
+                  Vinculado
+                </span>
               </div>
             </div>
             <Button secondary className="mt-5 w-full" onClick={changeDeviceConfiguration}>
