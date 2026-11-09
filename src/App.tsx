@@ -361,7 +361,7 @@ export default function App() {
                       old.map((item, i) => (i === index ? { ...item, name: e.target.value } : item))
                     )
                   }
-                  className="w-full bg-transparent text-lg font-semibold outline-none"
+                  className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-lg font-semibold outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100"
                 />
               </div>
               <div className="space-y-2">
