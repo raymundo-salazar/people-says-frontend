@@ -66,6 +66,7 @@ const screens: Screen[] = [
 const screenFromLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
   if (segments.length === 2 && segments[1] === "lobby") return "lobby" as Screen
+  if (segments.length === 2 && segments[1] === "join") return "join" as Screen
   if (segments.length === 2 && segments[1] === "edit") return "create" as Screen
   if (segments.length === 3 && segments[1] === "edit" && screens.includes(segments[2] as Screen)) {
     return segments[2] as Screen
@@ -78,6 +79,10 @@ const roomCodeFromLocation = () => {
   return segments.length >= 2 && (segments[1] === "lobby" || segments[1] === "edit")
     ? segments[0]
     : ""
+}
+const joinCodeFromLocation = () => {
+  const segments = window.location.pathname.split("/").filter(Boolean)
+  return segments.length === 2 && segments[1] === "join" ? segments[0].toUpperCase() : ""
 }
 const isEditLocation = () => window.location.pathname.split("/").filter(Boolean)[1] === "edit"
 const api = import.meta.env.VITE_API_URL ?? ""
@@ -132,13 +137,14 @@ export default function App() {
     localStorage.setItem("people-says-device-token", created)
     return created
   })
-  const [joinCode, setJoinCode] = useState("")
+  const [joinCode, setJoinCode] = useState(joinCodeFromLocation)
   const [stealIndex, setStealIndex] = useState(0)
   const [stealText, setStealText] = useState("")
   const [buzzerWinner, setBuzzerWinner] = useState<"blue" | "red" | null>(null)
   const [buttonRole, setButtonRole] = useState<"blue_button" | "red_button">("blue_button")
   const [devices, setDevices] = useState<Array<{ role: string }>>([])
   const [error, setError] = useState("")
+  const [copied, setCopied] = useState<"code" | "url" | null>(null)
   const [loadingAction, setLoadingAction] = useState<
     "create" | "teams" | "rounds" | "start" | null
   >(null)
@@ -167,6 +173,12 @@ export default function App() {
     (team) => team.name.trim().length > 0 && team.players.some((player) => player.trim().length > 0)
   )
   const validJoinCode = joinCode.trim().length >= 5
+  const shareUrl = `${window.location.origin}/${roomCode}/join`
+  const copyText = async (value: string, type: "code" | "url") => {
+    await navigator.clipboard.writeText(value)
+    setCopied(type)
+    window.setTimeout(() => setCopied(null), 1800)
+  }
   const setScreen = (next: Screen, path?: string) => {
     const nextPath =
       path ??
@@ -510,7 +522,39 @@ export default function App() {
         <div className="grid gap-5 md:grid-cols-2">
           <section className="rounded-2xl border border-stone-200 bg-white p-6 text-center">
             <p className="text-xs text-stone-500">Código de sala</p>
-            <p className="mt-2 text-5xl font-black tracking-widest text-emerald-900">{roomCode}</p>
+            <div className="mt-2 flex items-center justify-center gap-3">
+              <p className="text-5xl font-black tracking-widest text-emerald-900">{roomCode}</p>
+              <Button secondary onClick={() => copyText(roomCode, "code")}>
+                {copied === "code" ? "Copiado" : "Copiar"}
+              </Button>
+            </div>
+            <div className="mt-6 text-left">
+              <p className="mb-2 block text-xs font-medium text-stone-500">Enlace para compartir</p>
+              <div className="flex gap-2">
+                <input
+                  aria-label="Enlace de invitación"
+                  readOnly
+                  value={shareUrl}
+                  className="min-w-0 w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-xs outline-none focus:border-emerald-700"
+                />
+                <Button secondary onClick={() => copyText(shareUrl, "url")}>
+                  {copied === "url" ? "Copiado" : "Copiar URL"}
+                </Button>
+              </div>
+            </div>
+            <div className="mt-6 flex flex-col items-center">
+              <div className="rounded-xl border border-stone-200 bg-white p-3">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=168x168&data=${encodeURIComponent(shareUrl)}`}
+                  alt="Código QR para unirse a la sala"
+                  width="168"
+                  height="168"
+                />
+              </div>
+              <p className="mt-3 text-xs text-stone-500">
+                Escanea el código QR para unirte a la sala
+              </p>
+            </div>
             <p className="mt-5 text-xs text-stone-500">
               {devices.length}/4 dispositivos conectados
             </p>
