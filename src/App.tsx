@@ -25,6 +25,7 @@ import {
 } from "./components/atoms"
 import type { DeviceType } from "./components/atoms"
 import { GameSetupStep, RoundsStep, TeamsStep } from "./components/setup-wizard"
+import { cx } from "./lib/cx"
 
 type Screen =
   | "home"
@@ -885,7 +886,10 @@ export default function App() {
                       if (index > 0) otpRefs.current[index - 1]?.focus()
                     }
                   }}
-                  className="h-[clamp(3rem,14vw,3.5rem)] w-[clamp(2rem,10vw,3.5rem)] rounded-xl border border-stone-200 bg-white text-center text-xl font-black uppercase text-emerald-900 outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-stone-100 sm:size-14 sm:text-3xl sm:tracking-widest md:h-20 md:w-14 md:text-4xl"
+                  className={cx(
+                    "h-[clamp(3rem,14vw,3.5rem)] w-[clamp(2rem,10vw,3.5rem)] rounded-xl border border-stone-200 bg-white text-center text-xl font-black uppercase text-emerald-900 outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-stone-100",
+                    "sm:size-14 sm:text-3xl sm:tracking-widest md:h-20 md:w-14 md:text-4xl"
+                  )}
                 />
               ))}
             </div>
