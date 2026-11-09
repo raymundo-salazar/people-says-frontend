@@ -77,10 +77,12 @@ export function Shell({
   children,
   wide = false,
   showBack = true,
+  onBack,
 }: {
   children: ReactNode
   wide?: boolean
   showBack?: boolean
+  onBack?: () => void
 }) {
   return (
     <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
@@ -88,7 +90,7 @@ export function Shell({
         <header className="mb-12 flex items-center justify-between">
           {showBack ? (
             <button
-              onClick={() => window.history.back()}
+              onClick={onBack ?? (() => window.history.back())}
               className="text-xs font-semibold text-stone-500 hover:text-emerald-800"
             >
               <ArrowLeft size={14} /> Regresar

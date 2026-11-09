@@ -65,12 +65,18 @@ const screens: Screen[] = [
 const screenFromLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
   if (segments.length === 2 && segments[1] === "lobby") return "lobby" as Screen
+  if (segments.length === 2 && segments[1] === "edit") return "create" as Screen
+  if (segments.length === 3 && segments[1] === "edit" && screens.includes(segments[2] as Screen)) {
+    return segments[2] as Screen
+  }
   const candidate = segments[0] as Screen | undefined
   return candidate && screens.includes(candidate) ? candidate : "home"
 }
 const roomCodeFromLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
-  return segments.length === 2 && segments[1] === "lobby" ? segments[0] : ""
+  return segments.length >= 2 && (segments[1] === "lobby" || segments[1] === "edit")
+    ? segments[0]
+    : ""
 }
 const api = import.meta.env.VITE_API_URL ?? ""
 const defaultState: State = {
@@ -159,7 +165,13 @@ export default function App() {
   )
   const validJoinCode = joinCode.trim().length >= 5
   const setScreen = (next: Screen, path?: string) => {
-    const nextPath = path ?? (next === "lobby" && roomCode ? `/${roomCode}/lobby` : `/${next}`)
+    const nextPath =
+      path ??
+      (roomCode && ["create", "teams", "rounds"].includes(next)
+        ? `/${roomCode}/edit${next === "create" ? "" : `/${next}`}`
+        : next === "lobby" && roomCode
+          ? `/${roomCode}/lobby`
+          : `/${next}`)
     window.history.pushState({ screen: next }, "", nextPath)
     setScreenState(next)
   }
@@ -198,6 +210,38 @@ export default function App() {
       gameSocket.disconnect()
     }
   }, [roomCode, screen, hostToken, deviceToken, buttonRole])
+  useEffect(() => {
+    if (!roomCode || !hostToken || !["create", "teams", "rounds", "lobby"].includes(screen)) return
+    fetch(`${api}/api/rooms/${roomCode}`, { headers: { "x-host-token": hostToken } })
+      .then(async (response) => {
+        const data = await response.json()
+        if (!response.ok) throw new Error(data.error)
+        setMode(data.mode)
+        setState((old) => ({ ...old, ...data.state }))
+        if (data.state?.teams) {
+          setTeams(
+            data.state.teams.map((team: { name: string; players: string[] }, index: number) => ({
+              name: team.name,
+              color: index === 0 ? "blue" : "red",
+              players: team.players,
+            }))
+          )
+        }
+        if (data.state?.roundConfigs) {
+          setRounds(
+            data.state.roundConfigs.map(
+              (round: { answerCount: number; multiplier: 1 | 2 | 3 }) => ({
+                answerCount: String(round.answerCount),
+                multiplier: round.multiplier,
+              })
+            )
+          )
+        }
+      })
+      .catch((error: unknown) =>
+        setError(error instanceof Error ? error.message : "No se pudo cargar la partida")
+      )
+  }, [roomCode, hostToken, screen])
   const createRoom = async (finalize = false) => {
     setError("")
     const normalizedTeams = teams.map((team) => ({
@@ -243,12 +287,61 @@ export default function App() {
       setLoadingAction(null)
     }
   }
-  const saveTeams = () => setScreen("rounds")
+  const saveTeams = async () => {
+    if (!roomCode) {
+      setScreen("rounds")
+      return
+    }
+    setLoadingAction("teams")
+    try {
+      const response = await fetch(`${api}/api/rooms/${roomCode}/teams`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json", "x-host-token": hostToken },
+        body: JSON.stringify({
+          teams: teams.map((team) => ({
+            name: team.name.trim(),
+            players: team.players.map((player) => player.trim()).filter(Boolean),
+          })),
+        }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error)
+      setState((old) => ({ ...old, ...data.state }))
+      setScreen("rounds")
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No se pudieron guardar los equipos")
+    } finally {
+      setLoadingAction(null)
+    }
+  }
   const saveRounds = async () => {
     if (!validRounds) return
     setLoadingAction("rounds")
-    await createRoom(true)
-    setLoadingAction(null)
+    if (!roomCode) {
+      await createRoom(true)
+      setLoadingAction(null)
+      return
+    }
+    try {
+      const response = await fetch(`${api}/api/rooms/${roomCode}/rounds`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json", "x-host-token": hostToken },
+        body: JSON.stringify({
+          rounds: rounds.map((round) => ({
+            answerCount: Number(round.answerCount),
+            multiplier: round.multiplier,
+          })),
+        }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error)
+      setState((old) => ({ ...old, ...data.state }))
+      setScreen("lobby")
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No se pudieron guardar las rondas")
+    } finally {
+      setLoadingAction(null)
+    }
   }
   const start = () => {
     setLoadingAction("start")
@@ -587,7 +680,7 @@ export default function App() {
     )
   if (screen === "lobby")
     return (
-      <Shell>
+      <Shell onBack={() => setScreen("create", `/${roomCode}/edit`)}>
         <WizardProgress step={4} />
         <Heading
           k="04 / Sala de espera"
