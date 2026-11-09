@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react"
-import { ArrowLeft, Laptop, Monitor, Smartphone, Tablet, X as XIcon } from "lucide-react"
+import { ArrowLeft, Laptop, Monitor, Smartphone, Tablet, Tv, X as XIcon } from "lucide-react"
 
 export function Brand() {
   return (
@@ -60,7 +60,7 @@ export function CountPill({ count, label }: { count: number; label: string }) {
     </span>
   )
 }
-const deviceIcons = [Monitor, Laptop, Tablet, Smartphone]
+const deviceIcons = [Monitor, Laptop, Tablet, Smartphone, Tv]
 export function DeviceIconAnimation() {
   const [index, setIndex] = useState(0)
   const Icon = deviceIcons[index]
