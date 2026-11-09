@@ -1086,7 +1086,10 @@ export default function App() {
                       key={role}
                       secondary
                       disabled={!validJoinCode || occupied}
-                      className="h-auto min-h-28 justify-start text-left"
+                      className={cx(
+                        "h-auto min-h-28 justify-start text-left",
+                        occupied && "bg-stone-100 text-stone-400 hover:bg-stone-100"
+                      )}
                       onClick={() => selectJoinRole(role)}
                     >
                       <DeviceRoleIcon role={role} />
