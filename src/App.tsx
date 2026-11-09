@@ -887,7 +887,7 @@ export default function App() {
                     }
                   }}
                   className={cx(
-                    "h-[clamp(3rem,14vw,3.5rem)] w-[clamp(2rem,10vw,3.5rem)] rounded-xl border border-stone-200 bg-white text-center text-xl font-black uppercase text-emerald-900 outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-stone-100",
+                    "h-[clamp(3rem,14vw,3.5rem)] w-[clamp(2rem,10vw,3.5rem)] rounded-xl border border-stone-200 bg-white text-center text-xl !font-black uppercase text-emerald-900 outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-stone-100",
                     "sm:size-14 sm:text-3xl sm:tracking-widest md:h-20 md:w-14 md:text-4xl"
                   )}
                 />
