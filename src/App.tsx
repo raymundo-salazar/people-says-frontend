@@ -32,7 +32,7 @@ type Screen =
   | "roundResult"
   | "final"
 type Mode = "classic" | "stage" | "buttons" | "auto"
-type DeviceRole = "host" | "display" | "blue_button" | "red_button"
+type DeviceRole = "host" | "display" | "blue_button" | "red_button" | "pending"
 type Team = { name: string; color: "blue" | "red"; players: string[] }
 type RoundDraft = { answerCount: string; multiplier: 1 | 2 | 3 }
 type Answer = { text: string; points: number }
@@ -94,12 +94,14 @@ const deviceRoleLabels: Record<DeviceRole, string> = {
   display: "Pantalla pública",
   blue_button: "Pulsador azul",
   red_button: "Pulsador rojo",
+  pending: "Seleccionando rol",
 }
 const deviceRoleDescriptions: Record<DeviceRole, string> = {
   host: "Controla la partida y administra las respuestas.",
   display: "Muestra el tablero público para todos.",
   blue_button: "Funciona como pulsador del equipo azul.",
   red_button: "Funciona como pulsador del equipo rojo.",
+  pending: "Este dispositivo aún no tiene un rol asignado.",
 }
 const joinRoles: DeviceRole[] = ["host", "display", "blue_button", "red_button"]
 const api = import.meta.env.VITE_API_URL ?? ""
@@ -254,6 +256,22 @@ export default function App() {
       })
       .catch(() => setDevices([]))
   }, [screen, joinCode])
+  useEffect(() => {
+    if (screen !== "join" || joinCode.trim().length < 5) return
+    const presence = (payload: { devices?: Array<{ id?: string; role: string }> }) =>
+      setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
+    gameSocket.connect()
+    gameSocket.emit("room:join", {
+      code: joinCode.trim().toUpperCase(),
+      role: "pending",
+      deviceToken,
+    })
+    gameSocket.on("room:presence", presence)
+    return () => {
+      gameSocket.off("room:presence", presence)
+      gameSocket.disconnect()
+    }
+  }, [screen, joinCode, deviceToken])
   useEffect(() => {
     if (!roomCode || !hostToken || !isEditLocation()) return
     setRoomLoading(true)
@@ -670,7 +688,7 @@ export default function App() {
                     <DeviceRoleIcon role={device.role as DeviceRole} />
                     <div>
                       <p className="text-sm font-bold uppercase tracking-wider text-stone-700">
-                        {device.role}
+                        {deviceRoleLabels[device.role as DeviceRole] ?? device.role}
                       </p>
                       <p className="mt-1 text-xs text-stone-500">Dispositivo vinculado</p>
                     </div>

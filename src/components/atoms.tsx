@@ -105,7 +105,7 @@ export function DeviceRoleIcon({
   role,
   active = false,
 }: {
-  role: "host" | "display" | "blue_button" | "red_button"
+  role: "host" | "display" | "blue_button" | "red_button" | "pending"
   active?: boolean
 }) {
   const icons = {
@@ -113,6 +113,7 @@ export function DeviceRoleIcon({
     display: Presentation,
     blue_button: Circle,
     red_button: Circle,
+    pending: Smartphone,
   }
   const Icon = icons[role]
 
