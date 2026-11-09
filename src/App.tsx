@@ -1,5 +1,13 @@
 import { useEffect, useRef, useState } from "react"
-import { ArrowLeft, ArrowRight, ExternalLink, Monitor, X } from "lucide-react"
+import {
+  ArrowLeft,
+  ArrowRight,
+  ClipboardPaste,
+  ExternalLink,
+  LogIn,
+  Monitor,
+  X,
+} from "lucide-react"
 import { gameSocket } from "./socket"
 import {
   Button,
@@ -833,10 +841,7 @@ export default function App() {
         <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-md flex-col items-center justify-center">
           <Brand />
           <div className="mt-12 w-full text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-800">
-              Acceso
-            </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight">Unirse a una sala</h1>
+            <h1 className="text-3xl font-semibold tracking-tight">Unirse a una sala</h1>
             <p className="mt-3 text-sm text-stone-500">Escribe el código de 8 caracteres.</p>
             <div
               className="mt-8 flex justify-center gap-2"
@@ -880,17 +885,17 @@ export default function App() {
                       if (index > 0) otpRefs.current[index - 1]?.focus()
                     }
                   }}
-                  className="size-11 rounded-xl border border-stone-200 bg-white text-center text-xl font-bold uppercase outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-stone-100 sm:size-12"
+                  className="size-14 rounded-xl border border-stone-200 bg-white text-center text-2xl font-bold uppercase outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-stone-100 sm:size-16"
                 />
               ))}
             </div>
             <Button
-              secondary
-              className="mt-4 w-full"
+              ghost
+              className="mt-4 w-full text-emerald-800"
               disabled={loadingAction === "join"}
               onClick={pasteJoinCode}
             >
-              Pegar
+              <ClipboardPaste size={16} aria-hidden="true" /> Pegar
             </Button>
             <Button
               className="mt-3 w-full"
@@ -898,7 +903,7 @@ export default function App() {
               loading={loadingAction === "join"}
               onClick={validateAndJoin}
             >
-              Unirme a la sala
+              <LogIn size={16} aria-hidden="true" /> Unirme a la sala
             </Button>
             {error && <p className="mt-4 text-sm text-red-700">{error}</p>}
           </div>
