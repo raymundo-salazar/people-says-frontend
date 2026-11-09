@@ -233,6 +233,7 @@ export default function App() {
   const [deviceType] = useState<DeviceType>(getDeviceType)
   const [joinStage, setJoinStage] = useState<"name" | "role">(joinStageFromLocation)
   const [pendingRegistered, setPendingRegistered] = useState(false)
+  const [roleWarning, setRoleWarning] = useState("")
   const otpRefs = useRef<Array<HTMLInputElement | null>>([])
   const [stealIndex, setStealIndex] = useState(0)
   const [stealText, setStealText] = useState("")
@@ -329,11 +330,22 @@ export default function App() {
     }) => setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
     const failure = (payload: { error?: string }) => setError(payload.error ?? "Error de conexión")
     const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
+    const roleReplaced = (payload: { message?: string }) => {
+      setCurrentDeviceRole("pending")
+      setPendingRegistered(true)
+      setRoleWarning(
+        payload.message ?? "Tu rol fue actualizado. Selecciona uno nuevo para continuar."
+      )
+      setJoinStage("role")
+      navigate(`/${roomCode}/join/role`)
+      setScreenState("join")
+    }
     gameSocket.on("room:snapshot", receive)
     gameSocket.on("game:state", receive)
     gameSocket.on("room:presence", presence)
     gameSocket.on("game:error", failure)
     gameSocket.on("buzzer:winner", buzzer)
+    gameSocket.on("device:role-replaced", roleReplaced)
     gameSocket.on("buzzer:reset", () => setBuzzerWinner(null))
     return () => {
       gameSocket.off("room:snapshot", receive)
@@ -341,6 +353,7 @@ export default function App() {
       gameSocket.off("room:presence", presence)
       gameSocket.off("game:error", failure)
       gameSocket.off("buzzer:winner", buzzer)
+      gameSocket.off("device:role-replaced", roleReplaced)
       gameSocket.off("buzzer:reset")
       gameSocket.disconnect()
     }
@@ -543,6 +556,7 @@ export default function App() {
   const selectJoinRole = (role: DeviceRole) => {
     setRoomCode(joinCode.trim().toUpperCase())
     setCurrentDeviceRole(role)
+    setRoleWarning("")
     if (role === "blue_button" || role === "red_button") setButtonRole(role)
     navigate(`/${joinCode.trim().toUpperCase()}/join/lobby`)
     setScreenState("joinLobby")
@@ -1078,6 +1092,11 @@ export default function App() {
           ) : (
             <div className="rounded-2xl border border-stone-200 bg-white p-6">
               <h2 className="text-lg font-semibold">Selecciona el rol</h2>
+              {roleWarning && (
+                <p className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-800">
+                  {roleWarning}
+                </p>
+              )}
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {joinRoles.map((role) => {
                   const occupied = devices.some((device) => device.role === role)
