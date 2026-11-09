@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ArrowLeft, ArrowRight, ExternalLink, Monitor, X } from "lucide-react"
 import { gameSocket } from "./socket"
 import {
   Button,
+  Brand,
   CountPill,
   DeviceIconAnimation,
   DeviceRoleIcon,
@@ -96,6 +97,10 @@ const joinStageFromLocation = (): "name" | "role" => {
     (segments[1] === "join" && segments[2] === "role")
     ? "role"
     : "name"
+}
+const isJoinEntryLocation = () => {
+  const segments = window.location.pathname.split("/").filter(Boolean)
+  return segments.length === 1 && segments[0] === "join"
 }
 const isEditLocation = () => window.location.pathname.split("/").filter(Boolean)[1] === "edit"
 const deviceRoleLabels: Record<DeviceRole, string> = {
@@ -206,6 +211,7 @@ export default function App() {
   const [deviceName, setDeviceName] = useState(getDefaultDeviceName)
   const [deviceType] = useState<DeviceType>(getDeviceType)
   const [joinStage, setJoinStage] = useState<"name" | "role">(joinStageFromLocation)
+  const otpRefs = useRef<Array<HTMLInputElement | null>>([])
   const [stealIndex, setStealIndex] = useState(0)
   const [stealText, setStealText] = useState("")
   const [buzzerWinner, setBuzzerWinner] = useState<"blue" | "red" | null>(null)
@@ -217,7 +223,7 @@ export default function App() {
   const [error, setError] = useState("")
   const [copied, setCopied] = useState<"code" | "url" | null>(null)
   const [loadingAction, setLoadingAction] = useState<
-    "create" | "teams" | "rounds" | "start" | null
+    "create" | "teams" | "rounds" | "start" | "join" | null
   >(null)
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
@@ -514,6 +520,34 @@ export default function App() {
       setScreen("buzzer")
     }
   }
+  const pasteJoinCode = async () => {
+    const pasted = await navigator.clipboard.readText()
+    setJoinCode(
+      pasted
+        .replace(/[^a-zA-Z0-9]/g, "")
+        .slice(0, 8)
+        .toUpperCase()
+    )
+    window.setTimeout(() => otpRefs.current[Math.min(pasted.length, 8) - 1]?.focus(), 0)
+  }
+  const validateAndJoin = async () => {
+    if (joinCode.length !== 8) return
+    setError("")
+    setLoadingAction("join")
+    try {
+      const code = joinCode.toUpperCase()
+      const response = await fetch(`${api}/api/rooms/${code}`)
+      const data = await response.json()
+      if (!response.ok) throw new Error("La sala no existe o ya no está disponible.")
+      setRoomCode(code)
+      setState((old) => ({ ...old, ...data.state }))
+      setJoinRoute("name")
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No se pudo validar la sala")
+    } finally {
+      setLoadingAction(null)
+    }
+  }
   const start = () => {
     setLoadingAction("start")
     emitAction({ type: "start" })
@@ -792,6 +826,84 @@ export default function App() {
           </Button>
         </div>
       </Shell>
+    )
+  if (screen === "join" && isJoinEntryLocation())
+    return (
+      <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
+        <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-md flex-col items-center justify-center">
+          <Brand />
+          <div className="mt-12 w-full text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-800">
+              Acceso
+            </p>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight">Unirse a una sala</h1>
+            <p className="mt-3 text-sm text-stone-500">Escribe el código de 8 caracteres.</p>
+            <div
+              className="mt-8 flex justify-center gap-2"
+              onPaste={(event) => {
+                event.preventDefault()
+                const pasted = event.clipboardData
+                  .getData("text")
+                  .replace(/[^a-zA-Z0-9]/g, "")
+                  .slice(0, 8)
+                  .toUpperCase()
+                setJoinCode(pasted)
+                otpRefs.current[Math.min(pasted.length, 8) - 1]?.focus()
+              }}
+            >
+              {Array.from({ length: 8 }, (_, index) => (
+                <input
+                  key={index}
+                  ref={(element) => {
+                    otpRefs.current[index] = element
+                  }}
+                  value={joinCode[index] ?? ""}
+                  maxLength={1}
+                  disabled={loadingAction === "join"}
+                  inputMode="text"
+                  autoComplete={index === 0 ? "one-time-code" : "off"}
+                  placeholder="-"
+                  aria-label={`Carácter ${index + 1} del código`}
+                  onChange={(event) => {
+                    const value = event.target.value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase()
+                    const characters = joinCode.padEnd(8, " ").split("")
+                    characters[index] = value
+                    setJoinCode(characters.join("").replace(/\s+$/g, ""))
+                    if (value && index < 7) otpRefs.current[index + 1]?.focus()
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Backspace") {
+                      event.preventDefault()
+                      const characters = joinCode.padEnd(8, " ").split("")
+                      characters[index] = " "
+                      setJoinCode(characters.join("").replace(/\s+$/g, ""))
+                      if (index > 0) otpRefs.current[index - 1]?.focus()
+                    }
+                  }}
+                  className="size-11 rounded-xl border border-stone-200 bg-white text-center text-xl font-bold uppercase outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-stone-100 sm:size-12"
+                />
+              ))}
+            </div>
+            <Button
+              secondary
+              className="mt-4 w-full"
+              disabled={loadingAction === "join"}
+              onClick={pasteJoinCode}
+            >
+              Pegar
+            </Button>
+            <Button
+              className="mt-3 w-full"
+              disabled={joinCode.length !== 8}
+              loading={loadingAction === "join"}
+              onClick={validateAndJoin}
+            >
+              Unirme a la sala
+            </Button>
+            {error && <p className="mt-4 text-sm text-red-700">{error}</p>}
+          </div>
+        </div>
+      </main>
     )
   if (screen === "join")
     return (
