@@ -572,9 +572,9 @@ export default function App() {
               <div className="flex items-center justify-between gap-2">
                 <div>
                   <p className="text-sm font-bold uppercase tracking-wider text-emerald-800">
-                    Este dispositivo
+                    Presentador
                   </p>
-                  <p className="mt-1 text-xs text-stone-500">Presentador</p>
+                  <p className="mt-1 text-xs text-stone-500">Este dispositivo</p>
                 </div>
                 <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800">
                   <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" /> Listo
@@ -596,11 +596,11 @@ export default function App() {
             ) : (
               <div className="mt-7 space-y-2">
                 {devices.map((device, index) => (
-                  <div
-                    key={`${device.role}-${index}`}
-                    className="rounded-xl bg-stone-50 p-3 text-sm"
-                  >
-                    {device.role}
+                  <div key={`${device.role}-${index}`} className="rounded-xl bg-stone-50 p-3">
+                    <p className="text-sm font-bold uppercase tracking-wider text-stone-700">
+                      {device.role}
+                    </p>
+                    <p className="mt-1 text-xs text-stone-500">Dispositivo vinculado</p>
                   </div>
                 ))}
               </div>
