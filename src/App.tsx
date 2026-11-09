@@ -1159,10 +1159,22 @@ export default function App() {
   if (screen === "join" && isPrincipalDevice)
     return (
       <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
-        <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center text-center">
-          <p className="max-w-md text-lg font-semibold leading-7 text-stone-800">
-            Este es el dispositivo principal de esta partida. Regresa al lobby para continuar.
-          </p>
+        <div className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center">
+          <div className="w-full max-w-md rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
+            <h1 className="text-lg font-semibold text-emerald-950">
+              Este es el dispositivo principal
+            </h1>
+            <p className="mt-2 text-sm leading-6 text-emerald-800">
+              Esta sala ya está configurada en este dispositivo como presentador. Regresa al lobby
+              para continuar administrando la partida.
+            </p>
+            <Button
+              className="mt-5 w-full"
+              onClick={() => setScreen("lobby", `/${roomCode}/lobby`)}
+            >
+              Ir al lobby <ArrowRight size={16} aria-hidden="true" />
+            </Button>
+          </div>
         </div>
       </main>
     )
