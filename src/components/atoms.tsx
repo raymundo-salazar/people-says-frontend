@@ -60,7 +60,7 @@ export function CountPill({ count, label }: { count: number; label: string }) {
     </span>
   )
 }
-const deviceIcons = [Monitor, Laptop, Tablet, Smartphone, Tv]
+const deviceIcons = [Laptop, Smartphone, Monitor, Tablet, Tv]
 export function DeviceIconAnimation() {
   const [index, setIndex] = useState(0)
   const Icon = deviceIcons[index]
