@@ -422,9 +422,12 @@ export default function App() {
       gameSocket.off("buzzer:winner", buzzer)
       gameSocket.off("device:role-replaced", roleReplaced)
       gameSocket.off("buzzer:reset")
-      gameSocket.disconnect()
     }
   }, [roomCode, screen, hostToken, deviceToken, buttonRole, currentDeviceRole, deviceName])
+  useEffect(() => {
+    if (["host", "display", "buzzer", "lobby", "joinLobby"].includes(screen)) return
+    gameSocket.disconnect()
+  }, [screen])
   useEffect(() => {
     if (screen !== "lobby" && !["joinInvite", "join", "joinLobby"].includes(screen)) return
     const code = roomCode || joinCode.trim().toUpperCase()
