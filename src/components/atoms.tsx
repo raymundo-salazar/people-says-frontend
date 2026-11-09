@@ -69,7 +69,7 @@ export function DeviceIconAnimation() {
   useEffect(() => {
     const timer = window.setInterval(() => {
       setIndex((current) => (current + 1) % deviceIcons.length)
-    }, 4000)
+    }, 3600)
     return () => window.clearInterval(timer)
   }, [])
 
