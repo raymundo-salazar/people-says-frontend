@@ -416,6 +416,14 @@ export default function App() {
         setError("La sala ya no existe o no está disponible.")
         return
       }
+      if (errorCode === "turn_not_active") {
+        setError("La respuesta solo puede revelarse cuando hay un turno activo.")
+        return
+      }
+      if (errorCode === "host_required") {
+        setError("Este dispositivo no tiene permisos para controlar la partida.")
+        return
+      }
       setError(errorCode)
     }
     const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
@@ -814,7 +822,7 @@ export default function App() {
     emitAction({ type: "start" })
     window.setTimeout(() => {
       setLoadingAction(null)
-      if (currentDeviceRole === "host") setScreen("host")
+      if (currentDeviceRole === "host") setScreen("faceoff")
       if (currentDeviceRole === "display") setScreen("display")
       if (currentDeviceRole === "blue_button" || currentDeviceRole === "red_button") {
         setButtonRole(currentDeviceRole)
@@ -1597,6 +1605,11 @@ export default function App() {
             </Button>
           </div>
         </div>
+        {error && (
+          <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </p>
+        )}
         <div className="grid gap-5 lg:grid-cols-[1.35fr_.8fr]">
           <section className="rounded-2xl border border-stone-200 bg-white p-5">
             <div className="grid gap-x-4 md:grid-cols-2">
