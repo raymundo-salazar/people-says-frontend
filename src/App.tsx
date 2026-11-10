@@ -1616,9 +1616,7 @@ export default function App() {
                     <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm text-stone-600">
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <span className="flex-1 text-sm font-semibold">
-                      {visible ? answer.text : "-"}
-                    </span>
+                    <span className="flex-1 text-sm font-semibold">{answer.text}</span>
                     <span className="font-bold tabular-nums">{visible ? answer.points : "-"}</span>
                     <span
                       className={cx(
