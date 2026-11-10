@@ -355,6 +355,21 @@ export default function App() {
       Pausar partida
     </Button>
   ) : null
+  const moveToRoleSelection = (message: string) => {
+    setCurrentDeviceRole("pending")
+    saveDeviceConfig(roomCode, {
+      token: deviceToken,
+      role: "pending",
+      name: deviceName,
+      deviceType,
+    })
+    setPendingRegistered(true)
+    setRoleWarning(message)
+    setError("")
+    setJoinStage("role")
+    navigate("/join/role")
+    setScreenState("join")
+  }
   useEffect(() => {
     if (!roomCode || !["host", "display", "buzzer", "lobby", "joinLobby"].includes(screen)) return
     gameSocket.connect()
@@ -383,29 +398,32 @@ export default function App() {
     const presence = (payload: {
       devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
     }) => setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
-    const failure = (payload: { error?: string }) =>
-      setError(
-        payload.error === "controller_not_connected"
-          ? "El presentador aún no está conectado a la sala. Intenta de nuevo en un momento."
-          : (payload.error ?? "Error de conexión")
-      )
+    const failure = (payload: { error?: string }) => {
+      const errorCode = payload.error ?? "connection_error"
+      if (errorCode === "role_taken") {
+        moveToRoleSelection("Este rol ya está ocupado. Selecciona otro para continuar.")
+        return
+      }
+      if (errorCode === "controller_not_connected") {
+        setError("El presentador aún no está conectado a la sala. Intenta de nuevo en un momento.")
+        return
+      }
+      if (errorCode === "room_full") {
+        setError("La sala ya tiene el máximo de 4 dispositivos vinculados.")
+        return
+      }
+      if (errorCode === "room_not_found") {
+        setError("La sala ya no existe o no está disponible.")
+        return
+      }
+      setError(errorCode)
+    }
     const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
     const roleReplaced = (payload: { message?: string }) => {
-      setCurrentDeviceRole("pending")
-      saveDeviceConfig(roomCode, {
-        token: deviceToken,
-        role: "pending",
-        name: deviceName,
-        deviceType,
-      })
-      setPendingRegistered(true)
-      setRoleWarning(
+      moveToRoleSelection(
         payload.message ??
           "El dispositivo principal reasignó tu rol. Selecciona otro para continuar."
       )
-      setJoinStage("role")
-      navigate("/join/role")
-      setScreenState("join")
     }
     gameSocket.on("room:snapshot", receive)
     gameSocket.on("game:state", receive)
