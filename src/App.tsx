@@ -215,6 +215,55 @@ const modes: { id: Mode; title: string; detail: string }[] = [
   { id: "buttons", title: "Modo botones", detail: "Pulsadores digitales por equipo." },
   { id: "auto", title: "Modo automático", detail: "La máquina dirige la partida." },
 ]
+function GameStatusCard({ state, dark = false }: { state: State; dark?: boolean }) {
+  const round = state.roundIndex + 1
+  const multiplier = state.roundConfigs[state.roundIndex]?.multiplier ?? 1
+  const faceoff = ["faceoff", "tiebreaker"].includes(state.phase)
+  return (
+    <div
+      className={cx(
+        "mb-5 grid grid-cols-3 rounded-2xl border px-4 py-3 text-center sm:px-6",
+        dark ? "border-white/10 bg-white/10 text-white" : "border-stone-200 bg-white"
+      )}
+    >
+      <div>
+        <p
+          className={cx(
+            "text-[10px] font-semibold uppercase tracking-wider",
+            dark ? "text-white/60" : "text-stone-500"
+          )}
+        >
+          Ronda
+        </p>
+        <p className="mt-1 text-lg font-black">{round}</p>
+      </div>
+      <div className={cx("border-x", dark ? "border-white/10" : "border-stone-200")}>
+        <p
+          className={cx(
+            "text-[10px] font-semibold uppercase tracking-wider",
+            dark ? "text-white/60" : "text-stone-500"
+          )}
+        >
+          Multiplicador
+        </p>
+        <p className="mt-1 text-lg font-black">x{multiplier}</p>
+      </div>
+      <div>
+        <p
+          className={cx(
+            "text-[10px] font-semibold uppercase tracking-wider",
+            dark ? "text-white/60" : "text-stone-500"
+          )}
+        >
+          Modo
+        </p>
+        <p className="mt-1 text-sm font-black sm:text-lg">
+          {faceoff ? "Enfrentamiento" : "Normal"}
+        </p>
+      </div>
+    </div>
+  )
+}
 
 export default function App() {
   const location = useLocation()
@@ -1533,6 +1582,7 @@ export default function App() {
   if (screen === "faceoff")
     return (
       <Shell>
+        <GameStatusCard state={state} />
         <div className="mb-4 flex justify-end">{pauseControl}</div>
         <div className="mx-auto max-w-lg rounded-2xl border border-stone-200 bg-white p-6 text-center">
           <p className="text-xs font-bold uppercase tracking-widest text-emerald-800">
@@ -1563,6 +1613,7 @@ export default function App() {
   if (screen === "decision")
     return (
       <Shell>
+        <GameStatusCard state={state} />
         <div className="mb-4 flex justify-end">{pauseControl}</div>
         <div className="mx-auto max-w-lg rounded-2xl border border-stone-200 bg-white p-6 text-center">
           <p className="text-xs font-bold uppercase tracking-widest text-emerald-800">Decisión</p>
@@ -1593,6 +1644,7 @@ export default function App() {
   if (screen === "host")
     return (
       <Shell wide>
+        <GameStatusCard state={state} />
         <div className="mb-5 flex items-center justify-between rounded-2xl border border-stone-200 bg-white p-4">
           <div>
             <p className="text-xs text-stone-500">Ronda {state.roundIndex + 1}</p>
@@ -1679,6 +1731,7 @@ export default function App() {
   if (screen === "steal")
     return (
       <Shell>
+        <GameStatusCard state={state} />
         <div className="mb-4 flex justify-end">{pauseControl}</div>
         <div className="mx-auto max-w-lg rounded-2xl border border-stone-200 bg-white p-6 text-center">
           <p className="text-xs uppercase tracking-widest text-red-700">Robo</p>
@@ -1728,6 +1781,7 @@ export default function App() {
   if (screen === "roundResult")
     return (
       <Shell>
+        <GameStatusCard state={state} />
         <div className="flex justify-end">{pauseControl}</div>
         <div className="mx-auto max-w-lg pt-10 text-center">
           <p className="text-xs uppercase tracking-widest text-emerald-800">Ronda terminada</p>
@@ -1766,6 +1820,7 @@ export default function App() {
     return (
       <div className="min-h-screen bg-slate-950 px-5 py-10 text-white">
         <div className="mx-auto max-w-4xl">
+          <GameStatusCard state={state} dark />
           <div className="flex justify-end">{pauseControl}</div>
           <p className="text-center text-2xl font-bold">La gente dice.</p>
           <p className="mx-auto mt-8 max-w-3xl text-center text-3xl font-bold">
