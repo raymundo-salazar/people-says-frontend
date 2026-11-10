@@ -1599,17 +1599,39 @@ export default function App() {
         </div>
         <div className="grid gap-5 lg:grid-cols-[1.35fr_.8fr]">
           <section className="rounded-2xl border border-stone-200 bg-white p-5">
-            {answers.map((answer, index) => (
-              <button
-                key={`${answer.text}-${index}`}
-                onClick={() => reveal(index)}
-                className={`mb-2 flex w-full items-center gap-3 rounded-xl border p-3 text-left ${revealed.includes(index) ? "border-emerald-300 bg-emerald-50" : "border-stone-200"}`}
-              >
-                <span className="w-8 text-sm">{index + 1}</span>
-                <span className="flex-1 font-semibold">{answer.text}</span>
-                <span className="font-bold">{answer.points}</span>
-              </button>
-            ))}
+            <div className="grid gap-x-4 md:grid-cols-2">
+              {answers.map((answer, index) => {
+                const visible = revealed.includes(index)
+                return (
+                  <button
+                    key={`${answer.text}-${index}`}
+                    onClick={() => reveal(index)}
+                    className={cx(
+                      "mb-2 flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition",
+                      visible
+                        ? "border-emerald-300 bg-emerald-50"
+                        : "border-stone-200 bg-white hover:border-emerald-500"
+                    )}
+                  >
+                    <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm text-stone-600">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="flex-1 text-sm font-semibold">
+                      {visible ? answer.text : "-"}
+                    </span>
+                    <span className="font-bold tabular-nums">{visible ? answer.points : "-"}</span>
+                    <span
+                      className={cx(
+                        "w-16 text-right text-[10px] font-semibold",
+                        visible ? "text-emerald-800" : "text-stone-400"
+                      )}
+                    >
+                      {visible ? "VISIBLE" : "OCULTA"}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
             <div className="mt-5 flex items-center justify-between rounded-xl border border-red-200 bg-red-50 p-4">
               <Strikes count={Math.max(state.strikes.blue, state.strikes.red)} />
               <Button onClick={() => emitAction({ type: "strike", team: teamId })}>
@@ -1738,20 +1760,31 @@ export default function App() {
           <p className="mx-auto mt-8 max-w-3xl text-center text-3xl font-bold">
             {state.questionPrompt}
           </p>
-          <div className="mx-auto mt-8 max-w-2xl space-y-2">
+          <div className="mx-auto mt-8 grid max-w-4xl gap-x-4 md:grid-cols-2">
             {answers.length === 0 &&
               [0, 1, 2, 3, 4].map((index) => (
                 <Skeleton key={`answer-skeleton-${index}`} className="h-16 bg-white/10" />
               ))}
-            {answers.map((answer, index) => (
-              <div key={`${answer.text}-${index}`} className="flex rounded-xl bg-white/10 p-4">
-                <span className="w-10">{index + 1}</span>
-                <span className="flex-1 font-bold">
-                  {revealed.includes(index) ? answer.text : "••••••••"}
-                </span>
-                <span>{revealed.includes(index) ? answer.points : "••"}</span>
-              </div>
-            ))}
+            {answers.map((answer, index) => {
+              const visible = revealed.includes(index)
+              return (
+                <div
+                  key={`${answer.text}-${index}`}
+                  className={cx(
+                    "mb-2 flex items-center gap-4 rounded-xl border px-4 py-3",
+                    visible
+                      ? "border-emerald-300 bg-emerald-50 text-slate-950"
+                      : "border-white/10 bg-white/10"
+                  )}
+                >
+                  <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm text-stone-600">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="flex-1 font-bold">{visible ? answer.text : "-"}</span>
+                  <span className="font-bold tabular-nums">{visible ? answer.points : "-"}</span>
+                </div>
+              )
+            })}
           </div>
           <div className="mt-8">
             <Score blue={blue} red={red} />
