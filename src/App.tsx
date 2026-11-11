@@ -1720,10 +1720,10 @@ export default function App() {
                     <p className="text-xs font-black text-emerald-900">
                       Ronda {state.roundIndex + 1}
                     </p>
-                    <span className="text-xs text-stone-300" aria-hidden="true">
+                    <span className="text-xs text-emerald-300" aria-hidden="true">
                       ·
                     </span>
-                    <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
+                    <p className="text-xs font-black text-emerald-900">x{roundMultiplier}</p>
                   </div>
                   <span className="mt-1 inline-flex rounded-lg bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
                     {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
