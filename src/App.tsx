@@ -15,6 +15,7 @@ import {
   SquareDashed,
   SquareX,
   Settings2,
+  Timer,
   X,
 } from "lucide-react"
 import { gameSocket } from "./socket"
@@ -1878,7 +1879,6 @@ export default function App() {
                 </span>
               </div>
               <Button
-                secondary
                 className="mt-3 w-full"
                 disabled={timerRunning}
                 onClick={() => {
@@ -1886,6 +1886,7 @@ export default function App() {
                   setTimerRunning(true)
                 }}
               >
+                <Timer size={16} aria-hidden="true" />
                 Ya hice la pregunta
               </Button>
               <p className="mt-2 text-xs text-stone-500">Comienza el tiempo para responder.</p>
