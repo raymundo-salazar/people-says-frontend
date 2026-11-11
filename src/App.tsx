@@ -2255,14 +2255,12 @@ export default function App() {
                 {[0, 1, 2].map((index) => {
                   const active = index < Math.max(state.strikes.blue, state.strikes.red)
                   return active ? (
-                    <SquareX key={index} size={32} strokeWidth={1.8} className="text-red-400" />
+                    <SquareX key={index} size={64} strokeWidth={1.8} className="text-red-400" />
                   ) : (
-                    <SquareDashed
-                      key={index}
-                      size={32}
-                      strokeWidth={1.8}
-                      className="text-white/30"
-                    />
+                    <span key={index} className="relative block size-16 text-white/25">
+                      <SquareDashed size={64} strokeWidth={1.8} />
+                      <X className="absolute inset-0 m-auto" size={28} strokeWidth={2} />
+                    </span>
                   )
                 })}
               </div>
