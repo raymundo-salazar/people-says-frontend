@@ -2112,7 +2112,7 @@ export default function App() {
                   </span>
                 </button>
               </div>
-              {faceoffFirstTeam && ["faceoff", "tiebreaker"].includes(state.phase) && (
+              {faceoffFirstTeam && ["faceoff", "tiebreaker", "decision"].includes(state.phase) && (
                 <Button
                   secondary
                   className="mt-3 w-full"
