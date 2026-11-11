@@ -1714,12 +1714,12 @@ export default function App() {
           detail="Controla la ronda, revela respuestas y administra el marcador."
           aside={
             <div className="min-w-56 rounded-2xl border border-stone-200 bg-white p-4 text-left">
+              <span className="mb-3 inline-flex rounded-full bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
+                {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
+              </span>
               <div className="grid grid-cols-[1fr_auto_1fr] items-stretch gap-4">
                 <div className="flex flex-col items-start justify-center">
-                  <span className="inline-flex rounded-full bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
-                    {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
-                  </span>
-                  <div className="mt-2 flex items-center gap-2">
+                  <div className="flex items-center gap-2">
                     <p className="text-xs font-black text-emerald-900">
                       Ronda {state.roundIndex + 1}
                     </p>
