@@ -1648,18 +1648,22 @@ export default function App() {
                 </div>
               </div>
               <div className="flex min-w-28 flex-col overflow-hidden rounded-r-2xl border border-l-0 border-stone-200 p-0">
-                <div className="flex flex-1 flex-col justify-center bg-blue-50 px-3 py-2 text-left text-blue-950 first:rounded-tr-2xl">
+                <div className="flex flex-1 flex-col justify-center bg-blue-50 py-2 text-left text-blue-950 first:rounded-tr-2xl">
                   <div className="flex items-center justify-between gap-2">
-                    <p className="truncate text-xs font-bold">{teams[0].name}</p>
-                    <strong className="rounded-lg bg-blue-600 px-2 py-1 text-lg font-black tabular-nums text-white">
+                    <p className="min-w-0 flex-1 truncate pl-3 text-xs font-bold">
+                      {teams[0].name}
+                    </p>
+                    <strong className="self-stretch rounded-l-lg bg-blue-600 px-3 py-1 text-lg font-black tabular-nums text-white">
                       {blue}
                     </strong>
                   </div>
                 </div>
-                <div className="flex flex-1 flex-col justify-center bg-red-50 px-3 py-2 text-left text-red-950 last:rounded-br-2xl">
+                <div className="flex flex-1 flex-col justify-center bg-red-50 py-2 text-left text-red-950 last:rounded-br-2xl">
                   <div className="flex items-center justify-between gap-2">
-                    <p className="truncate text-xs font-bold">{teams[1].name}</p>
-                    <strong className="rounded-lg bg-red-600 px-2 py-1 text-lg font-black tabular-nums text-white">
+                    <p className="min-w-0 flex-1 truncate pl-3 text-xs font-bold">
+                      {teams[1].name}
+                    </p>
+                    <strong className="self-stretch rounded-l-lg bg-red-600 px-3 py-1 text-lg font-black tabular-nums text-white">
                       {red}
                     </strong>
                   </div>
