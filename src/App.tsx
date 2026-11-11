@@ -1723,12 +1723,12 @@ export default function App() {
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
                 Enfrentamiento
               </h2>
-              <div className="relative grid min-h-16 grid-cols-[1fr_auto_1fr] items-center gap-1">
+              <div className="grid min-h-16 grid-cols-[1fr_auto_1fr] items-center gap-1">
                 <div
                   className={cx(
                     "min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm transition duration-300",
                     faceoffFirstTeam === "blue"
-                      ? "absolute left-1/2 top-1/2 z-10 w-1/2 -translate-x-1/2 -translate-y-1/2 scale-150"
+                      ? "z-10 scale-150 translate-x-1/2"
                       : faceoffFirstTeam === "red"
                         ? "scale-75 opacity-0"
                         : ""
@@ -1751,7 +1751,7 @@ export default function App() {
                   className={cx(
                     "min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm transition duration-300",
                     faceoffFirstTeam === "red"
-                      ? "absolute left-1/2 top-1/2 z-10 w-1/2 -translate-x-1/2 -translate-y-1/2 scale-150"
+                      ? "z-10 scale-150 -translate-x-1/2"
                       : faceoffFirstTeam === "blue"
                         ? "scale-75 opacity-0"
                         : ""
