@@ -1718,7 +1718,7 @@ export default function App() {
                 <div className="flex flex-col items-center justify-center">
                   <div className="flex items-center justify-center gap-2">
                     <p className="text-xs font-black uppercase text-emerald-900">
-                      Ronda {state.roundIndex + 1}
+                      RONDA {String(state.roundIndex + 1).padStart(2, "0")}
                     </p>
                     <span className="text-sm font-bold text-stone-300" aria-hidden="true">
                       ·
