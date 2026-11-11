@@ -936,6 +936,12 @@ export default function App() {
   const teamId = state.control ?? "blue"
   const teamName = teamId === "blue" ? teams[0].name : teams[1].name
   const connectedDeviceCount = devices.length + 1
+  const roundMultiplier = state.roundConfigs[state.roundIndex]?.multiplier ?? 1
+  const baseRoundPoints = revealed.reduce(
+    (total, index) => total + (answers[index]?.points ?? 0),
+    0
+  )
+  const multipliedRoundPoints = baseRoundPoints * roundMultiplier
   useEffect(() => {
     if (screen === "joinLobby" && state.phase !== "lobby") {
       if (currentDeviceRole === "host") setScreen("host")
@@ -1706,6 +1712,19 @@ export default function App() {
           k="Juego en curso"
           title="Panel de presentador"
           detail="Controla la ronda, revela respuestas y administra el marcador."
+          aside={
+            <div className="min-w-44 rounded-2xl border border-stone-200 bg-white p-4 text-right">
+              <p className="text-xs font-bold text-stone-500">Ronda {state.roundIndex + 1}</p>
+              <p className="mt-1 text-lg font-black text-emerald-900">x{roundMultiplier}</p>
+              <p className="mt-1 text-2xl font-black tabular-nums text-stone-900">
+                <span className="mr-2 text-sm text-stone-400 line-through">{baseRoundPoints}</span>
+                {multipliedRoundPoints}
+              </p>
+              <span className="mt-2 inline-flex rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-800">
+                {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
+              </span>
+            </div>
+          }
         />
         <div className="mb-4 flex justify-end">
           {pauseControl}
