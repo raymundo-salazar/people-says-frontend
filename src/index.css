@@ -182,5 +182,5 @@ button:not(:disabled) {
 }
 
 .faceoff-lock-pointer {
-  animation: faceoff-lock-pointer 2.8s linear infinite;
+  animation: faceoff-lock-pointer 2s linear infinite;
 }
