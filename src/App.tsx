@@ -2223,7 +2223,7 @@ export default function App() {
                     return visible ? (
                       <div
                         key={`${answer.text}-${index}`}
-                        className="flex min-h-[68px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[80px]"
+                        className="public-answer-flip flex min-h-[68px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[80px]"
                       >
                         <div className="grid w-11 shrink-0 place-items-center border-r border-white/15 bg-black/20 font-mono text-base font-black tabular-nums text-amber-200 sm:w-14 sm:text-xl">
                           {String(index + 1).padStart(2, "0")}
