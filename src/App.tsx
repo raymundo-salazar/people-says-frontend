@@ -2188,14 +2188,6 @@ export default function App() {
         <div className="display-floating-accent display-floating-accent-left pointer-events-none absolute -bottom-36 -left-28 size-[360px] rounded-full border-[50px] border-white/5" />
         <div className="relative z-10 mx-auto max-w-7xl">
           <div className="flex justify-end">{pauseControl}</div>
-          <div className="mb-4 text-center">
-            <strong className="block text-7xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-8xl lg:text-9xl">
-              {multipliedRoundPoints}
-            </strong>
-            <p className="text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80 sm:text-xs">
-              Ronda {String(state.roundIndex + 1).padStart(2, "0")} · x{roundMultiplier}
-            </p>
-          </div>
           <div className="mt-8 grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]">
             <div className="mb-4 rounded-2xl bg-gradient-to-br from-blue-900/60 via-blue-700/40 to-blue-400/20 px-4 py-4 text-center shadow-[0_10px_34px_rgba(0,0,0,0.38)] backdrop-blur-sm">
               <p className="text-sm font-black uppercase tracking-wide text-blue-100">
@@ -2209,6 +2201,14 @@ export default function App() {
               </p>
             </div>
             <div>
+              <div className="mb-4 text-center">
+                <strong className="block text-7xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-8xl lg:text-9xl">
+                  {multipliedRoundPoints}
+                </strong>
+                <p className="text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80 sm:text-xs">
+                  Ronda {String(state.roundIndex + 1).padStart(2, "0")} · x{roundMultiplier}
+                </p>
+              </div>
               <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
                 <p className="text-xl font-black text-white sm:text-2xl">{state.questionPrompt}</p>
               </div>
