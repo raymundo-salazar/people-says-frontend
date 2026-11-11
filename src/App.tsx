@@ -226,7 +226,7 @@ function GameStatusCard({ state, dark = false }: { state: State; dark?: boolean 
   return (
     <div
       className={cx(
-        "mb-5 grid grid-cols-3 rounded-2xl border px-4 py-3 text-center sm:px-6",
+        "mb-5 grid grid-cols-4 rounded-2xl border px-4 py-3 text-center sm:px-6",
         dark ? "border-white/10 bg-white/10 text-white" : "border-stone-200 bg-white"
       )}
     >
@@ -264,6 +264,17 @@ function GameStatusCard({ state, dark = false }: { state: State; dark?: boolean 
         <p className="mt-1 text-sm font-black sm:text-lg">
           {faceoff ? "Enfrentamiento" : "Normal"}
         </p>
+      </div>
+      <div className={cx("border-l", dark ? "border-white/10" : "border-stone-200")}>
+        <p
+          className={cx(
+            "text-[10px] font-semibold uppercase tracking-wider",
+            dark ? "text-white/60" : "text-stone-500"
+          )}
+        >
+          Puntos de la ronda
+        </p>
+        <p className="mt-1 text-lg font-black">{state.pot}</p>
       </div>
     </div>
   )
@@ -1690,24 +1701,50 @@ export default function App() {
   if (screen === "host")
     return (
       <Shell wide>
-        <GameStatusCard state={state} />
         <div className="mb-4 flex justify-end">
+          {pauseControl}
           <DeviceConnectionIndicator
             connected={connectedDeviceCount}
             expected={expectedDeviceCount}
           />
         </div>
+        <GameStatusCard state={state} />
+        {["faceoff", "tiebreaker"].includes(state.phase) && (
+          <section className="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4">
+            <div className="flex flex-wrap items-center justify-center gap-3 text-center sm:gap-6">
+              <span className="text-base font-bold text-stone-900 sm:text-lg">
+                {state.faceoff?.bluePlayer ?? "Equipo Azul"}
+              </span>
+              <span className="text-xs font-black tracking-widest text-emerald-800">VS</span>
+              <span className="text-base font-bold text-stone-900 sm:text-lg">
+                {state.faceoff?.redPlayer ?? "Equipo Rojo"}
+              </span>
+            </div>
+            <div className="mx-auto mt-3 grid max-w-sm grid-cols-2 gap-2">
+              <Button
+                onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
+              >
+                {state.teams[0].name}
+              </Button>
+              <Button
+                secondary
+                onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
+              >
+                {state.teams[1].name}
+              </Button>
+            </div>
+          </section>
+        )}
         <div className="mb-5 flex items-center justify-between rounded-2xl border border-stone-200 bg-white p-4">
           <div>
-            <p className="text-xs text-stone-500">Ronda {state.roundIndex + 1}</p>
-            <p className="font-bold">{state.questionPrompt}</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+              Pregunta
+            </p>
+            <p className="mt-1 font-bold">{state.questionPrompt}</p>
           </div>
-          <div className="flex items-center gap-2">
-            {pauseControl}
-            <Button secondary onClick={() => setScreen("display")}>
-              Ver tablero <Monitor size={16} aria-hidden="true" />
-            </Button>
-          </div>
+          <Button secondary onClick={() => setScreen("display")}>
+            Ver tablero <Monitor size={16} aria-hidden="true" />
+          </Button>
         </div>
         {error && (
           <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -1716,77 +1753,44 @@ export default function App() {
         )}
         <div className="grid gap-5 lg:grid-cols-[1.35fr_.8fr]">
           <section className="rounded-2xl border border-stone-200 bg-white p-5">
-            {["faceoff", "tiebreaker"].includes(state.phase) ? (
-              <div className="flex min-h-72 flex-col items-center justify-center text-center">
-                <p className="text-xs font-bold uppercase tracking-widest text-emerald-800">
-                  Enfrentamiento
-                </p>
-                <h2 className="mt-4 text-3xl font-semibold">Cara a cara</h2>
-                <div className="mt-8 flex items-center gap-4 text-lg font-bold sm:gap-8 sm:text-2xl">
-                  <span>{state.faceoff?.bluePlayer ?? "Equipo Azul"}</span>
-                  <span className="text-sm font-black text-stone-400">VS</span>
-                  <span>{state.faceoff?.redPlayer ?? "Equipo Rojo"}</span>
-                </div>
-                <p className="mt-5 text-sm text-stone-500">
-                  Registra quién respondió primero para continuar la ronda.
-                </p>
-                <div className="mt-6 grid w-full max-w-md grid-cols-2 gap-3">
-                  <Button
-                    onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
+            <div className="grid gap-x-4 md:grid-cols-2">
+              {answers.map((answer, index) => {
+                const visible = revealed.includes(index)
+                return (
+                  <button
+                    key={`${answer.text}-${index}`}
+                    disabled={state.phase !== "turn"}
+                    onClick={() => reveal(index)}
+                    className={cx(
+                      "mb-2 flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-70",
+                      visible
+                        ? "border-emerald-300 bg-emerald-50"
+                        : "border-stone-200 bg-white hover:border-emerald-500"
+                    )}
                   >
-                    {state.teams[0].name}
-                  </Button>
-                  <Button
-                    secondary
-                    onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
-                  >
-                    {state.teams[1].name}
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className="grid gap-x-4 md:grid-cols-2">
-                  {answers.map((answer, index) => {
-                    const visible = revealed.includes(index)
-                    return (
-                      <button
-                        key={`${answer.text}-${index}`}
-                        onClick={() => reveal(index)}
-                        className={cx(
-                          "mb-2 flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition",
-                          visible
-                            ? "border-emerald-300 bg-emerald-50"
-                            : "border-stone-200 bg-white hover:border-emerald-500"
-                        )}
-                      >
-                        <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm text-stone-600">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <span className="flex-1 text-sm font-semibold">{answer.text}</span>
-                        <span className="font-bold tabular-nums">
-                          {visible ? answer.points : "-"}
-                        </span>
-                        <span
-                          className={cx(
-                            "w-16 text-right text-[10px] font-semibold",
-                            visible ? "text-emerald-800" : "text-stone-400"
-                          )}
-                        >
-                          {visible ? "VISIBLE" : "OCULTA"}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-                <div className="mt-5 flex items-center justify-between rounded-xl border border-red-200 bg-red-50 p-4">
-                  <Strikes count={Math.max(state.strikes.blue, state.strikes.red)} />
-                  <Button onClick={() => emitAction({ type: "strike", team: teamId })}>
-                    <X size={16} aria-hidden="true" /> Strike
-                  </Button>
-                </div>
-              </>
-            )}
+                    <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm text-stone-600">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="flex-1 text-sm font-semibold">{answer.text}</span>
+                    <span className="font-bold tabular-nums">{visible ? answer.points : "-"}</span>
+                    <span
+                      className={cx(
+                        "w-16 text-right text-[10px] font-semibold",
+                        visible ? "text-emerald-800" : "text-stone-400"
+                      )}
+                    >
+                      {visible ? "VISIBLE" : "OCULTA"}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+            <div className="mt-5 flex items-center justify-between rounded-xl border border-red-200 bg-red-50 p-4">
+              <Strikes count={Math.max(state.strikes.blue, state.strikes.red)} />
+              <Button onClick={() => emitAction({ type: "strike", team: teamId })}>
+                <X size={16} aria-hidden="true" /> Strike
+              </Button>
+            </div>
           </section>
           <aside className="space-y-4">
             <Score blue={blue} red={red} />
