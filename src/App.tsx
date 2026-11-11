@@ -1739,6 +1739,9 @@ export default function App() {
                     )}
                     {multipliedRoundPoints}
                   </p>
+                  <span className="text-[10px] font-bold uppercase tracking-wide text-stone-400">
+                    puntos
+                  </span>
                 </div>
               </div>
             </div>
