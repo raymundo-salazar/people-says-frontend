@@ -1717,7 +1717,7 @@ export default function App() {
               <div className="grid grid-cols-[auto_auto_auto] items-stretch justify-center gap-4 text-center">
                 <div className="flex flex-col items-center justify-center">
                   <div className="flex items-center justify-center gap-2">
-                    <p className="text-xs font-black text-emerald-900">
+                    <p className="text-xs font-black uppercase text-emerald-900">
                       Ronda {state.roundIndex + 1}
                     </p>
                     <span className="text-sm font-bold text-stone-300" aria-hidden="true">
