@@ -1715,53 +1715,62 @@ export default function App() {
             {error}
           </p>
         )}
-        <div className="grid gap-5 lg:grid-cols-[1.35fr_.8fr]">
-          <section className="rounded-2xl border border-stone-200 bg-white p-5">
-            <div className="mb-5 rounded-xl border border-stone-200 bg-stone-50 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
-                Pregunta
-              </p>
-              <p className="mt-1 font-bold text-stone-900">{state.questionPrompt}</p>
-            </div>
-            <div className="grid gap-x-4 md:grid-cols-2">
-              {answers.map((answer, index) => {
-                const visible = revealed.includes(index)
-                return (
-                  <button
-                    key={`${answer.text}-${index}`}
-                    disabled={state.phase !== "turn"}
-                    onClick={() => reveal(index)}
-                    className={cx(
-                      "mb-2 flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-70",
-                      visible
-                        ? "border-emerald-300 bg-emerald-50"
-                        : "border-stone-200 bg-white hover:border-emerald-500"
-                    )}
-                  >
-                    <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm text-stone-600">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="flex-1 text-sm font-semibold">{answer.text}</span>
-                    <span className="font-bold tabular-nums">{visible ? answer.points : "-"}</span>
-                    <span
+        <div className="grid items-start gap-5 lg:grid-cols-[2fr_1fr]">
+          <div className="space-y-5">
+            <section className="rounded-2xl border border-stone-200 bg-white p-5">
+              <div className="rounded-xl bg-emerald-950 px-4 py-4 text-white">
+                <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-emerald-300">
+                  Pregunta
+                </p>
+                <h2 className="text-lg font-bold leading-snug sm:text-xl">
+                  {state.questionPrompt}
+                </h2>
+              </div>
+            </section>
+            <section className="rounded-2xl border border-stone-200 bg-white p-5">
+              <h2 className="mb-4 text-lg font-semibold">Respuestas</h2>
+              <div className="grid gap-x-4 md:grid-cols-2">
+                {answers.map((answer, index) => {
+                  const visible = revealed.includes(index)
+                  return (
+                    <button
+                      key={`${answer.text}-${index}`}
+                      disabled={state.phase !== "turn"}
+                      onClick={() => reveal(index)}
                       className={cx(
-                        "w-16 text-right text-[10px] font-semibold",
-                        visible ? "text-emerald-800" : "text-stone-400"
+                        "mb-2 flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-70",
+                        visible
+                          ? "border-emerald-300 bg-emerald-50"
+                          : "border-stone-200 bg-white hover:border-emerald-500"
                       )}
                     >
-                      {visible ? "VISIBLE" : "OCULTA"}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
-            <div className="mt-5 flex items-center justify-between rounded-xl border border-red-200 bg-red-50 p-4">
-              <Strikes count={Math.max(state.strikes.blue, state.strikes.red)} />
-              <Button onClick={() => emitAction({ type: "strike", team: teamId })}>
-                <X size={16} aria-hidden="true" /> Strike
-              </Button>
-            </div>
-            <div className="mt-5 rounded-2xl border border-stone-200 bg-white p-5">
+                      <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm text-stone-600">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="flex-1 text-sm font-semibold">{answer.text}</span>
+                      <span className="font-bold tabular-nums">
+                        {visible ? answer.points : "-"}
+                      </span>
+                      <span
+                        className={cx(
+                          "w-16 text-right text-[10px] font-semibold",
+                          visible ? "text-emerald-800" : "text-stone-400"
+                        )}
+                      >
+                        {visible ? "VISIBLE" : "OCULTA"}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+              <div className="mt-5 flex items-center justify-between rounded-xl border border-red-200 bg-red-50 p-4">
+                <Strikes count={Math.max(state.strikes.blue, state.strikes.red)} />
+                <Button onClick={() => emitAction({ type: "strike", team: teamId })}>
+                  <X size={16} aria-hidden="true" /> Strike
+                </Button>
+              </div>
+            </section>
+            <section className="rounded-2xl border border-stone-200 bg-white p-5">
               <h2 className="text-lg font-semibold">Marcador general</h2>
               <div className="mt-4 grid grid-cols-2 gap-3">
                 <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
@@ -1775,21 +1784,27 @@ export default function App() {
                   <p className="mt-3 text-3xl font-black tabular-nums text-red-950">{red}</p>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
           <aside className="space-y-4 rounded-2xl border border-stone-200 bg-white p-5">
             <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
                 Enfrentamiento
               </p>
-              <div className="mt-3 flex items-center justify-between gap-2 text-center">
-                <span className="min-w-0 flex-1 truncate text-sm font-bold text-stone-900">
-                  {state.faceoff?.bluePlayer ?? "Equipo Azul"}
-                </span>
-                <span className="text-xs font-black tracking-widest text-emerald-800">VS</span>
-                <span className="min-w-0 flex-1 truncate text-sm font-bold text-stone-900">
-                  {state.faceoff?.redPlayer ?? "Equipo Rojo"}
-                </span>
+              <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-1">
+                <div className="min-w-0 rounded-lg bg-blue-50 px-2 py-2 text-center">
+                  <p className="truncate text-[10px] font-bold text-blue-700">Azul</p>
+                  <p className="truncate text-sm font-black text-blue-950">
+                    {state.faceoff?.bluePlayer ?? "—"}
+                  </p>
+                </div>
+                <span className="text-xs font-black text-stone-400">VS</span>
+                <div className="min-w-0 rounded-lg bg-red-50 px-2 py-2 text-center">
+                  <p className="truncate text-[10px] font-bold text-red-700">Rojo</p>
+                  <p className="truncate text-sm font-black text-red-950">
+                    {state.faceoff?.redPlayer ?? "—"}
+                  </p>
+                </div>
               </div>
               <div className="hidden">
                 <button
