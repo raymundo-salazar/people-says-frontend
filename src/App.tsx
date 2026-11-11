@@ -8,6 +8,7 @@ import {
   ChevronDown,
   ExternalLink,
   Hand,
+  Info,
   LoaderCircle,
   LogIn,
   LogOut,
@@ -1871,9 +1872,23 @@ export default function App() {
             </section>
             <section className="rounded-2xl border border-stone-200 bg-white p-4">
               <div className="flex items-center justify-between gap-3">
-                <h2 className="text-[11px] font-bold uppercase tracking-wide text-stone-900">
-                  Temporizador
-                </h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-[11px] font-bold uppercase tracking-wide text-stone-900">
+                    Temporizador
+                  </h2>
+                  <span className="group relative inline-flex">
+                    <Info
+                      size={15}
+                      strokeWidth={2}
+                      className="cursor-help text-stone-400 transition-colors group-hover:text-stone-700"
+                      aria-label="Información del temporizador"
+                    />
+                    <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 hidden w-56 -translate-x-1/2 rounded-lg bg-stone-900 px-3 py-2 text-center text-xs font-medium normal-case tracking-normal text-white shadow-lg group-hover:block">
+                      Activa el temporizador después de hacer la pregunta para comenzar a contar el
+                      tiempo para responder.
+                    </span>
+                  </span>
+                </div>
                 <span className="text-2xl font-black tabular-nums text-stone-900">
                   {timerSeconds}s
                 </span>
