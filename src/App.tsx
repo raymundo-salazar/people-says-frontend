@@ -1802,9 +1802,12 @@ export default function App() {
                   })}
                 </div>
                 {["faceoff", "tiebreaker"].includes(state.phase) && !faceoffFirstTeam && (
-                  <div className="absolute inset-0 z-10 flex items-center justify-center gap-2 rounded-xl bg-stone-100/90 text-stone-500 backdrop-blur-[1px]">
+                  <div className="absolute inset-0 z-10 flex items-center justify-center gap-2 rounded-xl bg-black/65 px-4 text-center text-white backdrop-blur-[1px]">
                     <Lock size={18} aria-hidden="true" />
-                    <span className="text-xs font-bold">Esperando al equipo o pulsador</span>
+                    <span className="text-xs font-bold">
+                      Selecciona primero al equipo participante de forma manual o mediante los
+                      pulsadores.
+                    </span>
                   </div>
                 )}
               </div>
