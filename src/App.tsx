@@ -2062,11 +2062,15 @@ export default function App() {
                 <button
                   type="button"
                   className={cx(
-                    "flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-8 border-blue-800 bg-blue-600 px-5 py-4 text-left text-white shadow-lg transition-all duration-150 hover:-translate-y-1 hover:scale-[1.02] hover:brightness-105 hover:shadow-xl active:translate-y-1 active:scale-[0.98] active:border-b-0 active:shadow-md disabled:cursor-not-allowed disabled:opacity-50",
-                    faceoffFirstTeam === "blue" && "translate-y-1 scale-[0.98] border-b-0 shadow-md"
+                    "flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-8 border-blue-800 bg-blue-600 px-5 py-4 text-left text-white transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50",
+                    !faceoffFirstTeam &&
+                      "shadow-lg hover:-translate-y-1 hover:scale-[1.02] hover:brightness-105 hover:shadow-xl active:translate-y-1 active:scale-[0.98] active:border-b-0 active:shadow-md",
+                    faceoffFirstTeam === "blue" &&
+                      "translate-y-1 scale-[0.98] border-b-0 shadow-[0_0_30px_rgba(37,99,235,0.75)]"
                   )}
                   disabled={
-                    !["faceoff", "tiebreaker"].includes(state.phase) || faceoffFirstTeam === "red"
+                    !["faceoff", "tiebreaker", "decision"].includes(state.phase) ||
+                    faceoffFirstTeam === "red"
                   }
                   onClick={() => {
                     if (!faceoffFirstTeam)
@@ -2084,11 +2088,15 @@ export default function App() {
                 <button
                   type="button"
                   className={cx(
-                    "flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-8 border-red-800 bg-red-600 px-5 py-4 text-left text-white shadow-lg transition-all duration-150 hover:-translate-y-1 hover:scale-[1.02] hover:brightness-105 hover:shadow-xl active:translate-y-1 active:scale-[0.98] active:border-b-0 active:shadow-md disabled:cursor-not-allowed disabled:opacity-50",
-                    faceoffFirstTeam === "red" && "translate-y-1 scale-[0.98] border-b-0 shadow-md"
+                    "flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-8 border-red-800 bg-red-600 px-5 py-4 text-left text-white transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50",
+                    !faceoffFirstTeam &&
+                      "shadow-lg hover:-translate-y-1 hover:scale-[1.02] hover:brightness-105 hover:shadow-xl active:translate-y-1 active:scale-[0.98] active:border-b-0 active:shadow-md",
+                    faceoffFirstTeam === "red" &&
+                      "translate-y-1 scale-[0.98] border-b-0 shadow-[0_0_30px_rgba(220,38,38,0.75)]"
                   )}
                   disabled={
-                    !["faceoff", "tiebreaker"].includes(state.phase) || faceoffFirstTeam === "blue"
+                    !["faceoff", "tiebreaker", "decision"].includes(state.phase) ||
+                    faceoffFirstTeam === "blue"
                   }
                   onClick={() => {
                     if (!faceoffFirstTeam)
