@@ -298,6 +298,7 @@ export default function App() {
   const [showConnectedDevices, setShowConnectedDevices] = useState(false)
   const [timerSeconds, setTimerSeconds] = useState(30)
   const [timerRunning, setTimerRunning] = useState(false)
+  const [strikeVisible, setStrikeVisible] = useState(false)
   useEffect(() => {
     if (!timerRunning) return
     const timer = window.setInterval(() => {
@@ -307,8 +308,9 @@ export default function App() {
           gameSocket.emit("game:action", {
             code: roomCode,
             hostToken,
-            action: { type: "strike", team: state.control ?? "blue" },
+            action: { type: "strike", team: state.control ?? "blue", source: "timer" },
           })
+          setStrikeVisible(true)
           return 0
         }
         return seconds - 1
@@ -316,6 +318,11 @@ export default function App() {
     }, 1000)
     return () => window.clearInterval(timer)
   }, [hostToken, roomCode, state.control, timerRunning])
+  useEffect(() => {
+    if (!strikeVisible) return
+    const timeout = window.setTimeout(() => setStrikeVisible(false), 1800)
+    return () => window.clearTimeout(timeout)
+  }, [strikeVisible])
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
@@ -1629,6 +1636,16 @@ export default function App() {
   if (screen === "host")
     return (
       <Shell wide>
+        {strikeVisible && (
+          <div className="pointer-events-none fixed inset-0 z-50 grid place-items-center bg-red-950/10">
+            <SquareX
+              size={132}
+              strokeWidth={1.5}
+              className="animate-bounce text-red-600 drop-shadow-2xl"
+              aria-label="Strike registrado"
+            />
+          </div>
+        )}
         <Heading
           k="Juego en curso"
           title="Panel de presentador"
@@ -1977,7 +1994,10 @@ export default function App() {
                 </div>
                 <Button
                   className="bg-red-600 hover:bg-red-700"
-                  onClick={() => emitAction({ type: "strike", team: teamId })}
+                  onClick={() => {
+                    setStrikeVisible(true)
+                    emitAction({ type: "strike", team: teamId, source: "manual" })
+                  }}
                 >
                   <SquareX size={16} aria-hidden="true" /> Error
                 </Button>
@@ -2062,7 +2082,10 @@ export default function App() {
                 </div>
                 <Button
                   className="bg-red-600 hover:bg-red-700"
-                  onClick={() => emitAction({ type: "strike", team: teamId })}
+                  onClick={() => {
+                    setStrikeVisible(true)
+                    emitAction({ type: "strike", team: teamId, source: "manual" })
+                  }}
                 >
                   <SquareX size={16} aria-hidden="true" /> Error
                 </Button>
