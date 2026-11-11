@@ -2428,12 +2428,12 @@ export default function App() {
                   <p className="mb-2 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
                     Enfrentamiento
                   </p>
-                  <div className="relative grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+                  <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
                     <div
                       className={cx(
                         "rounded-lg bg-white/85 px-2 py-1.5 text-center shadow-sm transition duration-300",
                         faceoffFirstTeam === "blue"
-                          ? "absolute left-1/2 z-10 -translate-x-1/2 scale-150 bg-gradient-to-br from-blue-700 to-blue-500 text-white"
+                          ? "z-10 scale-150 translate-x-1/2 bg-gradient-to-br from-blue-700 to-blue-500 text-white"
                           : faceoffFirstTeam === "red"
                             ? "scale-75 opacity-0"
                             : ""
@@ -2468,7 +2468,7 @@ export default function App() {
                       className={cx(
                         "rounded-lg bg-white/85 px-2 py-1.5 text-center shadow-sm transition duration-300",
                         faceoffFirstTeam === "red"
-                          ? "absolute left-1/2 z-10 -translate-x-1/2 scale-150 bg-gradient-to-bl from-red-700 to-red-500 text-white"
+                          ? "z-10 scale-150 -translate-x-1/2 bg-gradient-to-bl from-red-700 to-red-500 text-white"
                           : faceoffFirstTeam === "blue"
                             ? "scale-75 opacity-0"
                             : ""
