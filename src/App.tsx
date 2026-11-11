@@ -1702,6 +1702,11 @@ export default function App() {
   if (screen === "host")
     return (
       <Shell wide>
+        <Heading
+          k="Juego en curso"
+          title="Panel de presentador"
+          detail="Controla la ronda, revela respuestas y administra el marcador."
+        />
         <div className="mb-4 flex justify-end">
           {pauseControl}
           <DeviceConnectionIndicator
