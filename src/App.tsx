@@ -2186,7 +2186,7 @@ export default function App() {
       <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 px-5 py-10 text-white">
         <div className="display-floating-accent display-floating-accent-right pointer-events-none absolute -right-40 -top-48 size-[480px] rounded-full border-[65px] border-white/5" />
         <div className="display-floating-accent display-floating-accent-left pointer-events-none absolute -bottom-36 -left-28 size-[360px] rounded-full border-[50px] border-white/5" />
-        <div className="relative z-10 mx-auto max-w-4xl">
+        <div className="relative z-10 mx-auto max-w-7xl">
           <div className="flex justify-end">{pauseControl}</div>
           <p className="text-center text-2xl font-bold">La gente dice.</p>
           <div className="mb-4 text-center">
@@ -2197,7 +2197,7 @@ export default function App() {
               Ronda {String(state.roundIndex + 1).padStart(2, "0")} · x{roundMultiplier}
             </p>
           </div>
-          <div className="mt-8 grid items-start gap-4 lg:grid-cols-[1fr_5fr_1fr]">
+          <div className="mt-8 grid w-full items-start gap-4 lg:grid-cols-[1fr_5fr_1fr]">
             <div className="mb-4 rounded-2xl border border-white/20 bg-blue-600/80 px-4 py-4 text-center shadow-lg">
               <p className="text-sm font-black uppercase tracking-wide text-blue-100">
                 {teams[0].name}
@@ -2217,7 +2217,7 @@ export default function App() {
                 <p className="mb-3 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
                   Respuestas
                 </p>
-                <div className="grid gap-2">
+                <div className="grid gap-2 sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-5">
                   {answers.length === 0 &&
                     [0, 1, 2, 3, 4].map((index) => (
                       <Skeleton key={`answer-skeleton-${index}`} className="h-20 bg-white/10" />
