@@ -2183,7 +2183,7 @@ export default function App() {
     )
   if (screen === "display")
     return (
-      <div className="min-h-screen bg-slate-950 px-5 py-10 text-white">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 px-5 py-10 text-white">
         <div className="mx-auto max-w-4xl">
           <div className="flex justify-end">{pauseControl}</div>
           <p className="text-center text-2xl font-bold">La gente dice.</p>
