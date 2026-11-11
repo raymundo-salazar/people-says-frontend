@@ -242,6 +242,7 @@ export function Heading({
   aside?: ReactNode
   footer?: ReactNode
 }) {
+  if (!title) return <>{aside}</>
   return (
     <div className="mb-8 grid items-start gap-6 lg:grid-cols-[2fr_1fr]">
       <div>

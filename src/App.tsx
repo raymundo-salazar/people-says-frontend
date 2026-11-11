@@ -1650,7 +1650,7 @@ export default function App() {
         <Heading
           k="Panel del presentador"
           aside={
-            <div className="flex min-w-56 items-stretch text-left">
+            <div className="hidden flex min-w-56 items-stretch text-left">
               <div className="rounded-l-2xl rounded-r-none border border-r-0 border-stone-200 bg-white p-4">
                 <div className="grid grid-cols-[auto_auto_auto] items-stretch justify-center gap-4 text-center">
                   <div className="flex flex-col items-center justify-center">
@@ -1717,6 +1717,9 @@ export default function App() {
         )}
         <div className="grid items-start gap-3 lg:grid-cols-[2fr_1fr]">
           <div className="space-y-3">
+            <p className="text-[11px] font-semibold uppercase tracking-[.17em] text-emerald-800">
+              Panel del presentador
+            </p>
             <section className="rounded-2xl bg-gradient-to-r from-blue-100/80 via-slate-50 to-red-100/80 p-5">
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
                 Enfrentamiento
@@ -1856,6 +1859,38 @@ export default function App() {
             </section>
           </div>
           <aside className="space-y-3">
+            <section className="flex min-h-32 items-stretch overflow-hidden rounded-2xl border border-stone-200 bg-white text-left">
+              <div className="flex flex-1 flex-col items-center justify-center gap-1 p-4 text-center">
+                <p className="text-xs font-black uppercase text-emerald-900">
+                  RONDA {String(state.roundIndex + 1).padStart(2, "0")}
+                </p>
+                <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
+                <span className="rounded-lg bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
+                  {["faceoff", "tiebreaker", "decision"].includes(state.phase)
+                    ? "Enfrentamiento"
+                    : "Normal"}
+                </span>
+              </div>
+              <div className="w-px bg-stone-200" aria-hidden="true" />
+              <div className="flex flex-1 flex-col items-center justify-center p-4 text-center">
+                <strong className="text-3xl font-black tabular-nums text-emerald-900">
+                  {multipliedRoundPoints}
+                </strong>
+                <span className="text-[10px] font-bold uppercase tracking-wide text-stone-400">
+                  puntos
+                </span>
+              </div>
+              <div className="flex flex-col overflow-hidden rounded-r-2xl">
+                <div className="flex flex-1 items-center gap-2 bg-gradient-to-r from-blue-100 to-white px-3">
+                  <span className="text-xs font-bold text-blue-950">{teams[0].name}</span>
+                  <strong className="text-lg font-black tabular-nums text-blue-900">{blue}</strong>
+                </div>
+                <div className="flex flex-1 items-center gap-2 bg-gradient-to-r from-red-100 to-white px-3">
+                  <span className="text-xs font-bold text-red-950">{teams[1].name}</span>
+                  <strong className="text-lg font-black tabular-nums text-red-900">{red}</strong>
+                </div>
+              </div>
+            </section>
             <div className="grid grid-cols-2 gap-3">
               <Button secondary onClick={pauseGame}>
                 <Pause size={16} aria-hidden="true" /> Pausar partida
