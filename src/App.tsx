@@ -1804,14 +1804,6 @@ export default function App() {
                 aria-expanded={showConnectedDevices}
                 onClick={() => setShowConnectedDevices((visible) => !visible)}
               >
-                <ChevronDown
-                  size={18}
-                  aria-hidden="true"
-                  className={cx(
-                    "shrink-0 text-stone-500 transition-transform",
-                    showConnectedDevices && "rotate-180"
-                  )}
-                />
                 <span className="relative grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-700">
                   <DeviceIconAnimation
                     className="size-6"
@@ -1833,11 +1825,19 @@ export default function App() {
                 <span className="text-2xl font-black tabular-nums text-stone-900">
                   {connectedDeviceCount}
                 </span>
+                <ChevronDown
+                  size={18}
+                  aria-hidden="true"
+                  className={cx(
+                    "shrink-0 text-stone-500 transition-transform",
+                    showConnectedDevices && "rotate-180"
+                  )}
+                />
               </button>
               {showConnectedDevices && (
                 <div className="border-t border-stone-100 px-4 pb-4 pt-2">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-3 rounded-xl border border-emerald-700 bg-emerald-50 p-3">
+                  <div>
+                    <div className="flex items-center gap-3 border-b border-stone-100 py-3">
                       <DeviceRoleIcon role={currentDeviceRole} active />
                       <div className="min-w-0">
                         <p className="truncate text-sm font-bold uppercase tracking-wider text-emerald-800">
@@ -1853,7 +1853,7 @@ export default function App() {
                     {devices.map((device, index) => (
                       <div
                         key={`${device.role}-${device.id ?? index}`}
-                        className="flex items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3"
+                        className="flex items-center gap-3 border-b border-stone-100 py-3 last:border-b-0"
                       >
                         {device.role === "pending" ? (
                           <span className="grid size-12 shrink-0 place-items-center rounded-lg bg-stone-100">
