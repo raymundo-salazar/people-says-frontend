@@ -1861,10 +1861,15 @@ export default function App() {
           <aside className="space-y-3">
             <section className="flex min-h-32 items-stretch overflow-hidden rounded-2xl border border-stone-200 bg-white text-left">
               <div className="flex flex-1 flex-col items-center justify-center gap-1 p-4 text-center">
-                <p className="text-xs font-black uppercase text-emerald-900">
-                  RONDA {String(state.roundIndex + 1).padStart(2, "0")}
-                </p>
-                <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-xs font-black uppercase text-emerald-900">
+                    RONDA {String(state.roundIndex + 1).padStart(2, "0")}
+                  </p>
+                  <span className="text-sm font-bold text-stone-300" aria-hidden="true">
+                    ·
+                  </span>
+                  <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
+                </div>
                 <span className="rounded-lg bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
                   {["faceoff", "tiebreaker", "decision"].includes(state.phase)
                     ? "Enfrentamiento"
@@ -1872,7 +1877,7 @@ export default function App() {
                 </span>
               </div>
               <div className="w-px bg-stone-200" aria-hidden="true" />
-              <div className="flex flex-1 flex-col items-center justify-center p-4 text-center">
+              <div className="flex shrink-0 flex-col items-center justify-center p-4 text-center">
                 <strong className="text-3xl font-black tabular-nums text-emerald-900">
                   {multipliedRoundPoints}
                 </strong>
