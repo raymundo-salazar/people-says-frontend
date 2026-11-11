@@ -2197,37 +2197,72 @@ export default function App() {
               Ronda {String(state.roundIndex + 1).padStart(2, "0")} · x{roundMultiplier}
             </p>
           </div>
-          <p className="mx-auto mt-8 max-w-3xl text-center text-3xl font-bold">
-            {state.questionPrompt}
-          </p>
-          <div className="mx-auto mt-8 grid max-w-4xl gap-x-4 md:grid-cols-2">
-            {answers.length === 0 &&
-              [0, 1, 2, 3, 4].map((index) => (
-                <Skeleton key={`answer-skeleton-${index}`} className="h-16 bg-white/10" />
-              ))}
-            {answers.map((answer, index) => {
-              const visible = revealed.includes(index)
-              return (
-                <div
-                  key={`${answer.text}-${index}`}
-                  className={cx(
-                    "mb-2 flex items-center gap-4 rounded-xl border px-4 py-3",
-                    visible
-                      ? "border-emerald-300 bg-emerald-50 text-slate-950"
-                      : "border-white/10 bg-white/10"
-                  )}
-                >
-                  <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm text-stone-600">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="flex-1 font-bold">{visible ? answer.text : "-"}</span>
-                  <span className="font-bold tabular-nums">{visible ? answer.points : "-"}</span>
+          <div className="mt-8 grid items-start gap-4 lg:grid-cols-[1fr_5fr_1fr]">
+            <div className="mb-4 rounded-2xl border border-white/20 bg-blue-600/80 px-4 py-4 text-center shadow-lg">
+              <p className="text-sm font-black uppercase tracking-wide text-blue-100">
+                {teams[0].name}
+              </p>
+              <strong className="mt-2 block text-4xl font-black tabular-nums text-white sm:text-5xl">
+                {blue}
+              </strong>
+            </div>
+            <div>
+              <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
+                <p className="mb-2 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
+                  Pregunta
+                </p>
+                <p className="text-2xl font-black text-white sm:text-3xl">{state.questionPrompt}</p>
+              </div>
+              <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
+                <p className="mb-3 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
+                  Respuestas
+                </p>
+                <div className="grid gap-2">
+                  {answers.length === 0 &&
+                    [0, 1, 2, 3, 4].map((index) => (
+                      <Skeleton key={`answer-skeleton-${index}`} className="h-20 bg-white/10" />
+                    ))}
+                  {answers.map((answer, index) => {
+                    const visible = revealed.includes(index)
+                    return visible ? (
+                      <div
+                        key={`${answer.text}-${index}`}
+                        className="flex min-h-[74px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[88px]"
+                      >
+                        <div className="grid w-11 shrink-0 place-items-center border-r border-white/15 bg-black/20 text-base font-black tabular-nums text-amber-200 sm:w-14 sm:text-xl">
+                          {String(index + 1).padStart(2, "0")}
+                        </div>
+                        <div className="flex min-w-0 flex-1 items-center px-3 sm:px-5">
+                          <span className="truncate text-lg font-black text-white sm:text-2xl">
+                            {answer.text}
+                          </span>
+                        </div>
+                        <div className="grid w-14 shrink-0 place-items-center border-l border-white/15 bg-amber-300 text-xl font-black tabular-nums text-emerald-950 sm:w-20 sm:text-3xl">
+                          {answer.points}
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        key={`${answer.text}-${index}`}
+                        className="flex min-h-[74px] items-stretch overflow-hidden rounded-xl border border-white/20 bg-black/20 shadow-md sm:min-h-[88px]"
+                      >
+                        <div className="grid w-full shrink-0 place-items-center border-r border-white/15 text-base font-black tabular-nums text-amber-200 sm:text-5xl">
+                          {String(index + 1).padStart(2, "0")}
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
-              )
-            })}
-          </div>
-          <div className="mt-8">
-            <Score blue={blue} red={red} />
+              </div>
+            </div>
+            <div className="mb-4 rounded-2xl border border-white/20 bg-red-600/80 px-4 py-4 text-center shadow-lg">
+              <p className="text-sm font-black uppercase tracking-wide text-red-100">
+                {teams[1].name}
+              </p>
+              <strong className="mt-2 block text-4xl font-black tabular-nums text-white sm:text-5xl">
+                {red}
+              </strong>
+            </div>
           </div>
         </div>
       </div>
