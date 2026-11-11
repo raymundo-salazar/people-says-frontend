@@ -8,6 +8,9 @@ body {
 html {
   scrollbar-gutter: stable;
 }
+html:has(.public-display) {
+  scrollbar-gutter: auto;
+}
 button,
 input,
 select {
