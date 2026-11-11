@@ -83,7 +83,13 @@ export function CountPill({ count, label }: { count: number; label: string }) {
   )
 }
 const deviceIcons = [Laptop, Smartphone, Monitor, Tablet, Tv]
-export function DeviceIconAnimation() {
+export function DeviceIconAnimation({
+  className = "",
+  iconClassName = "",
+}: {
+  className?: string
+  iconClassName?: string
+}) {
   const [index, setIndex] = useState(0)
   const Icon = deviceIcons[index]
   const NextIcon = deviceIcons[(index + 1) % deviceIcons.length]
@@ -96,18 +102,21 @@ export function DeviceIconAnimation() {
   }, [])
 
   return (
-    <span className="device-icon-perspective relative block size-8" aria-hidden="true">
+    <span
+      className={cx("device-icon-perspective relative block size-8", className)}
+      aria-hidden="true"
+    >
       <Icon
         key={`front-${index}`}
         size={30}
         strokeWidth={1.5}
-        className="device-icon-front text-stone-300"
+        className={cx("device-icon-front text-stone-300", iconClassName)}
       />
       <NextIcon
         key={`back-${index}`}
         size={30}
         strokeWidth={1.5}
-        className="device-icon-back text-stone-300"
+        className={cx("device-icon-back text-stone-300", iconClassName)}
       />
     </span>
   )
