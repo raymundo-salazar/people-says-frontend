@@ -1796,19 +1796,21 @@ export default function App() {
               </Button>
             </div>
             <section className="flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-4">
-              <span className="relative grid size-12 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-700">
-                <DeviceIconAnimation className="size-7" iconClassName="text-emerald-700" />
+              <span className="relative grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-700">
+                <DeviceIconAnimation className="size-6" iconClassName="text-emerald-700" />
                 <span
-                  className="absolute -right-1 -top-1 size-3 rounded-full border-2 border-white bg-emerald-500"
+                  className="absolute -right-1 -top-1 size-2.5 rounded-full border-2 border-white bg-emerald-500"
                   aria-label="Conectado"
                   title="Conectado"
                 />
               </span>
               <div className="min-w-0 flex-1">
-                <h2 className="text-sm font-bold text-stone-900">Dispositivos conectados</h2>
+                <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-500">
+                  Dispositivos conectados
+                </h2>
                 <p className="mt-1 text-xs text-stone-500">Partida actual</p>
               </div>
-              <span className="text-3xl font-black tabular-nums text-stone-900">
+              <span className="text-2xl font-black tabular-nums text-stone-900">
                 {connectedDeviceCount}
               </span>
             </section>
