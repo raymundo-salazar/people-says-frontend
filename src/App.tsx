@@ -1783,7 +1783,7 @@ export default function App() {
               </div>
             </section>
           </div>
-          <aside className="space-y-3 rounded-2xl border border-stone-200 bg-white p-5">
+          <aside className="space-y-3">
             <section className="hidden rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
                 Enfrentamiento
