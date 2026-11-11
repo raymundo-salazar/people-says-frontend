@@ -2202,9 +2202,12 @@ export default function App() {
               <p className="text-sm font-black uppercase tracking-wide text-blue-100">
                 {teams[0].name}
               </p>
-              <strong className="mt-2 block text-4xl font-black tabular-nums text-white sm:text-5xl">
+              <strong className="mt-2 block text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
                 {blue}
               </strong>
+              <p className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-white/50">
+                Puntos
+              </p>
             </div>
             <div>
               <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
@@ -2259,9 +2262,12 @@ export default function App() {
               <p className="text-sm font-black uppercase tracking-wide text-red-100">
                 {teams[1].name}
               </p>
-              <strong className="mt-2 block text-4xl font-black tabular-nums text-white sm:text-5xl">
+              <strong className="mt-2 block text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
                 {red}
               </strong>
+              <p className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-white/50">
+                Puntos
+              </p>
             </div>
           </div>
         </div>
