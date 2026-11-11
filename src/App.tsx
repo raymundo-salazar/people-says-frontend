@@ -2198,7 +2198,7 @@ export default function App() {
             </p>
           </div>
           <div className="mt-8 grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]">
-            <div className="mb-4 rounded-2xl border border-white/20 bg-gradient-to-br from-blue-900/60 via-blue-700/40 to-blue-400/20 px-4 py-4 text-center shadow-[0_0_32px_rgba(37,99,235,0.35)] backdrop-blur-sm">
+            <div className="mb-4 rounded-2xl bg-gradient-to-br from-blue-900/60 via-blue-700/40 to-blue-400/20 px-4 py-4 text-center shadow-[0_10px_34px_rgba(0,0,0,0.38)] backdrop-blur-sm">
               <p className="text-sm font-black uppercase tracking-wide text-blue-100">
                 {teams[0].name}
               </p>
@@ -2224,26 +2224,26 @@ export default function App() {
                     return visible ? (
                       <div
                         key={`${answer.text}-${index}`}
-                        className="flex min-h-[74px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[88px]"
+                        className="flex min-h-[68px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[80px]"
                       >
                         <div className="grid w-11 shrink-0 place-items-center border-r border-white/15 bg-black/20 text-base font-black tabular-nums text-amber-200 sm:w-14 sm:text-xl">
                           {String(index + 1).padStart(2, "0")}
                         </div>
                         <div className="flex min-w-0 flex-1 items-center px-3 sm:px-5">
-                          <span className="truncate text-lg font-black text-white sm:text-2xl">
+                          <span className="truncate text-base font-black text-white sm:text-xl">
                             {answer.text}
                           </span>
                         </div>
-                        <div className="grid w-14 shrink-0 place-items-center border-l border-white/15 bg-amber-300 text-xl font-black tabular-nums text-emerald-950 sm:w-20 sm:text-3xl">
+                        <div className="grid w-14 shrink-0 place-items-center border-l border-white/15 bg-amber-300 text-lg font-black tabular-nums text-emerald-950 sm:w-20 sm:text-2xl">
                           {answer.points}
                         </div>
                       </div>
                     ) : (
                       <div
                         key={`${answer.text}-${index}`}
-                        className="flex min-h-[74px] items-stretch overflow-hidden rounded-xl border border-white/20 bg-black/20 shadow-md sm:min-h-[88px]"
+                        className="flex min-h-[68px] items-stretch overflow-hidden rounded-xl border border-white/20 bg-black/20 shadow-md sm:min-h-[80px]"
                       >
-                        <div className="grid w-full shrink-0 place-items-center border-r border-white/15 text-base font-black tabular-nums text-amber-200 sm:text-5xl">
+                        <div className="grid w-full shrink-0 place-items-center border-r border-white/15 text-sm font-black tabular-nums text-amber-200 sm:text-4xl">
                           {String(index + 1).padStart(2, "0")}
                         </div>
                       </div>
@@ -2251,8 +2251,23 @@ export default function App() {
                   })}
                 </div>
               </div>
+              <div className="mt-3 flex justify-center gap-3" aria-label="Errores de la ronda">
+                {[0, 1, 2].map((index) => {
+                  const active = index < Math.max(state.strikes.blue, state.strikes.red)
+                  return active ? (
+                    <SquareX key={index} size={32} strokeWidth={1.8} className="text-red-400" />
+                  ) : (
+                    <SquareDashed
+                      key={index}
+                      size={32}
+                      strokeWidth={1.8}
+                      className="text-white/30"
+                    />
+                  )
+                })}
+              </div>
             </div>
-            <div className="mb-4 rounded-2xl border border-white/20 bg-gradient-to-bl from-red-900/60 via-red-700/40 to-red-400/20 px-4 py-4 text-center shadow-[0_0_32px_rgba(220,38,38,0.35)] backdrop-blur-sm">
+            <div className="mb-4 rounded-2xl bg-gradient-to-bl from-red-900/60 via-red-700/40 to-red-400/20 px-4 py-4 text-center shadow-[0_10px_34px_rgba(0,0,0,0.38)] backdrop-blur-sm">
               <p className="text-sm font-black uppercase tracking-wide text-red-100">
                 {teams[1].name}
               </p>
