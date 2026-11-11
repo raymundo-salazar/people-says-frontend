@@ -1747,7 +1747,7 @@ export default function App() {
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
                 Respuestas
               </h2>
-              <div className="grid gap-2 md:grid-cols-2">
+              <div className="grid gap-1 md:grid-cols-2">
                 {answers.map((answer, index) => {
                   const visible = revealed.includes(index)
                   return (
