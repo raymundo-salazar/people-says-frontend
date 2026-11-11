@@ -2198,7 +2198,7 @@ export default function App() {
             </p>
           </div>
           <div className="mt-8 grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]">
-            <div className="mb-4 rounded-2xl border border-white/20 bg-gradient-to-br from-blue-900/60 via-blue-700/40 to-blue-400/20 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
+            <div className="mb-4 rounded-2xl bg-gradient-to-br from-blue-900/60 via-blue-700/40 to-blue-400/20 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
               <p className="text-sm font-black uppercase tracking-wide text-blue-100">
                 {teams[0].name}
               </p>
@@ -2252,7 +2252,7 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className="mb-4 rounded-2xl border border-white/20 bg-gradient-to-bl from-red-900/60 via-red-700/40 to-red-400/20 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
+            <div className="mb-4 rounded-2xl bg-gradient-to-bl from-red-900/60 via-red-700/40 to-red-400/20 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
               <p className="text-sm font-black uppercase tracking-wide text-red-100">
                 {teams[1].name}
               </p>
