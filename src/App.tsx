@@ -1713,16 +1713,20 @@ export default function App() {
           title="Panel de presentador"
           detail="Controla la ronda, revela respuestas y administra el marcador."
           aside={
-            <div className="min-w-44 rounded-2xl border border-stone-200 bg-white p-4 text-right">
-              <div className="flex items-center justify-end gap-2">
+            <div className="min-w-44 rounded-2xl border border-stone-200 bg-white p-4 text-center">
+              <div className="flex items-center justify-center gap-2">
                 <p className="text-xs font-black text-emerald-900">Ronda {state.roundIndex + 1}</p>
                 <span className="text-xs text-stone-300" aria-hidden="true">
                   ·
                 </span>
                 <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
               </div>
-              <p className="mt-1 text-2xl font-black tabular-nums text-stone-900">
-                <span className="mr-2 text-sm text-stone-400 line-through">{baseRoundPoints}</span>
+              <p className="mt-2 text-4xl font-black tabular-nums text-stone-900">
+                {roundMultiplier > 1 && (
+                  <span className="mr-2 text-lg text-stone-400 line-through">
+                    {baseRoundPoints}
+                  </span>
+                )}
                 {multipliedRoundPoints}
               </p>
               <span className="mt-2 inline-flex rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-800">
