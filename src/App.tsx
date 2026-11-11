@@ -1728,14 +1728,26 @@ export default function App() {
                   className={cx(
                     "min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm transition duration-300",
                     faceoffFirstTeam === "blue"
-                      ? "z-10 scale-150 translate-x-1/2"
+                      ? "z-10 scale-150 translate-x-1/2 bg-gradient-to-br from-blue-700 to-blue-500 text-white"
                       : faceoffFirstTeam === "red"
                         ? "scale-75 opacity-0"
                         : ""
                   )}
                 >
-                  <p className="truncate text-[10px] font-bold text-blue-700">Azul</p>
-                  <p className="truncate text-sm font-black text-blue-950">
+                  <p
+                    className={cx(
+                      "truncate text-[10px] font-bold",
+                      faceoffFirstTeam === "blue" ? "text-white/70" : "text-blue-700"
+                    )}
+                  >
+                    Azul
+                  </p>
+                  <p
+                    className={cx(
+                      "truncate text-sm font-black",
+                      faceoffFirstTeam === "blue" ? "text-white" : "text-blue-950"
+                    )}
+                  >
                     {state.faceoff?.bluePlayer ?? "—"}
                   </p>
                 </div>
@@ -1751,14 +1763,26 @@ export default function App() {
                   className={cx(
                     "min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm transition duration-300",
                     faceoffFirstTeam === "red"
-                      ? "z-10 scale-150 -translate-x-1/2"
+                      ? "z-10 scale-150 -translate-x-1/2 bg-gradient-to-bl from-red-700 to-red-500 text-white"
                       : faceoffFirstTeam === "blue"
                         ? "scale-75 opacity-0"
                         : ""
                   )}
                 >
-                  <p className="truncate text-[10px] font-bold text-red-700">Rojo</p>
-                  <p className="truncate text-sm font-black text-red-950">
+                  <p
+                    className={cx(
+                      "truncate text-[10px] font-bold",
+                      faceoffFirstTeam === "red" ? "text-white/70" : "text-red-700"
+                    )}
+                  >
+                    Rojo
+                  </p>
+                  <p
+                    className={cx(
+                      "truncate text-sm font-black",
+                      faceoffFirstTeam === "red" ? "text-white" : "text-red-950"
+                    )}
+                  >
                     {state.faceoff?.redPlayer ?? "—"}
                   </p>
                 </div>
