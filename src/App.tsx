@@ -1837,56 +1837,59 @@ export default function App() {
                   )}
                 />
               </button>
-              {showConnectedDevices && (
-                <div className="connected-devices-list border-t border-stone-100 px-4 pb-4 pt-2">
-                  <div>
-                    <div className="flex items-center gap-3 border-b border-stone-100 py-3">
-                      <DeviceRoleIcon role={currentDeviceRole} muted compact />
+              <div
+                className={cx(
+                  "connected-devices-list border-t border-stone-100 px-4 pb-4 pt-2",
+                  showConnectedDevices && "connected-devices-list-open"
+                )}
+              >
+                <div>
+                  <div className="flex items-center gap-3 border-b border-stone-100 py-3">
+                    <DeviceRoleIcon role={currentDeviceRole} muted compact />
+                    <div className="min-w-0">
+                      <p className="truncate text-xs font-bold uppercase tracking-wider text-stone-700">
+                        {deviceRoleLabels[currentDeviceRole]}
+                      </p>
+                      <p className="truncate text-[11px] text-stone-500">{deviceName}</p>
+                    </div>
+                    <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800">
+                      <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" />
+                      Conectado
+                    </span>
+                  </div>
+                  {devices.map((device, index) => (
+                    <div
+                      key={`${device.role}-${device.id ?? index}`}
+                      className="flex items-center gap-3 border-b border-stone-100 py-3 last:border-b-0"
+                    >
+                      {device.role === "pending" ? (
+                        <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-stone-100">
+                          <DeviceTypeIcon type={device.deviceType ?? "desktop"} size={18} />
+                        </span>
+                      ) : (
+                        <DeviceRoleIcon role={device.role as DeviceRole} muted compact />
+                      )}
                       <div className="min-w-0">
                         <p className="truncate text-xs font-bold uppercase tracking-wider text-stone-700">
-                          {deviceRoleLabels[currentDeviceRole]}
+                          {deviceRoleLabels[device.role as DeviceRole] ?? device.role}
                         </p>
-                        <p className="truncate text-[11px] text-stone-500">{deviceName}</p>
+                        <p className="truncate text-[11px] text-stone-500">
+                          {device.name ?? "Dispositivo"}
+                        </p>
                       </div>
-                      <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800">
-                        <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" />
-                        Conectado
+                      <span
+                        className={`ml-auto inline-flex shrink-0 items-center gap-1 text-[10px] font-bold ${device.role === "pending" ? "text-stone-400" : "text-emerald-800"}`}
+                      >
+                        <span
+                          className={`size-2 rounded-full ${device.role === "pending" ? "animate-pulse bg-stone-400" : "bg-emerald-600"}`}
+                          aria-hidden="true"
+                        />
+                        {device.role === "pending" ? "Pendiente" : "Conectado"}
                       </span>
                     </div>
-                    {devices.map((device, index) => (
-                      <div
-                        key={`${device.role}-${device.id ?? index}`}
-                        className="flex items-center gap-3 border-b border-stone-100 py-3 last:border-b-0"
-                      >
-                        {device.role === "pending" ? (
-                          <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-stone-100">
-                            <DeviceTypeIcon type={device.deviceType ?? "desktop"} size={18} />
-                          </span>
-                        ) : (
-                          <DeviceRoleIcon role={device.role as DeviceRole} muted compact />
-                        )}
-                        <div className="min-w-0">
-                          <p className="truncate text-xs font-bold uppercase tracking-wider text-stone-700">
-                            {deviceRoleLabels[device.role as DeviceRole] ?? device.role}
-                          </p>
-                          <p className="truncate text-[11px] text-stone-500">
-                            {device.name ?? "Dispositivo"}
-                          </p>
-                        </div>
-                        <span
-                          className={`ml-auto inline-flex shrink-0 items-center gap-1 text-[10px] font-bold ${device.role === "pending" ? "text-stone-400" : "text-emerald-800"}`}
-                        >
-                          <span
-                            className={`size-2 rounded-full ${device.role === "pending" ? "animate-pulse bg-stone-400" : "bg-emerald-600"}`}
-                            aria-hidden="true"
-                          />
-                          {device.role === "pending" ? "Pendiente" : "Conectado"}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                  ))}
                 </div>
-              )}
+              </div>
             </section>
             <section className="hidden rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
