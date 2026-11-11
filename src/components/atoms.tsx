@@ -86,9 +86,11 @@ const deviceIcons = [Laptop, Smartphone, Monitor, Tablet, Tv]
 export function DeviceIconAnimation({
   className = "",
   iconClassName = "",
+  size = 30,
 }: {
   className?: string
   iconClassName?: string
+  size?: number
 }) {
   const [index, setIndex] = useState(0)
   const Icon = deviceIcons[index]
@@ -108,13 +110,13 @@ export function DeviceIconAnimation({
     >
       <Icon
         key={`front-${index}`}
-        size={30}
+        size={size}
         strokeWidth={1.5}
         className={cx("device-icon-front text-stone-300", iconClassName)}
       />
       <NextIcon
         key={`back-${index}`}
-        size={30}
+        size={size}
         strokeWidth={1.5}
         className={cx("device-icon-back text-stone-300", iconClassName)}
       />
