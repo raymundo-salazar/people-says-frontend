@@ -2202,7 +2202,7 @@ export default function App() {
             </div>
             <div>
               <div className="mx-auto mb-4 w-fit rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
-                <strong className="block font-mono text-7xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-8xl lg:text-9xl">
+                <strong className="block font-mono text-6xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-7xl lg:text-8xl">
                   {multipliedRoundPoints}
                 </strong>
                 <p className="text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80 sm:text-xs">
