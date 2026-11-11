@@ -1714,8 +1714,10 @@ export default function App() {
           detail="Controla la ronda, revela respuestas y administra el marcador."
           aside={
             <div className="min-w-44 rounded-2xl border border-stone-200 bg-white p-4 text-right">
-              <p className="text-xs font-bold text-stone-500">Ronda {state.roundIndex + 1}</p>
-              <p className="mt-1 text-lg font-black text-emerald-900">x{roundMultiplier}</p>
+              <div className="flex items-center justify-end gap-2">
+                <p className="text-xs font-bold text-stone-500">Ronda {state.roundIndex + 1}</p>
+                <p className="text-xs font-black text-emerald-900">x{roundMultiplier}</p>
+              </div>
               <p className="mt-1 text-2xl font-black tabular-nums text-stone-900">
                 <span className="mr-2 text-sm text-stone-400 line-through">{baseRoundPoints}</span>
                 {multipliedRoundPoints}
