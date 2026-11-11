@@ -11,6 +11,7 @@ import {
   LogIn,
   LogOut,
   Monitor,
+  Pause,
   SquareDashed,
   SquareX,
   Settings2,
@@ -1687,7 +1688,6 @@ export default function App() {
           }
         />
         <div className="mb-4 flex justify-end">
-          {pauseControl}
           <DeviceConnectionIndicator
             connected={connectedDeviceCount}
             expected={expectedDeviceCount}
@@ -1784,6 +1784,17 @@ export default function App() {
             </section>
           </div>
           <aside className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <Button secondary onClick={pauseGame}>
+                <Pause size={16} aria-hidden="true" /> Pausar partida
+              </Button>
+              <Button
+                className="bg-red-600 hover:bg-red-700"
+                onClick={() => emitAction({ type: "end" })}
+              >
+                <SquareX size={16} aria-hidden="true" /> Terminar partida
+              </Button>
+            </div>
             <section className="hidden rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
                 Enfrentamiento
