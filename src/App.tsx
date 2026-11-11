@@ -2349,7 +2349,7 @@ export default function App() {
               className={cx(
                 "mb-4 rounded-2xl bg-gradient-to-br from-blue-900/60 via-blue-700/40 to-blue-400/20 px-4 py-4 text-center shadow-[0_10px_34px_rgba(0,0,0,0.38)] backdrop-blur-sm transition duration-300",
                 faceoffFirstTeam === "blue"
-                  ? "z-10 scale-[1.2] -translate-x-3 bg-blue-600 shadow-[0_0_42px_rgba(37,99,235,0.75)]"
+                  ? "z-10 scale-[1.2] -translate-x-4 bg-blue-600 shadow-[0_0_42px_rgba(37,99,235,0.75)]"
                   : faceoffFirstTeam === "red"
                     ? "scale-90 -translate-x-2 opacity-30"
                     : ""
