@@ -1859,7 +1859,7 @@ export default function App() {
             </section>
           </div>
           <aside className="space-y-3">
-            <section className="mt-7 flex min-h-32 items-stretch overflow-hidden rounded-2xl border border-stone-200 bg-white text-left">
+            <section className="mt-7 flex items-stretch overflow-hidden rounded-2xl border border-stone-200 bg-white text-left">
               <div className="flex flex-1 flex-col items-center justify-center gap-1 p-4 text-center">
                 <div className="flex items-center gap-2">
                   <p className="text-xs font-black uppercase text-emerald-900">
