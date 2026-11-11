@@ -2198,14 +2198,14 @@ export default function App() {
             </p>
           </div>
           <div className="mt-8 grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]">
-            <div className="mb-4 rounded-2xl border border-white/20 bg-blue-600/50 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
+            <div className="mb-4 rounded-2xl border border-white/20 bg-gradient-to-br from-blue-600/60 to-blue-950/30 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
               <p className="text-sm font-black uppercase tracking-wide text-blue-100">
                 {teams[0].name}
               </p>
-              <strong className="mt-2 block text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
+              <strong className="block text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
                 {blue}
               </strong>
-              <p className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-white/50">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-white/50">
                 Puntos
               </p>
             </div>
@@ -2255,14 +2255,14 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className="mb-4 rounded-2xl border border-white/20 bg-red-600/50 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
+            <div className="mb-4 rounded-2xl border border-white/20 bg-gradient-to-br from-red-600/60 to-red-950/30 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
               <p className="text-sm font-black uppercase tracking-wide text-red-100">
                 {teams[1].name}
               </p>
-              <strong className="mt-2 block text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
+              <strong className="block text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
                 {red}
               </strong>
-              <p className="mt-2 text-[10px] font-semibold uppercase tracking-widest text-white/50">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-white/50">
                 Puntos
               </p>
             </div>
