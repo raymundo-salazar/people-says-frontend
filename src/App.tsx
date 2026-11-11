@@ -2198,7 +2198,7 @@ export default function App() {
             </p>
           </div>
           <div className="mt-8 grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]">
-            <div className="mb-4 rounded-2xl border border-white/20 bg-gradient-to-br from-blue-600/60 to-blue-950/30 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
+            <div className="mb-4 rounded-2xl border border-white/20 bg-gradient-to-bl from-blue-950/60 via-blue-700/40 to-blue-300/20 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
               <p className="text-sm font-black uppercase tracking-wide text-blue-100">
                 {teams[0].name}
               </p>
@@ -2211,9 +2211,6 @@ export default function App() {
             </div>
             <div>
               <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
-                <p className="mb-2 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
-                  Pregunta
-                </p>
                 <p className="text-2xl font-black text-white sm:text-3xl">{state.questionPrompt}</p>
               </div>
               <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
@@ -2255,7 +2252,7 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className="mb-4 rounded-2xl border border-white/20 bg-gradient-to-br from-red-600/60 to-red-950/30 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
+            <div className="mb-4 rounded-2xl border border-white/20 bg-gradient-to-br from-red-950/60 via-red-700/40 to-red-300/20 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
               <p className="text-sm font-black uppercase tracking-wide text-red-100">
                 {teams[1].name}
               </p>
