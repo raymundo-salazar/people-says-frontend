@@ -1766,45 +1766,47 @@ export default function App() {
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
                 Respuestas
               </h2>
-              <div className="grid gap-1 md:grid-cols-2">
-                {answers.map((answer, index) => {
-                  const visible = revealed.includes(index)
-                  return (
-                    <button
-                      key={`${answer.text}-${index}`}
-                      disabled={state.phase !== "turn"}
-                      onClick={() => reveal(index)}
-                      className={cx(
-                        "relative flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-70",
-                        visible
-                          ? "border-emerald-300 bg-emerald-50"
-                          : "border-stone-200 bg-white hover:border-emerald-500"
-                      )}
-                    >
-                      <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm text-stone-600">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <span className="flex-1 text-sm font-semibold">{answer.text}</span>
-                      <span className="font-bold tabular-nums">
-                        {visible ? answer.points : "-"}
-                      </span>
-                      <span
+              <div className="relative">
+                <div className="grid gap-1 md:grid-cols-2">
+                  {answers.map((answer, index) => {
+                    const visible = revealed.includes(index)
+                    return (
+                      <button
+                        key={`${answer.text}-${index}`}
+                        disabled={state.phase !== "turn"}
+                        onClick={() => reveal(index)}
                         className={cx(
-                          "w-16 text-right text-[10px] font-semibold",
-                          visible ? "text-emerald-800" : "text-stone-400"
+                          "relative flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-70",
+                          visible
+                            ? "border-emerald-300 bg-emerald-50"
+                            : "border-stone-200 bg-white hover:border-emerald-500"
                         )}
                       >
-                        {visible ? "VISIBLE" : "OCULTA"}
-                      </span>
-                      {["faceoff", "tiebreaker"].includes(state.phase) && !faceoffFirstTeam && (
-                        <span className="absolute inset-0 z-10 flex items-center justify-center gap-2 rounded-xl bg-stone-100/90 text-stone-500 backdrop-blur-[1px]">
-                          <Lock size={18} aria-hidden="true" />
-                          <span className="text-xs font-bold">Esperando al equipo o pulsador</span>
+                        <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm text-stone-600">
+                          {String(index + 1).padStart(2, "0")}
                         </span>
-                      )}
-                    </button>
-                  )
-                })}
+                        <span className="flex-1 text-sm font-semibold">{answer.text}</span>
+                        <span className="font-bold tabular-nums">
+                          {visible ? answer.points : "-"}
+                        </span>
+                        <span
+                          className={cx(
+                            "w-16 text-right text-[10px] font-semibold",
+                            visible ? "text-emerald-800" : "text-stone-400"
+                          )}
+                        >
+                          {visible ? "VISIBLE" : "OCULTA"}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+                {["faceoff", "tiebreaker"].includes(state.phase) && !faceoffFirstTeam && (
+                  <div className="absolute inset-0 z-10 flex items-center justify-center gap-2 rounded-xl bg-stone-100/90 text-stone-500 backdrop-blur-[1px]">
+                    <Lock size={18} aria-hidden="true" />
+                    <span className="text-xs font-bold">Esperando al equipo o pulsador</span>
+                  </div>
+                )}
               </div>
             </section>
           </div>
