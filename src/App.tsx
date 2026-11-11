@@ -179,6 +179,7 @@ type SavedDeviceConfig = {
   deviceType: DeviceType
 }
 const deviceConfigKey = (code: string) => `people-says-device-config:${code.toUpperCase()}`
+const gameDeviceCountKey = (code: string) => `people-says-game-device-count:${code.toUpperCase()}`
 const getSavedDeviceConfigForCode = (code: string): SavedDeviceConfig | null => {
   if (!code) return null
   const raw = localStorage.getItem(deviceConfigKey(code))
@@ -264,6 +265,33 @@ function GameStatusCard({ state, dark = false }: { state: State; dark?: boolean 
     </div>
   )
 }
+function DeviceConnectionIndicator({
+  connected,
+  expected,
+}: {
+  connected: number
+  expected: number
+}) {
+  const disconnected = expected > 1 && connected < expected
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-3 py-2">
+        <Monitor size={16} className="text-emerald-800" aria-hidden="true" />
+        <span className="text-xs font-semibold text-stone-700">
+          {connected}/{expected} dispositivos
+        </span>
+      </div>
+      {disconnected && (
+        <span
+          role="alert"
+          className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800"
+        >
+          Un dispositivo se desconectó. Busca reconectarlo.
+        </span>
+      )}
+    </div>
+  )
+}
 
 export default function App() {
   const location = useLocation()
@@ -336,6 +364,11 @@ export default function App() {
   const [loadingAction, setLoadingAction] = useState<
     "create" | "teams" | "rounds" | "start" | "join" | null
   >(null)
+  const [expectedDeviceCount, setExpectedDeviceCount] = useState(() => {
+    const code = roomCodeFromLocation() || localStorage.getItem("people-says-room-code") || ""
+    const stored = code ? localStorage.getItem(gameDeviceCountKey(code)) : null
+    return stored ? Number(stored) : 1
+  })
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
@@ -867,6 +900,9 @@ export default function App() {
       return
     }
     setError("")
+    const connectedCount = roles.length
+    setExpectedDeviceCount(connectedCount)
+    localStorage.setItem(gameDeviceCountKey(roomCode), String(connectedCount))
     setLoadingAction("start")
     emitAction({ type: "start" })
     window.setTimeout(() => {
@@ -884,6 +920,7 @@ export default function App() {
   }
   const teamId = state.control ?? "blue"
   const teamName = teamId === "blue" ? teams[0].name : teams[1].name
+  const connectedDeviceCount = devices.length + 1
   useEffect(() => {
     if (screen === "joinLobby" && state.phase !== "lobby") {
       if (currentDeviceRole === "host") setScreen("host")
@@ -1583,6 +1620,12 @@ export default function App() {
     return (
       <Shell>
         <GameStatusCard state={state} />
+        <div className="mb-4 flex justify-end">
+          <DeviceConnectionIndicator
+            connected={connectedDeviceCount}
+            expected={expectedDeviceCount}
+          />
+        </div>
         <div className="mb-4 flex justify-end">{pauseControl}</div>
         <div className="mx-auto max-w-lg rounded-2xl border border-stone-200 bg-white p-6 text-center">
           <p className="text-xs font-bold uppercase tracking-widest text-emerald-800">
@@ -1645,6 +1688,12 @@ export default function App() {
     return (
       <Shell wide>
         <GameStatusCard state={state} />
+        <div className="mb-4 flex justify-end">
+          <DeviceConnectionIndicator
+            connected={connectedDeviceCount}
+            expected={expectedDeviceCount}
+          />
+        </div>
         <div className="mb-5 flex items-center justify-between rounded-2xl border border-stone-200 bg-white p-4">
           <div>
             <p className="text-xs text-stone-500">Ronda {state.roundIndex + 1}</p>
