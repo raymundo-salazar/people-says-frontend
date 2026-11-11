@@ -1847,7 +1847,7 @@ export default function App() {
                       </div>
                       <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800">
                         <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" />
-                        Listo
+                        Conectado
                       </span>
                     </div>
                     {devices.map((device, index) => (
@@ -1877,7 +1877,7 @@ export default function App() {
                             className={`size-2 rounded-full ${device.role === "pending" ? "animate-pulse bg-stone-400" : "bg-emerald-600"}`}
                             aria-hidden="true"
                           />
-                          {device.role === "pending" ? "Pendiente" : "Listo"}
+                          {device.role === "pending" ? "Pendiente" : "Conectado"}
                         </span>
                       </div>
                     ))}
