@@ -1880,12 +1880,12 @@ export default function App() {
                   puntos
                 </span>
               </div>
-              <div className="flex flex-col overflow-hidden rounded-r-2xl">
-                <div className="flex flex-1 items-center gap-2 bg-gradient-to-r from-blue-100 to-white px-3">
+              <div className="flex w-fit shrink-0 flex-col overflow-hidden rounded-r-2xl">
+                <div className="flex flex-1 items-center gap-2 whitespace-nowrap bg-gradient-to-r from-blue-100 to-white px-3">
                   <span className="text-xs font-bold text-blue-950">{teams[0].name}</span>
                   <strong className="text-lg font-black tabular-nums text-blue-900">{blue}</strong>
                 </div>
-                <div className="flex flex-1 items-center gap-2 bg-gradient-to-r from-red-100 to-white px-3">
+                <div className="flex flex-1 items-center gap-2 whitespace-nowrap bg-gradient-to-r from-red-100 to-white px-3">
                   <span className="text-xs font-bold text-red-950">{teams[1].name}</span>
                   <strong className="text-lg font-black tabular-nums text-red-900">{red}</strong>
                 </div>
