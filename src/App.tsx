@@ -1838,14 +1838,14 @@ export default function App() {
                 <div className="border-t border-stone-100 px-4 pb-4 pt-2">
                   <div>
                     <div className="flex items-center gap-3 border-b border-stone-100 py-3">
-                      <DeviceRoleIcon role={currentDeviceRole} active />
+                      <DeviceRoleIcon role={currentDeviceRole} muted compact />
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-bold uppercase tracking-wider text-emerald-800">
+                        <p className="truncate text-xs font-bold uppercase tracking-wider text-stone-700">
                           {deviceRoleLabels[currentDeviceRole]}
                         </p>
-                        <p className="mt-1 truncate text-xs text-stone-500">{deviceName}</p>
+                        <p className="truncate text-[11px] text-stone-500">{deviceName}</p>
                       </div>
-                      <span className="ml-auto inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800">
+                      <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800">
                         <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" />
                         Listo
                       </span>
@@ -1856,22 +1856,22 @@ export default function App() {
                         className="flex items-center gap-3 border-b border-stone-100 py-3 last:border-b-0"
                       >
                         {device.role === "pending" ? (
-                          <span className="grid size-12 shrink-0 place-items-center rounded-lg bg-stone-100">
-                            <DeviceTypeIcon type={device.deviceType ?? "desktop"} />
+                          <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-stone-100">
+                            <DeviceTypeIcon type={device.deviceType ?? "desktop"} size={18} />
                           </span>
                         ) : (
-                          <DeviceRoleIcon role={device.role as DeviceRole} muted />
+                          <DeviceRoleIcon role={device.role as DeviceRole} muted compact />
                         )}
                         <div className="min-w-0">
-                          <p className="truncate text-sm font-bold uppercase tracking-wider text-stone-700">
+                          <p className="truncate text-xs font-bold uppercase tracking-wider text-stone-700">
                             {deviceRoleLabels[device.role as DeviceRole] ?? device.role}
                           </p>
-                          <p className="mt-1 truncate text-xs text-stone-500">
+                          <p className="truncate text-[11px] text-stone-500">
                             {device.name ?? "Dispositivo"}
                           </p>
                         </div>
                         <span
-                          className={`ml-auto inline-flex shrink-0 items-center gap-1 text-[11px] font-bold ${device.role === "pending" ? "text-stone-400" : "text-emerald-800"}`}
+                          className={`ml-auto inline-flex shrink-0 items-center gap-1 text-[10px] font-bold ${device.role === "pending" ? "text-stone-400" : "text-emerald-800"}`}
                         >
                           <span
                             className={`size-2 rounded-full ${device.role === "pending" ? "animate-pulse bg-stone-400" : "bg-emerald-600"}`}

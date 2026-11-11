@@ -127,10 +127,12 @@ export function DeviceRoleIcon({
   role,
   active = false,
   muted = false,
+  compact = false,
 }: {
   role: "host" | "display" | "blue_button" | "red_button" | "pending"
   active?: boolean
   muted?: boolean
+  compact?: boolean
 }) {
   const icons = {
     host: MicVocal,
@@ -144,7 +146,8 @@ export function DeviceRoleIcon({
   return (
     <span
       className={cx(
-        "grid aspect-square size-12 shrink-0 place-items-center rounded-lg",
+        "grid aspect-square shrink-0 place-items-center rounded-lg",
+        compact ? "size-10" : "size-12",
         active
           ? "bg-emerald-900 text-white"
           : muted
@@ -154,7 +157,7 @@ export function DeviceRoleIcon({
       aria-hidden="true"
     >
       <Icon
-        size={22}
+        size={compact ? 18 : 22}
         strokeWidth={1.8}
         className={active ? "text-white" : muted ? "text-stone-500" : "text-emerald-900"}
         fill={role.includes("button") ? "currentColor" : "none"}
@@ -163,10 +166,10 @@ export function DeviceRoleIcon({
   )
 }
 export type DeviceType = "desktop" | "mobile" | "tv" | "tablet"
-export function DeviceTypeIcon({ type }: { type: DeviceType }) {
+export function DeviceTypeIcon({ type, size = 22 }: { type: DeviceType; size?: number }) {
   const icons = { desktop: Laptop, mobile: Smartphone, tv: Tv, tablet: Tablet }
   const Icon = icons[type]
-  return <Icon size={22} strokeWidth={1.8} className="text-emerald-900" aria-hidden="true" />
+  return <Icon size={size} strokeWidth={1.8} className="text-emerald-900" aria-hidden="true" />
 }
 export function WizardProgress({ step, total = 4 }: { step: number; total?: number }) {
   return (
