@@ -1762,11 +1762,11 @@ export default function App() {
               </p>
               <h2 className="text-lg font-bold leading-snug sm:text-xl">{state.questionPrompt}</h2>
             </div>
-            <section className="rounded-2xl border border-stone-200 bg-white p-5">
+            <section className="relative rounded-2xl border border-stone-200 bg-white p-5">
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
                 Respuestas
               </h2>
-              <div className="relative">
+              <div>
                 <div className="grid gap-1 md:grid-cols-2">
                   {answers.map((answer, index) => {
                     const visible = revealed.includes(index)
@@ -1802,9 +1802,10 @@ export default function App() {
                   })}
                 </div>
                 {["faceoff", "tiebreaker"].includes(state.phase) && !faceoffFirstTeam && (
-                  <div className="absolute inset-0 z-10 flex items-center justify-center gap-2 rounded-xl bg-black/65 px-4 text-center text-white backdrop-blur-[1px]">
-                    <Lock size={18} aria-hidden="true" />
-                    <span className="text-xs font-bold">
+                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 rounded-2xl bg-black/65 px-6 text-center text-white backdrop-blur-[1px]">
+                    <Lock size={48} strokeWidth={1.7} aria-hidden="true" />
+                    <strong className="text-sm font-black">Respuestas bloqueadas</strong>
+                    <span className="max-w-sm text-xs font-bold">
                       Selecciona primero al equipo participante de forma manual o mediante los
                       pulsadores.
                     </span>
