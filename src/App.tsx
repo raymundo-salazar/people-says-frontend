@@ -1714,6 +1714,9 @@ export default function App() {
           detail="Controla la ronda, revela respuestas y administra el marcador."
           aside={
             <div className="min-w-44 rounded-2xl border border-stone-200 bg-white p-4 text-center">
+              <span className="mb-2 inline-flex rounded-full bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
+                {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
+              </span>
               <div className="flex items-center justify-center gap-2">
                 <p className="text-xs font-black text-emerald-900">Ronda {state.roundIndex + 1}</p>
                 <span className="text-xs text-stone-300" aria-hidden="true">
@@ -1729,9 +1732,6 @@ export default function App() {
                 )}
                 {multipliedRoundPoints}
               </p>
-              <span className="mt-2 inline-flex rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-800">
-                {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
-              </span>
             </div>
           }
         />
