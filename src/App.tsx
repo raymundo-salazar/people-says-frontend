@@ -1714,9 +1714,6 @@ export default function App() {
           detail="Controla la ronda, revela respuestas y administra el marcador."
           aside={
             <div className="min-w-56 rounded-2xl border border-stone-200 bg-white p-4 text-left">
-              <span className="mb-3 inline-flex rounded-full bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
-                {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
-              </span>
               <div className="grid grid-cols-[auto_auto_auto] items-stretch justify-center gap-4 text-center">
                 <div className="flex flex-col items-center justify-center">
                   <div className="flex items-center justify-center gap-2">
@@ -1728,6 +1725,9 @@ export default function App() {
                     </span>
                     <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
                   </div>
+                  <span className="mt-2 inline-flex rounded-lg bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
+                    {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
+                  </span>
                 </div>
                 <div className="w-px bg-stone-200" aria-hidden="true" />
                 <div className="flex flex-col items-center justify-center text-center">
