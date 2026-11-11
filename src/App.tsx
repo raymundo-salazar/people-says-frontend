@@ -1718,7 +1718,9 @@ export default function App() {
         <div className="grid items-start gap-5 lg:grid-cols-[2fr_1fr]">
           <div className="space-y-5">
             <section className="rounded-2xl border border-stone-200 bg-white p-5">
-              <h2 className="mb-4 text-lg font-semibold">Enfrentamiento</h2>
+              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
+                Enfrentamiento
+              </h2>
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-1">
                 <div className="min-w-0 rounded-lg bg-blue-50 px-2 py-2 text-center">
                   <p className="truncate text-[10px] font-bold text-blue-700">Azul</p>
@@ -1736,13 +1738,15 @@ export default function App() {
               </div>
             </section>
             <div className="rounded-xl bg-emerald-950 px-4 py-4 text-white">
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-emerald-300">
+              <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-emerald-300">
                 Pregunta
               </p>
               <h2 className="text-lg font-bold leading-snug sm:text-xl">{state.questionPrompt}</h2>
             </div>
             <section className="rounded-2xl border border-stone-200 bg-white p-5">
-              <h2 className="mb-4 text-lg font-semibold">Respuestas</h2>
+              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
+                Respuestas
+              </h2>
               <div className="grid gap-x-4 md:grid-cols-2">
                 {answers.map((answer, index) => {
                   const visible = revealed.includes(index)
@@ -1785,7 +1789,9 @@ export default function App() {
               </div>
             </section>
             <section className="rounded-2xl border border-stone-200 bg-white p-5">
-              <h2 className="text-lg font-semibold">Marcador general</h2>
+              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
+                Marcador general
+              </h2>
               <div className="mt-4 grid grid-cols-2 gap-3">
                 <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
                   <p className="text-sm font-bold text-blue-950">{state.teams[0].name}</p>
