@@ -1613,7 +1613,7 @@ export default function App() {
           detail="Controla la ronda, revela respuestas y administra el marcador."
           aside={
             <div className="min-w-56 rounded-2xl border border-stone-200 bg-white p-4 text-left">
-              <div className="grid grid-cols-[auto_auto_auto] items-stretch justify-center gap-4 text-center">
+              <div className="grid grid-cols-[auto_auto_auto_auto_auto] items-stretch justify-center gap-4 text-center">
                 <div className="flex flex-col items-center justify-center">
                   <div className="flex items-center justify-center gap-2">
                     <p className="text-xs font-black uppercase text-emerald-900">
@@ -1641,6 +1641,27 @@ export default function App() {
                   <span className="text-[10px] font-bold uppercase tracking-wide text-stone-400">
                     puntos
                   </span>
+                </div>
+                <div className="w-px bg-stone-200" aria-hidden="true" />
+                <div className="flex flex-col justify-center gap-2 text-left">
+                  <div className="flex items-end gap-2">
+                    <div>
+                      <p className="text-xs font-bold text-blue-900">{teams[0].name}</p>
+                      <p className="text-[10px] text-stone-500">Equipo azul</p>
+                    </div>
+                    <span className="text-xs text-stone-400">:</span>
+                    <strong className="text-lg font-black tabular-nums text-blue-900">
+                      {blue}
+                    </strong>
+                  </div>
+                  <div className="flex items-end gap-2">
+                    <div>
+                      <p className="text-xs font-bold text-red-900">{teams[1].name}</p>
+                      <p className="text-[10px] text-stone-500">Equipo rojo</p>
+                    </div>
+                    <span className="text-xs text-stone-400">:</span>
+                    <strong className="text-lg font-black tabular-nums text-red-900">{red}</strong>
+                  </div>
                 </div>
               </div>
             </div>
