@@ -1735,17 +1735,6 @@ export default function App() {
             </div>
           </section>
         )}
-        <div className="mb-5 flex items-center justify-between rounded-2xl border border-stone-200 bg-white p-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
-              Pregunta
-            </p>
-            <p className="mt-1 font-bold">{state.questionPrompt}</p>
-          </div>
-          <Button secondary onClick={() => setScreen("display")}>
-            Ver tablero <Monitor size={16} aria-hidden="true" />
-          </Button>
-        </div>
         {error && (
           <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
@@ -1753,6 +1742,12 @@ export default function App() {
         )}
         <div className="grid gap-5 lg:grid-cols-[1.35fr_.8fr]">
           <section className="rounded-2xl border border-stone-200 bg-white p-5">
+            <div className="mb-5 rounded-xl border border-stone-200 bg-stone-50 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+                Pregunta
+              </p>
+              <p className="mt-1 font-bold text-stone-900">{state.questionPrompt}</p>
+            </div>
             <div className="grid gap-x-4 md:grid-cols-2">
               {answers.map((answer, index) => {
                 const visible = revealed.includes(index)
