@@ -871,6 +871,7 @@ export default function App() {
   const teamId = state.control ?? "blue"
   const teamName = teamId === "blue" ? teams[0].name : teams[1].name
   const faceoffFirstTeam = state.faceoff?.firstTeam
+  const strikeTeam = faceoffFirstTeam ?? teamId
   const connectedDeviceCount = devices.length + 1
   const roundMultiplier = state.roundConfigs[state.roundIndex]?.multiplier ?? 1
   const baseRoundPoints = revealed.reduce(
@@ -2119,7 +2120,7 @@ export default function App() {
                   className="bg-red-600 hover:bg-red-700"
                   onClick={() => {
                     setStrikeVisible(true)
-                    emitAction({ type: "strike", team: teamId, source: "manual" })
+                    emitAction({ type: "strike", team: strikeTeam, source: "manual" })
                   }}
                 >
                   <SquareX size={16} aria-hidden="true" /> Error
@@ -2240,7 +2241,7 @@ export default function App() {
                   className="bg-red-600 hover:bg-red-700"
                   onClick={() => {
                     setStrikeVisible(true)
-                    emitAction({ type: "strike", team: teamId, source: "manual" })
+                    emitAction({ type: "strike", team: strikeTeam, source: "manual" })
                   }}
                 >
                   <SquareX size={16} aria-hidden="true" /> Error
