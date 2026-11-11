@@ -2351,7 +2351,7 @@ export default function App() {
                 faceoffFirstTeam === "blue"
                   ? "z-10 scale-[1.2] -translate-x-4 bg-blue-600 shadow-[0_0_42px_rgba(37,99,235,0.75)]"
                   : faceoffFirstTeam === "red"
-                    ? "scale-90 -translate-x-2 opacity-30"
+                    ? "scale-90 translate-x-2 opacity-30"
                     : ""
               )}
             >
