@@ -1725,7 +1725,7 @@ export default function App() {
                     </span>
                     <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
                   </div>
-                  <span className="mt-2 inline-flex rounded-lg bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
+                  <span className="mt-1 inline-flex rounded-lg bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
                     {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
                   </span>
                 </div>
