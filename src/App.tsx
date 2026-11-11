@@ -2357,21 +2357,17 @@ export default function App() {
               </p>
             </div>
             <div>
-              <div className="mb-4 grid items-stretch gap-4 sm:grid-cols-[1fr_auto]">
-                <div className="rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
-                  <p className="text-xl font-black text-white sm:text-2xl">
-                    {state.questionPrompt}
-                  </p>
-                </div>
-                <div className="w-fit rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
-                  <strong className="block font-mono text-6xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-7xl lg:text-8xl">
-                    {multipliedRoundPoints}
-                  </strong>
-                  <p className="text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80 sm:text-xs">
-                    Ronda {String(state.roundIndex + 1).padStart(2, "0")}
-                    {roundMultiplier > 1 && ` · x${roundMultiplier}`}
-                  </p>
-                </div>
+              <div className="mx-auto mb-4 w-fit rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
+                <strong className="block font-mono text-6xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-7xl lg:text-8xl">
+                  {multipliedRoundPoints}
+                </strong>
+                <p className="text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80 sm:text-xs">
+                  Ronda {String(state.roundIndex + 1).padStart(2, "0")}
+                  {roundMultiplier > 1 && ` · x${roundMultiplier}`}
+                </p>
+              </div>
+              <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
+                <p className="text-xl font-black text-white sm:text-2xl">{state.questionPrompt}</p>
               </div>
               <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
                 <div className="grid gap-2 sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-5">
