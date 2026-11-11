@@ -1874,7 +1874,7 @@ export default function App() {
                 <h2 className="text-[11px] font-bold uppercase tracking-wide text-stone-900">
                   Temporizador
                 </h2>
-                <span className="text-3xl font-black tabular-nums text-stone-900">
+                <span className="text-2xl font-black tabular-nums text-stone-900">
                   {timerSeconds}s
                 </span>
               </div>
