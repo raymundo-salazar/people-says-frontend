@@ -441,6 +441,7 @@ export default function App() {
       devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
     }) => setDevices((payload.devices ?? []).filter((device) => device.id !== deviceToken))
     const failure = (payload: { error?: string }) => {
+      setLoadingAction(null)
       const errorCode = payload.error ?? "connection_error"
       if (errorCode === "role_taken") {
         moveToRoleSelection("Este rol ya está ocupado. Selecciona otro para continuar.")
@@ -862,15 +863,6 @@ export default function App() {
     setError("")
     setLoadingAction("start")
     emitAction({ type: "start" })
-    window.setTimeout(() => {
-      setLoadingAction(null)
-      if (currentDeviceRole === "host") setScreen("host")
-      if (currentDeviceRole === "display") setScreen("display")
-      if (currentDeviceRole === "blue_button" || currentDeviceRole === "red_button") {
-        setButtonRole(currentDeviceRole)
-        setScreen("buzzer")
-      }
-    }, 350)
   }
   const reveal = (index: number) => {
     if (!revealed.includes(index)) emitAction({ type: "reveal_answer", index })
@@ -886,6 +878,7 @@ export default function App() {
   )
   const multipliedRoundPoints = baseRoundPoints * roundMultiplier
   useEffect(() => {
+    if (state.phase !== "lobby") setLoadingAction(null)
     if (screen === "joinLobby" && state.phase !== "lobby") {
       if (currentDeviceRole === "host") setScreen("host")
       if (currentDeviceRole === "display") setScreen("display")
