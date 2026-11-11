@@ -74,7 +74,8 @@ button:not(:disabled) {
   transition:
     max-height 220ms ease,
     opacity 180ms ease,
-    transform 220ms ease;
+    transform 220ms ease,
+    padding 220ms ease;
 }
 
 .connected-devices-list-open {

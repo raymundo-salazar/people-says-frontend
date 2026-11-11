@@ -1839,8 +1839,10 @@ export default function App() {
               </button>
               <div
                 className={cx(
-                  "connected-devices-list border-t border-stone-100 px-4 pb-4 pt-2",
-                  showConnectedDevices && "connected-devices-list-open"
+                  "connected-devices-list px-4",
+                  showConnectedDevices
+                    ? "connected-devices-list-open border-t border-stone-100 pb-4 pt-2"
+                    : "connected-devices-list-closed py-0"
                 )}
               >
                 <div>
