@@ -2197,8 +2197,8 @@ export default function App() {
               Ronda {String(state.roundIndex + 1).padStart(2, "0")} · x{roundMultiplier}
             </p>
           </div>
-          <div className="mt-8 grid w-full items-start gap-4 lg:grid-cols-[1fr_5fr_1fr]">
-            <div className="mb-4 rounded-2xl border border-white/20 bg-blue-600/80 px-4 py-4 text-center shadow-lg">
+          <div className="mt-8 grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]">
+            <div className="mb-4 rounded-2xl border border-white/20 bg-blue-600/50 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
               <p className="text-sm font-black uppercase tracking-wide text-blue-100">
                 {teams[0].name}
               </p>
@@ -2255,7 +2255,7 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className="mb-4 rounded-2xl border border-white/20 bg-red-600/80 px-4 py-4 text-center shadow-lg">
+            <div className="mb-4 rounded-2xl border border-white/20 bg-red-600/50 px-4 py-4 text-center shadow-lg backdrop-blur-sm">
               <p className="text-sm font-black uppercase tracking-wide text-red-100">
                 {teams[1].name}
               </p>
