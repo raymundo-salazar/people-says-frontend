@@ -1679,7 +1679,7 @@ export default function App() {
         )}
         <div className="grid items-start gap-3 lg:grid-cols-[2fr_1fr]">
           <div className="space-y-3">
-            <section className="rounded-2xl border border-stone-200 bg-gradient-to-r from-blue-100/80 via-slate-50 to-red-100/80 p-5">
+            <section className="rounded-2xl bg-gradient-to-r from-blue-100/80 via-slate-50 to-red-100/80 p-5">
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
                 Enfrentamiento
               </h2>
