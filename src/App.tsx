@@ -1612,55 +1612,56 @@ export default function App() {
           title="Panel de presentador"
           detail="Controla la ronda, revela respuestas y administra el marcador."
           aside={
-            <div className="min-w-56 rounded-2xl border border-stone-200 bg-white p-4 text-left">
-              <div className="grid grid-cols-[auto_auto_auto_auto_auto] items-stretch justify-center gap-4 text-center">
-                <div className="flex flex-col items-center justify-center">
-                  <div className="flex items-center justify-center gap-2">
-                    <p className="text-xs font-black uppercase text-emerald-900">
-                      RONDA {String(state.roundIndex + 1).padStart(2, "0")}
-                    </p>
-                    <span className="text-sm font-bold text-stone-300" aria-hidden="true">
-                      ·
-                    </span>
-                    <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
-                  </div>
-                  <span className="mt-1 inline-flex rounded-lg bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
-                    {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
-                  </span>
-                </div>
-                <div className="w-px bg-stone-200" aria-hidden="true" />
-                <div className="flex flex-col items-center justify-center text-center">
-                  <p className="text-5xl font-black tabular-nums text-emerald-900">
-                    {roundMultiplier > 1 && (
-                      <span className="mr-2 text-lg text-stone-400 line-through">
-                        {baseRoundPoints}
+            <div className="flex min-w-56 items-stretch text-left">
+              <div className="rounded-l-2xl rounded-r-none border border-r-0 border-stone-200 bg-white p-4">
+                <div className="grid grid-cols-[auto_auto_auto] items-stretch justify-center gap-4 text-center">
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <p className="text-xs font-black uppercase text-emerald-900">
+                        RONDA {String(state.roundIndex + 1).padStart(2, "0")}
+                      </p>
+                      <span className="text-sm font-bold text-stone-300" aria-hidden="true">
+                        ·
                       </span>
-                    )}
-                    {multipliedRoundPoints}
-                  </p>
-                  <span className="text-[10px] font-bold uppercase tracking-wide text-stone-400">
-                    puntos
-                  </span>
-                </div>
-                <div className="w-px bg-stone-200" aria-hidden="true" />
-                <div className="flex flex-col justify-center gap-2 text-left">
-                  <div className="flex items-end gap-2">
-                    <div>
-                      <p className="text-xs font-bold text-blue-900">{teams[0].name}</p>
-                      <p className="text-[10px] text-stone-500">Equipo azul</p>
+                      <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
                     </div>
-                    <span className="text-xs text-stone-400">:</span>
-                    <strong className="text-lg font-black tabular-nums text-blue-900">
-                      {blue}
-                    </strong>
+                    <span className="mt-1 inline-flex rounded-lg bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
+                      {["faceoff", "tiebreaker"].includes(state.phase)
+                        ? "Enfrentamiento"
+                        : "Normal"}
+                    </span>
                   </div>
-                  <div className="flex items-end gap-2">
-                    <div>
-                      <p className="text-xs font-bold text-red-900">{teams[1].name}</p>
-                      <p className="text-[10px] text-stone-500">Equipo rojo</p>
-                    </div>
-                    <span className="text-xs text-stone-400">:</span>
-                    <strong className="text-lg font-black tabular-nums text-red-900">{red}</strong>
+                  <div className="w-px bg-stone-200" aria-hidden="true" />
+                  <div className="flex flex-col items-center justify-center text-center">
+                    <p className="text-5xl font-black tabular-nums text-emerald-900">
+                      {roundMultiplier > 1 && (
+                        <span className="mr-2 text-lg text-stone-400 line-through">
+                          {baseRoundPoints}
+                        </span>
+                      )}
+                      {multipliedRoundPoints}
+                    </p>
+                    <span className="text-[10px] font-bold uppercase tracking-wide text-stone-400">
+                      puntos
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex min-w-28 flex-col overflow-hidden rounded-r-2xl border border-stone-200">
+                <div className="flex flex-1 flex-col justify-center bg-blue-50 px-3 py-2 text-left text-blue-950">
+                  <p className="truncate text-xs font-bold">{teams[0].name}</p>
+                  <p className="text-[10px] text-blue-700">Equipo azul</p>
+                  <div className="mt-1 flex items-center gap-1">
+                    <span className="text-xs text-blue-700">:</span>
+                    <strong className="text-lg font-black tabular-nums">{blue}</strong>
+                  </div>
+                </div>
+                <div className="flex flex-1 flex-col justify-center bg-red-50 px-3 py-2 text-left text-red-950">
+                  <p className="truncate text-xs font-bold">{teams[1].name}</p>
+                  <p className="text-[10px] text-red-700">Equipo rojo</p>
+                  <div className="mt-1 flex items-center gap-1">
+                    <span className="text-xs text-red-700">:</span>
+                    <strong className="text-lg font-black tabular-nums">{red}</strong>
                   </div>
                 </div>
               </div>
