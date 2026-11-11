@@ -1713,25 +1713,34 @@ export default function App() {
           title="Panel de presentador"
           detail="Controla la ronda, revela respuestas y administra el marcador."
           aside={
-            <div className="min-w-44 rounded-2xl border border-stone-200 bg-white p-4 text-center">
-              <span className="mb-2 inline-flex rounded-full bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
-                {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
-              </span>
-              <div className="flex items-center justify-center gap-2">
-                <p className="text-xs font-black text-emerald-900">Ronda {state.roundIndex + 1}</p>
-                <span className="text-xs text-stone-300" aria-hidden="true">
-                  ·
-                </span>
-                <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
-              </div>
-              <p className="mt-2 text-5xl font-black tabular-nums text-emerald-900">
-                {roundMultiplier > 1 && (
-                  <span className="mr-2 text-lg text-stone-400 line-through">
-                    {baseRoundPoints}
+            <div className="min-w-56 rounded-2xl border border-stone-200 bg-white p-4 text-left">
+              <div className="grid grid-cols-[1fr_auto_1fr] items-stretch gap-4">
+                <div className="flex flex-col items-start justify-center">
+                  <span className="inline-flex rounded-full bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
+                    {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
                   </span>
-                )}
-                {multipliedRoundPoints}
-              </p>
+                  <div className="mt-2 flex items-center gap-2">
+                    <p className="text-xs font-black text-emerald-900">
+                      Ronda {state.roundIndex + 1}
+                    </p>
+                    <span className="text-xs text-stone-300" aria-hidden="true">
+                      ·
+                    </span>
+                    <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
+                  </div>
+                </div>
+                <div className="w-px bg-stone-200" aria-hidden="true" />
+                <div className="flex flex-col items-center justify-center text-center">
+                  <p className="text-5xl font-black tabular-nums text-emerald-900">
+                    {roundMultiplier > 1 && (
+                      <span className="mr-2 text-lg text-stone-400 line-through">
+                        {baseRoundPoints}
+                      </span>
+                    )}
+                    {multipliedRoundPoints}
+                  </p>
+                </div>
+              </div>
             </div>
           }
         />
