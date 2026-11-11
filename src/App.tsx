@@ -1684,14 +1684,14 @@ export default function App() {
                 Enfrentamiento
               </h2>
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-1">
-                <div className="min-w-0 rounded-lg bg-blue-50 px-2 py-2 text-center">
+                <div className="min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm">
                   <p className="truncate text-[10px] font-bold text-blue-700">Azul</p>
                   <p className="truncate text-sm font-black text-blue-950">
                     {state.faceoff?.bluePlayer ?? "—"}
                   </p>
                 </div>
                 <span className="text-xs font-black text-stone-400">VS</span>
-                <div className="min-w-0 rounded-lg bg-red-50 px-2 py-2 text-center">
+                <div className="min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm">
                   <p className="truncate text-[10px] font-bold text-red-700">Rojo</p>
                   <p className="truncate text-sm font-black text-red-950">
                     {state.faceoff?.redPlayer ?? "—"}
