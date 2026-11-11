@@ -1833,22 +1833,27 @@ export default function App() {
                     )
                   })}
                 </div>
-                {["faceoff", "tiebreaker"].includes(state.phase) && !faceoffFirstTeam && (
-                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 rounded-2xl bg-black/65 px-6 text-center text-white backdrop-blur-[1px]">
-                    <Pointer
-                      size={88}
-                      strokeWidth={1.8}
-                      className="faceoff-lock-pointer absolute right-8 top-[40%] text-amber-300"
-                      aria-hidden="true"
-                    />
-                    <Lock size={48} strokeWidth={1.7} aria-hidden="true" />
-                    <strong className="text-sm font-black">Respuestas bloqueadas</strong>
-                    <span className="max-w-sm text-xs font-bold">
-                      Selecciona primero al equipo participante de forma manual o mediante los
-                      pulsadores.
-                    </span>
-                  </div>
-                )}
+                <div
+                  className={cx(
+                    "absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 rounded-2xl bg-black/65 px-6 text-center text-white backdrop-blur-[1px] transition duration-300",
+                    ["faceoff", "tiebreaker"].includes(state.phase) && !faceoffFirstTeam
+                      ? "scale-100 opacity-100"
+                      : "pointer-events-none scale-75 opacity-0"
+                  )}
+                >
+                  <Pointer
+                    size={88}
+                    strokeWidth={1.8}
+                    className="faceoff-lock-pointer absolute right-8 top-[40%] text-amber-300"
+                    aria-hidden="true"
+                  />
+                  <Lock size={48} strokeWidth={1.7} aria-hidden="true" />
+                  <strong className="text-sm font-black">Respuestas bloqueadas</strong>
+                  <span className="max-w-sm text-xs font-bold">
+                    Selecciona primero al equipo participante de forma manual o mediante los
+                    pulsadores.
+                  </span>
+                </div>
               </div>
             </section>
           </div>
