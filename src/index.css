@@ -174,10 +174,10 @@ button:not(:disabled) {
 @keyframes faceoff-lock-pointer {
   0%,
   100% {
-    transform: translateX(0);
+    transform: rotate(90deg) translateX(0);
   }
   75% {
-    transform: translateX(24px);
+    transform: rotate(90deg) translateX(24px);
   }
 }
 
