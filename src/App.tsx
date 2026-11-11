@@ -1649,20 +1649,18 @@ export default function App() {
               </div>
               <div className="flex min-w-28 flex-col overflow-hidden rounded-r-2xl border border-stone-200">
                 <div className="flex flex-1 flex-col justify-center bg-blue-50 px-3 py-2 text-left text-blue-950">
-                  <p className="truncate text-xs font-bold">{teams[0].name}</p>
-                  <p className="text-[10px] text-blue-700">Equipo azul</p>
-                  <div className="mt-1 flex items-center gap-1">
-                    <span className="text-xs text-blue-700">:</span>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="truncate text-xs font-bold">{teams[0].name}</p>
                     <strong className="text-lg font-black tabular-nums">{blue}</strong>
                   </div>
+                  <p className="text-[10px] text-blue-700">Equipo azul</p>
                 </div>
                 <div className="flex flex-1 flex-col justify-center bg-red-50 px-3 py-2 text-left text-red-950">
-                  <p className="truncate text-xs font-bold">{teams[1].name}</p>
-                  <p className="text-[10px] text-red-700">Equipo rojo</p>
-                  <div className="mt-1 flex items-center gap-1">
-                    <span className="text-xs text-red-700">:</span>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="truncate text-xs font-bold">{teams[1].name}</p>
                     <strong className="text-lg font-black tabular-nums">{red}</strong>
                   </div>
+                  <p className="text-[10px] text-red-700">Equipo rojo</p>
                 </div>
               </div>
             </div>
