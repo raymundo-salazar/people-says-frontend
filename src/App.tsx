@@ -6,6 +6,7 @@ import {
   AlertTriangle,
   ClipboardPaste,
   ExternalLink,
+  Hand,
   LoaderCircle,
   LogIn,
   LogOut,
@@ -1775,7 +1776,7 @@ export default function App() {
                   {state.faceoff?.redPlayer ?? "Equipo Rojo"}
                 </span>
               </div>
-              <div className="mt-4 grid grid-cols-2 gap-2">
+              <div className="hidden">
                 <button
                   type="button"
                   className="min-h-10 cursor-pointer rounded-xl bg-blue-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
@@ -1815,6 +1816,34 @@ export default function App() {
                 Cerrar ronda <ArrowRight size={16} aria-hidden="true" />
               </Button>
             )}
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+              <button
+                type="button"
+                className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl bg-blue-600 px-5 py-4 text-left text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
+                onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
+              >
+                <Hand size={32} strokeWidth={2.2} aria-hidden="true" />
+                <span>
+                  <span className="block text-xl font-black">{state.teams[0].name}</span>
+                  <span className="mt-1 block text-xs font-semibold text-blue-100">
+                    Equipo azul
+                  </span>
+                </span>
+              </button>
+              <button
+                type="button"
+                className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl bg-red-600 px-5 py-4 text-left text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
+                onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
+              >
+                <Hand size={32} strokeWidth={2.2} aria-hidden="true" />
+                <span>
+                  <span className="block text-xl font-black">{state.teams[1].name}</span>
+                  <span className="mt-1 block text-xs font-semibold text-red-100">Equipo rojo</span>
+                </span>
+              </button>
+            </div>
           </aside>
         </div>
       </Shell>
