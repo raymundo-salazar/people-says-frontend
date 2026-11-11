@@ -2061,11 +2061,17 @@ export default function App() {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-8 border-blue-800 bg-blue-600 px-5 py-4 text-left text-white shadow-lg transition-all duration-150 hover:-translate-y-1 hover:scale-[1.02] hover:brightness-105 hover:shadow-xl active:translate-y-1 active:scale-[0.98] active:border-b-0 active:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                  className={cx(
+                    "flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-8 border-blue-800 bg-blue-600 px-5 py-4 text-left text-white shadow-lg transition-all duration-150 hover:-translate-y-1 hover:scale-[1.02] hover:brightness-105 hover:shadow-xl active:translate-y-1 active:scale-[0.98] active:border-b-0 active:shadow-md disabled:cursor-not-allowed disabled:opacity-50",
+                    faceoffFirstTeam === "blue" && "ring-4 ring-blue-300 ring-offset-2"
+                  )}
                   disabled={
-                    !["faceoff", "tiebreaker"].includes(state.phase) || Boolean(faceoffFirstTeam)
+                    !["faceoff", "tiebreaker"].includes(state.phase) || faceoffFirstTeam === "red"
                   }
-                  onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
+                  onClick={() => {
+                    if (!faceoffFirstTeam)
+                      emitAction({ type: "faceoff_answer", team: "blue", index: 0 })
+                  }}
                 >
                   <Hand size={32} strokeWidth={2.2} aria-hidden="true" />
                   <span>
@@ -2077,11 +2083,17 @@ export default function App() {
                 </button>
                 <button
                   type="button"
-                  className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-8 border-red-800 bg-red-600 px-5 py-4 text-left text-white shadow-lg transition-all duration-150 hover:-translate-y-1 hover:scale-[1.02] hover:brightness-105 hover:shadow-xl active:translate-y-1 active:scale-[0.98] active:border-b-0 active:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                  className={cx(
+                    "flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-8 border-red-800 bg-red-600 px-5 py-4 text-left text-white shadow-lg transition-all duration-150 hover:-translate-y-1 hover:scale-[1.02] hover:brightness-105 hover:shadow-xl active:translate-y-1 active:scale-[0.98] active:border-b-0 active:shadow-md disabled:cursor-not-allowed disabled:opacity-50",
+                    faceoffFirstTeam === "red" && "ring-4 ring-red-300 ring-offset-2"
+                  )}
                   disabled={
-                    !["faceoff", "tiebreaker"].includes(state.phase) || Boolean(faceoffFirstTeam)
+                    !["faceoff", "tiebreaker"].includes(state.phase) || faceoffFirstTeam === "blue"
                   }
-                  onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
+                  onClick={() => {
+                    if (!faceoffFirstTeam)
+                      emitAction({ type: "faceoff_answer", team: "red", index: 1 })
+                  }}
                 >
                   <Hand size={32} strokeWidth={2.2} aria-hidden="true" />
                   <span>
@@ -2092,6 +2104,15 @@ export default function App() {
                   </span>
                 </button>
               </div>
+              {faceoffFirstTeam && ["faceoff", "tiebreaker"].includes(state.phase) && (
+                <Button
+                  secondary
+                  className="mt-3 w-full"
+                  onClick={() => emitAction({ type: "cancel_faceoff" })}
+                >
+                  Soltar selección
+                </Button>
+              )}
             </section>
             <section className="rounded-2xl border border-stone-200 bg-white p-5">
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
