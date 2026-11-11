@@ -182,5 +182,5 @@ button:not(:disabled) {
 }
 
 .faceoff-lock-pointer {
-  animation: faceoff-lock-pointer 2s ease-in infinite;
+  animation: faceoff-lock-pointer 2s ease-in-out infinite;
 }
