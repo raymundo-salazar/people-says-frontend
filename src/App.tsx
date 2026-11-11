@@ -2193,7 +2193,7 @@ export default function App() {
               <p className="text-sm font-black uppercase tracking-wide text-blue-100">
                 {teams[0].name}
               </p>
-              <strong className="block text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
+              <strong className="block font-mono text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
                 {blue}
               </strong>
               <p className="text-[10px] font-semibold uppercase tracking-widest text-white/50">
@@ -2202,7 +2202,7 @@ export default function App() {
             </div>
             <div>
               <div className="mb-4 text-center">
-                <strong className="block text-7xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-8xl lg:text-9xl">
+                <strong className="block font-mono text-7xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-8xl lg:text-9xl">
                   {multipliedRoundPoints}
                 </strong>
                 <p className="text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80 sm:text-xs">
@@ -2225,7 +2225,7 @@ export default function App() {
                         key={`${answer.text}-${index}`}
                         className="flex min-h-[68px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[80px]"
                       >
-                        <div className="grid w-11 shrink-0 place-items-center border-r border-white/15 bg-black/20 text-base font-black tabular-nums text-amber-200 sm:w-14 sm:text-xl">
+                        <div className="grid w-11 shrink-0 place-items-center border-r border-white/15 bg-black/20 font-mono text-base font-black tabular-nums text-amber-200 sm:w-14 sm:text-xl">
                           {String(index + 1).padStart(2, "0")}
                         </div>
                         <div className="flex min-w-0 flex-1 items-center px-3 sm:px-5">
@@ -2233,7 +2233,7 @@ export default function App() {
                             {answer.text}
                           </span>
                         </div>
-                        <div className="grid w-14 shrink-0 place-items-center border-l border-white/15 bg-amber-300 text-lg font-black tabular-nums text-emerald-950 sm:w-20 sm:text-2xl">
+                        <div className="grid w-14 shrink-0 place-items-center border-l border-white/15 bg-amber-300 font-mono text-lg font-black tabular-nums text-emerald-950 sm:w-20 sm:text-2xl">
                           {answer.points}
                         </div>
                       </div>
@@ -2242,7 +2242,7 @@ export default function App() {
                         key={`${answer.text}-${index}`}
                         className="flex min-h-[68px] items-stretch overflow-hidden rounded-xl border border-white/20 bg-black/20 shadow-md sm:min-h-[80px]"
                       >
-                        <div className="grid w-full shrink-0 place-items-center border-r border-white/15 text-sm font-black tabular-nums text-amber-200 sm:text-4xl">
+                        <div className="grid w-full shrink-0 place-items-center border-r border-white/15 font-mono text-sm font-black tabular-nums text-amber-200 sm:text-4xl">
                           {String(index + 1).padStart(2, "0")}
                         </div>
                       </div>
@@ -2268,7 +2268,7 @@ export default function App() {
               <p className="text-sm font-black uppercase tracking-wide text-red-100">
                 {teams[1].name}
               </p>
-              <strong className="block text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
+              <strong className="block font-mono text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
                 {red}
               </strong>
               <p className="text-[10px] font-semibold uppercase tracking-widest text-white/50">
