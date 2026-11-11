@@ -5,6 +5,7 @@ import {
   ArrowRight,
   AlertTriangle,
   ClipboardPaste,
+  ChevronDown,
   ExternalLink,
   Hand,
   LoaderCircle,
@@ -326,6 +327,7 @@ export default function App() {
     const stored = code ? localStorage.getItem(gameDeviceCountKey(code)) : null
     return stored ? Number(stored) : 1
   })
+  const [showConnectedDevices, setShowConnectedDevices] = useState(false)
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
@@ -1795,28 +1797,93 @@ export default function App() {
                 <SquareX size={16} aria-hidden="true" /> Terminar partida
               </Button>
             </div>
-            <section className="flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-4">
-              <span className="relative grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-700">
-                <DeviceIconAnimation
-                  className="size-6"
-                  iconClassName="text-emerald-700"
-                  size={24}
+            <section className="rounded-2xl border border-stone-200 bg-white">
+              <button
+                type="button"
+                className="flex w-full cursor-pointer items-center gap-3 p-4 text-left"
+                aria-expanded={showConnectedDevices}
+                onClick={() => setShowConnectedDevices((visible) => !visible)}
+              >
+                <ChevronDown
+                  size={18}
+                  aria-hidden="true"
+                  className={cx(
+                    "shrink-0 text-stone-500 transition-transform",
+                    showConnectedDevices && "rotate-180"
+                  )}
                 />
-                <span
-                  className="absolute -right-1 -top-1 size-2.5 rounded-full border-2 border-white bg-emerald-500"
-                  aria-label="Conectado"
-                  title="Conectado"
-                />
-              </span>
-              <div className="min-w-0 flex-1">
-                <h2 className="text-[11px] font-bold uppercase tracking-wide text-stone-900">
-                  Dispositivos conectados
-                </h2>
-                <p className="text-xs text-stone-500">Partida actual</p>
-              </div>
-              <span className="text-2xl font-black tabular-nums text-stone-900">
-                {connectedDeviceCount}
-              </span>
+                <span className="relative grid size-10 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-700">
+                  <DeviceIconAnimation
+                    className="size-6"
+                    iconClassName="text-emerald-700"
+                    size={24}
+                  />
+                  <span
+                    className="absolute -right-1 -top-1 size-2.5 rounded-full border-2 border-white bg-emerald-500"
+                    aria-label="Conectado"
+                    title="Conectado"
+                  />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-[11px] font-bold uppercase tracking-wide text-stone-900">
+                    Dispositivos conectados
+                  </h2>
+                  <p className="text-xs text-stone-500">Partida actual</p>
+                </div>
+                <span className="text-2xl font-black tabular-nums text-stone-900">
+                  {connectedDeviceCount}
+                </span>
+              </button>
+              {showConnectedDevices && (
+                <div className="border-t border-stone-100 px-4 pb-4 pt-2">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 rounded-xl border border-emerald-700 bg-emerald-50 p-3">
+                      <DeviceRoleIcon role={currentDeviceRole} active />
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-bold uppercase tracking-wider text-emerald-800">
+                          {deviceRoleLabels[currentDeviceRole]}
+                        </p>
+                        <p className="mt-1 truncate text-xs text-stone-500">{deviceName}</p>
+                      </div>
+                      <span className="ml-auto inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800">
+                        <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" />
+                        Listo
+                      </span>
+                    </div>
+                    {devices.map((device, index) => (
+                      <div
+                        key={`${device.role}-${device.id ?? index}`}
+                        className="flex items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3"
+                      >
+                        {device.role === "pending" ? (
+                          <span className="grid size-12 shrink-0 place-items-center rounded-lg bg-stone-100">
+                            <DeviceTypeIcon type={device.deviceType ?? "desktop"} />
+                          </span>
+                        ) : (
+                          <DeviceRoleIcon role={device.role as DeviceRole} muted />
+                        )}
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-bold uppercase tracking-wider text-stone-700">
+                            {deviceRoleLabels[device.role as DeviceRole] ?? device.role}
+                          </p>
+                          <p className="mt-1 truncate text-xs text-stone-500">
+                            {device.name ?? "Dispositivo"}
+                          </p>
+                        </div>
+                        <span
+                          className={`ml-auto inline-flex shrink-0 items-center gap-1 text-[11px] font-bold ${device.role === "pending" ? "text-stone-400" : "text-emerald-800"}`}
+                        >
+                          <span
+                            className={`size-2 rounded-full ${device.role === "pending" ? "animate-pulse bg-stone-400" : "bg-emerald-600"}`}
+                            aria-hidden="true"
+                          />
+                          {device.role === "pending" ? "Pendiente" : "Listo"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </section>
             <section className="hidden rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
