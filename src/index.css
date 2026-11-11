@@ -5,6 +5,9 @@
 body {
   @apply min-w-[320px] bg-stone-50 text-stone-900 antialiased;
 }
+html {
+  scrollbar-gutter: stable;
+}
 button,
 input,
 select {
