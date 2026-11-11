@@ -1716,7 +1716,7 @@ export default function App() {
           </p>
         )}
         <div className="grid items-start gap-3 lg:grid-cols-[2fr_1fr]">
-          <div className="space-y-2">
+          <div className="space-y-3">
             <section className="rounded-2xl border border-stone-200 bg-white p-5">
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
                 Enfrentamiento
@@ -1806,7 +1806,7 @@ export default function App() {
               </div>
             </section>
           </div>
-          <aside className="space-y-2 rounded-2xl border border-stone-200 bg-white p-5">
+          <aside className="space-y-3 rounded-2xl border border-stone-200 bg-white p-5">
             <section className="hidden rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
                 Enfrentamiento
