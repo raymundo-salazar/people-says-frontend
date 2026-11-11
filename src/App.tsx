@@ -1658,10 +1658,14 @@ export default function App() {
                       <p className="text-xs font-black uppercase text-emerald-900">
                         RONDA {String(state.roundIndex + 1).padStart(2, "0")}
                       </p>
-                      <span className="text-sm font-bold text-stone-300" aria-hidden="true">
-                        ·
-                      </span>
-                      <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
+                      {roundMultiplier > 1 && (
+                        <>
+                          <span className="text-sm font-bold text-stone-300" aria-hidden="true">
+                            ·
+                          </span>
+                          <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
+                        </>
+                      )}
                     </div>
                     <span className="mt-1 inline-flex rounded-lg bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
                       {["faceoff", "tiebreaker", "decision"].includes(state.phase)
@@ -1865,10 +1869,14 @@ export default function App() {
                   <p className="text-xs font-black uppercase text-emerald-900">
                     RONDA {String(state.roundIndex + 1).padStart(2, "0")}
                   </p>
-                  <span className="text-sm font-bold text-stone-300" aria-hidden="true">
-                    ·
-                  </span>
-                  <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
+                  {roundMultiplier > 1 && (
+                    <>
+                      <span className="text-sm font-bold text-stone-300" aria-hidden="true">
+                        ·
+                      </span>
+                      <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
+                    </>
+                  )}
                 </div>
                 <span className="rounded-lg bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
                   {["faceoff", "tiebreaker", "decision"].includes(state.phase)
@@ -2354,7 +2362,8 @@ export default function App() {
                   {multipliedRoundPoints}
                 </strong>
                 <p className="text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80 sm:text-xs">
-                  Ronda {String(state.roundIndex + 1).padStart(2, "0")} · x{roundMultiplier}
+                  Ronda {String(state.roundIndex + 1).padStart(2, "0")}
+                  {roundMultiplier > 1 && ` · x${roundMultiplier}`}
                 </p>
               </div>
               <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
