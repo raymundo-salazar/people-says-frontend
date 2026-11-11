@@ -1797,10 +1797,13 @@ export default function App() {
                 <SquareX size={16} aria-hidden="true" /> Terminar partida
               </Button>
             </div>
-            <section className="rounded-2xl border border-stone-200 bg-white">
+            <section className="overflow-hidden rounded-2xl border border-stone-200 bg-white">
               <button
                 type="button"
-                className="flex w-full cursor-pointer items-center gap-3 rounded-2xl p-4 text-left transition-colors hover:bg-stone-50"
+                className={cx(
+                  "flex w-full cursor-pointer items-center gap-3 p-4 text-left transition-colors hover:bg-stone-50",
+                  showConnectedDevices ? "rounded-t-2xl bg-stone-50" : "rounded-2xl"
+                )}
                 aria-expanded={showConnectedDevices}
                 onClick={() => setShowConnectedDevices((visible) => !visible)}
               >
