@@ -2375,14 +2375,14 @@ export default function App() {
                 <div className="grid gap-2 sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-5">
                   {answers.length === 0 &&
                     [0, 1, 2, 3, 4].map((index) => (
-                      <Skeleton key={`answer-skeleton-${index}`} className="h-20 bg-white/10" />
+                      <Skeleton key={`answer-skeleton-${index}`} className="h-16 bg-white/10" />
                     ))}
                   {answers.map((answer, index) => {
                     const visible = revealed.includes(index)
                     return visible ? (
                       <div
                         key={`${answer.text}-${index}`}
-                        className="public-answer-flip flex min-h-[68px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[80px]"
+                        className="public-answer-flip flex min-h-[60px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[72px]"
                       >
                         <div className="grid w-11 shrink-0 place-items-center border-r border-white/15 bg-black/20 font-mono text-base font-black tabular-nums text-amber-200 sm:w-14 sm:text-xl">
                           {String(index + 1).padStart(2, "0")}
@@ -2399,7 +2399,7 @@ export default function App() {
                     ) : (
                       <div
                         key={`${answer.text}-${index}`}
-                        className="flex min-h-[68px] items-stretch overflow-hidden rounded-xl border border-white/20 bg-black/20 shadow-md sm:min-h-[80px]"
+                        className="flex min-h-[60px] items-stretch overflow-hidden rounded-xl border border-white/20 bg-black/20 shadow-md sm:min-h-[72px]"
                       >
                         <div className="grid w-full shrink-0 place-items-center border-r border-white/15 font-mono text-sm font-black tabular-nums text-amber-200 sm:text-4xl">
                           {String(index + 1).padStart(2, "0")}
