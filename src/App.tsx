@@ -1805,9 +1805,9 @@ export default function App() {
                 {["faceoff", "tiebreaker"].includes(state.phase) && !faceoffFirstTeam && (
                   <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 rounded-2xl bg-black/65 px-6 text-center text-white backdrop-blur-[1px]">
                     <Pointer
-                      size={72}
+                      size={88}
                       strokeWidth={1.8}
-                      className="faceoff-lock-pointer absolute right-8 top-[40%] text-amber-300"
+                      className="faceoff-lock-pointer absolute right-8 top-[40%] text-white"
                       aria-hidden="true"
                     />
                     <Lock size={48} strokeWidth={1.7} aria-hidden="true" />
