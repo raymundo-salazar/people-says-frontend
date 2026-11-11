@@ -5,6 +5,33 @@
 body {
   @apply min-w-[320px] bg-stone-50 text-stone-900 antialiased;
 }
+
+@keyframes public-strike-animation {
+  0% {
+    opacity: 0;
+    transform: scale(0.45);
+  }
+  15% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  84% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.45);
+  }
+}
+
+.public-strike-animation {
+  animation: public-strike-animation 3s ease-in-out both;
+}
 html {
   scrollbar-gutter: stable;
 }

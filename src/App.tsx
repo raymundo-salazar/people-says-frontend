@@ -307,6 +307,9 @@ export default function App() {
   const [timerSeconds, setTimerSeconds] = useState(30)
   const [timerRunning, setTimerRunning] = useState(false)
   const [strikeVisible, setStrikeVisible] = useState(false)
+  const [publicStrikeVisible, setPublicStrikeVisible] = useState(false)
+  const publicStrikeKey = `${state.faceoffStrikeTeam ?? ""}-${state.strikes.blue}-${state.strikes.red}`
+  const previousPublicStrikeKey = useRef(publicStrikeKey)
   useEffect(() => {
     if (!timerRunning) return
     const timer = window.setInterval(() => {
@@ -331,6 +334,13 @@ export default function App() {
     const timeout = window.setTimeout(() => setStrikeVisible(false), 1800)
     return () => window.clearTimeout(timeout)
   }, [strikeVisible])
+  useEffect(() => {
+    if (previousPublicStrikeKey.current === publicStrikeKey) return
+    previousPublicStrikeKey.current = publicStrikeKey
+    setPublicStrikeVisible(true)
+    const timeout = window.setTimeout(() => setPublicStrikeVisible(false), 3000)
+    return () => window.clearTimeout(timeout)
+  }, [publicStrikeKey])
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
@@ -2351,6 +2361,16 @@ export default function App() {
   if (screen === "display")
     return (
       <div className="public-display relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 px-5 py-10 text-white">
+        {publicStrikeVisible && (
+          <div className="pointer-events-none fixed inset-0 z-50 grid place-items-center bg-red-950/10">
+            <SquareX
+              size={180}
+              strokeWidth={1.5}
+              className="public-strike-animation text-red-400"
+              aria-label="Strike registrado"
+            />
+          </div>
+        )}
         <div className="display-floating-accent display-floating-accent-right pointer-events-none absolute -right-40 -top-48 size-[480px] rounded-full border-[65px] border-white/5" />
         <div className="display-floating-accent display-floating-accent-left pointer-events-none absolute -bottom-36 -left-28 size-[360px] rounded-full border-[50px] border-white/5" />
         <div className="relative z-10 mx-auto max-w-7xl">
