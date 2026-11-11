@@ -191,7 +191,9 @@ const getSavedDeviceConfigForCode = (code: string): SavedDeviceConfig | null => 
   }
 }
 const getSavedDeviceConfig = (): SavedDeviceConfig | null =>
-  getSavedDeviceConfigForCode(roomCodeFromLocation())
+  getSavedDeviceConfigForCode(
+    roomCodeFromLocation() || localStorage.getItem("people-says-room-code") || ""
+  )
 const saveDeviceConfig = (code: string, config: SavedDeviceConfig) => {
   localStorage.setItem(deviceConfigKey(code), JSON.stringify(config))
 }
