@@ -243,7 +243,7 @@ export function Heading({
   footer?: ReactNode
 }) {
   return (
-    <div className="mb-8 flex items-start justify-between gap-6">
+    <div className="mb-8 grid items-start gap-6 lg:grid-cols-[2fr_1fr]">
       <div>
         <p className="mb-3 text-[11px] font-semibold uppercase tracking-[.17em] text-emerald-800">
           {k}
@@ -252,7 +252,7 @@ export function Heading({
         {detail && <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-500">{detail}</p>}
         {footer && <div className="mt-3">{footer}</div>}
       </div>
-      {aside}
+      {aside && <div className="lg:justify-self-end">{aside}</div>}
     </div>
   )
 }
