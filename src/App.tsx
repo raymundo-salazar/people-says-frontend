@@ -9,6 +9,7 @@ import {
   ExternalLink,
   Hand,
   Info,
+  Lock,
   LoaderCircle,
   LogIn,
   LogOut,
@@ -1781,7 +1782,7 @@ export default function App() {
                       disabled={state.phase !== "turn"}
                       onClick={() => reveal(index)}
                       className={cx(
-                        "flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-70",
+                        "relative flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-70",
                         visible
                           ? "border-emerald-300 bg-emerald-50"
                           : "border-stone-200 bg-white hover:border-emerald-500"
@@ -1802,6 +1803,12 @@ export default function App() {
                       >
                         {visible ? "VISIBLE" : "OCULTA"}
                       </span>
+                      {["faceoff", "tiebreaker"].includes(state.phase) && !faceoffFirstTeam && (
+                        <span className="absolute inset-0 z-10 flex items-center justify-center gap-2 rounded-xl bg-stone-100/90 text-stone-500 backdrop-blur-[1px]">
+                          <Lock size={18} aria-hidden="true" />
+                          <span className="text-xs font-bold">Esperando al equipo o pulsador</span>
+                        </span>
+                      )}
                     </button>
                   )
                 })}
