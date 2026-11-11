@@ -1800,7 +1800,7 @@ export default function App() {
             <section className="rounded-2xl border border-stone-200 bg-white">
               <button
                 type="button"
-                className="flex w-full cursor-pointer items-center gap-3 p-4 text-left"
+                className="flex w-full cursor-pointer items-center gap-3 rounded-2xl p-4 text-left transition-colors hover:bg-stone-50"
                 aria-expanded={showConnectedDevices}
                 onClick={() => setShowConnectedDevices((visible) => !visible)}
               >
@@ -1835,7 +1835,7 @@ export default function App() {
                 />
               </button>
               {showConnectedDevices && (
-                <div className="border-t border-stone-100 px-4 pb-4 pt-2">
+                <div className="connected-devices-list border-t border-stone-100 px-4 pb-4 pt-2">
                   <div>
                     <div className="flex items-center gap-3 border-b border-stone-100 py-3">
                       <DeviceRoleIcon role={currentDeviceRole} muted compact />
