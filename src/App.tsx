@@ -2368,7 +2368,7 @@ export default function App() {
                   </p>
                 </div>
               </div>
-              <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
+              <div className="mb-4 rounded-2xl border border-amber-300/60 bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-950 px-4 py-4 text-center shadow-xl shadow-black/25 ring-1 ring-amber-200/20">
                 <p className="text-xl font-black text-white sm:text-2xl">{state.questionPrompt}</p>
               </div>
               <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
