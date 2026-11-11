@@ -2357,66 +2357,68 @@ export default function App() {
               </p>
             </div>
             <div>
-              <div className="mx-auto mb-4 w-fit rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
-                <strong className="block font-mono text-6xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-7xl lg:text-8xl">
-                  {multipliedRoundPoints}
-                </strong>
-                <p className="text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80 sm:text-xs">
-                  Ronda {String(state.roundIndex + 1).padStart(2, "0")}
-                  {roundMultiplier > 1 && ` · x${roundMultiplier}`}
-                </p>
-              </div>
-              <div
-                className={cx(
-                  "mb-4 rounded-2xl border border-white/20 bg-black/20 px-3 py-3 text-center shadow-lg transition duration-300",
-                  !["faceoff", "tiebreaker", "decision"].includes(state.phase) && "hidden"
-                )}
-              >
-                <p className="mb-2 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
-                  Enfrentamiento
-                </p>
-                <div className="grid min-h-14 grid-cols-[1fr_auto_1fr] items-center gap-2">
-                  <div
-                    className={cx(
-                      "rounded-lg bg-blue-500/30 px-2 py-1.5 transition duration-300",
-                      faceoffFirstTeam === "blue"
-                        ? "scale-110 bg-blue-600 text-white"
-                        : faceoffFirstTeam === "red"
-                          ? "scale-75 opacity-30"
-                          : "text-white"
-                    )}
-                  >
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-blue-200">
-                      {teams[0].name}
-                    </p>
-                    <p className="truncate text-base font-black">
-                      {state.faceoff?.bluePlayer ?? "—"}
-                    </p>
-                  </div>
-                  <span
-                    className={cx(
-                      "text-xs font-black text-amber-200 transition duration-300",
-                      faceoffFirstTeam && "scale-75 opacity-0"
-                    )}
-                  >
-                    VS
-                  </span>
-                  <div
-                    className={cx(
-                      "rounded-lg bg-red-500/30 px-2 py-1.5 transition duration-300",
-                      faceoffFirstTeam === "red"
-                        ? "scale-110 bg-red-600 text-white"
-                        : faceoffFirstTeam === "blue"
-                          ? "scale-75 opacity-30"
-                          : "text-white"
-                    )}
-                  >
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-red-200">
-                      {teams[1].name}
-                    </p>
-                    <p className="truncate text-base font-black">
-                      {state.faceoff?.redPlayer ?? "—"}
-                    </p>
+              <div className="mb-4 flex flex-wrap items-stretch justify-center gap-3">
+                <div className="w-fit rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
+                  <strong className="block font-mono text-6xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-7xl lg:text-8xl">
+                    {multipliedRoundPoints}
+                  </strong>
+                  <p className="text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80 sm:text-xs">
+                    Ronda {String(state.roundIndex + 1).padStart(2, "0")}
+                    {roundMultiplier > 1 && ` · x${roundMultiplier}`}
+                  </p>
+                </div>
+                <div
+                  className={cx(
+                    "rounded-2xl border border-white/20 bg-black/20 px-3 py-3 text-center shadow-lg transition duration-300",
+                    !["faceoff", "tiebreaker", "decision"].includes(state.phase) && "hidden"
+                  )}
+                >
+                  <p className="mb-2 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
+                    Enfrentamiento
+                  </p>
+                  <div className="grid min-h-14 grid-cols-[1fr_auto_1fr] items-center gap-2">
+                    <div
+                      className={cx(
+                        "rounded-lg bg-blue-500/30 px-2 py-1.5 transition duration-300",
+                        faceoffFirstTeam === "blue"
+                          ? "scale-110 bg-blue-600 text-white"
+                          : faceoffFirstTeam === "red"
+                            ? "scale-75 opacity-30"
+                            : "text-white"
+                      )}
+                    >
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-blue-200">
+                        {teams[0].name}
+                      </p>
+                      <p className="truncate text-base font-black">
+                        {state.faceoff?.bluePlayer ?? "—"}
+                      </p>
+                    </div>
+                    <span
+                      className={cx(
+                        "text-xs font-black text-amber-200 transition duration-300",
+                        faceoffFirstTeam && "scale-75 opacity-0"
+                      )}
+                    >
+                      VS
+                    </span>
+                    <div
+                      className={cx(
+                        "rounded-lg bg-red-500/30 px-2 py-1.5 transition duration-300",
+                        faceoffFirstTeam === "red"
+                          ? "scale-110 bg-red-600 text-white"
+                          : faceoffFirstTeam === "blue"
+                            ? "scale-75 opacity-30"
+                            : "text-white"
+                      )}
+                    >
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-red-200">
+                        {teams[1].name}
+                      </p>
+                      <p className="truncate text-base font-black">
+                        {state.faceoff?.redPlayer ?? "—"}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
