@@ -11,6 +11,8 @@ import {
   LogIn,
   LogOut,
   Monitor,
+  SquareDashed,
+  SquareX,
   Settings2,
   X,
 } from "lucide-react"
@@ -25,7 +27,6 @@ import {
   Score,
   Shell,
   Skeleton,
-  Strikes,
   WizardProgress,
   DeviceTypeIcon,
 } from "./components/atoms"
@@ -1763,12 +1764,6 @@ export default function App() {
                   )
                 })}
               </div>
-              <div className="mt-5 flex items-center justify-between rounded-xl border border-red-200 bg-red-50 p-4">
-                <Strikes count={Math.max(state.strikes.blue, state.strikes.red)} />
-                <Button onClick={() => emitAction({ type: "strike", team: teamId })}>
-                  <X size={16} aria-hidden="true" /> Strike
-                </Button>
-              </div>
             </section>
             <section className="rounded-2xl border border-stone-200 bg-white p-5">
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
@@ -1825,6 +1820,37 @@ export default function App() {
                 >
                   Pulsador rojo
                 </button>
+              </div>
+            </section>
+            <section className="rounded-2xl border border-stone-200 bg-white p-5">
+              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
+                Errores
+              </h2>
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  {[0, 1, 2].map((index) => {
+                    const active = index < Math.max(state.strikes.blue, state.strikes.red)
+                    return (
+                      <span key={index} className="relative block size-7" aria-hidden="true">
+                        {active ? (
+                          <SquareX size={28} strokeWidth={1.8} className="text-red-600" />
+                        ) : (
+                          <>
+                            <SquareDashed size={28} strokeWidth={1.8} className="text-stone-300" />
+                            <X
+                              className="absolute inset-0 m-auto text-stone-300"
+                              size={12}
+                              strokeWidth={2}
+                            />
+                          </>
+                        )}
+                      </span>
+                    )
+                  })}
+                </div>
+                <Button secondary onClick={() => emitAction({ type: "strike", team: teamId })}>
+                  <SquareX size={16} aria-hidden="true" /> Error
+                </Button>
               </div>
             </section>
             {state.phase === "steal" && (
