@@ -91,3 +91,39 @@ button:not(:disabled) {
 .device-icon-back {
   animation-name: device-icon-back-flip;
 }
+
+@keyframes display-floating-accent-right {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-18px, 22px, 0);
+  }
+}
+
+@keyframes display-floating-accent-left {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(18px, -18px, 0);
+  }
+}
+
+.display-floating-accent {
+  animation-duration: 9s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  will-change: transform;
+}
+
+.display-floating-accent-right {
+  animation-name: display-floating-accent-right;
+}
+
+.display-floating-accent-left {
+  animation-delay: -4.5s;
+  animation-name: display-floating-accent-left;
+}
