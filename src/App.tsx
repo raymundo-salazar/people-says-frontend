@@ -1898,7 +1898,7 @@ export default function App() {
               </button>
             </div>
           </aside>
-          <section className="rounded-2xl border border-stone-200 bg-white p-5 lg:col-start-2">
+          <section className="rounded-2xl border border-stone-200 bg-white p-5 lg:col-start-1">
             <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
               Errores
             </h2>
