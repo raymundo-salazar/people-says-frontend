@@ -1717,9 +1717,9 @@ export default function App() {
               <span className="mb-3 inline-flex rounded-full bg-stone-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-stone-600">
                 {["faceoff", "tiebreaker"].includes(state.phase) ? "Enfrentamiento" : "Normal"}
               </span>
-              <div className="grid grid-cols-[1fr_auto_1fr] items-stretch gap-4">
-                <div className="flex flex-col items-start justify-center">
-                  <div className="flex items-center gap-2">
+              <div className="grid grid-cols-[auto_auto_auto] items-stretch justify-center gap-4 text-center">
+                <div className="flex flex-col items-center justify-center">
+                  <div className="flex items-center justify-center gap-2">
                     <p className="text-xs font-black text-emerald-900">
                       Ronda {state.roundIndex + 1}
                     </p>
