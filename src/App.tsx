@@ -1724,7 +1724,7 @@ export default function App() {
                 </span>
                 <p className="text-xs font-semibold text-stone-400">x{roundMultiplier}</p>
               </div>
-              <p className="mt-2 text-4xl font-black tabular-nums text-stone-900">
+              <p className="mt-2 text-5xl font-black tabular-nums text-emerald-900">
                 {roundMultiplier > 1 && (
                   <span className="mr-2 text-lg text-stone-400 line-through">
                     {baseRoundPoints}
