@@ -2189,6 +2189,14 @@ export default function App() {
         <div className="relative z-10 mx-auto max-w-4xl">
           <div className="flex justify-end">{pauseControl}</div>
           <p className="text-center text-2xl font-bold">La gente dice.</p>
+          <div className="mb-4 text-center">
+            <strong className="block text-7xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-8xl lg:text-9xl">
+              {multipliedRoundPoints}
+            </strong>
+            <p className="text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80 sm:text-xs">
+              Ronda {String(state.roundIndex + 1).padStart(2, "0")} · x{roundMultiplier}
+            </p>
+          </div>
           <p className="mx-auto mt-8 max-w-3xl text-center text-3xl font-bold">
             {state.questionPrompt}
           </p>
