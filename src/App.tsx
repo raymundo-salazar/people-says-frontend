@@ -304,13 +304,18 @@ export default function App() {
       setTimerSeconds((seconds) => {
         if (seconds <= 1) {
           setTimerRunning(false)
+          gameSocket.emit("game:action", {
+            code: roomCode,
+            hostToken,
+            action: { type: "strike", team: state.control ?? "blue" },
+          })
           return 0
         }
         return seconds - 1
       })
     }, 1000)
     return () => window.clearInterval(timer)
-  }, [timerRunning])
+  }, [hostToken, roomCode, state.control, timerRunning])
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
