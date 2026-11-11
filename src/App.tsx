@@ -1647,23 +1647,23 @@ export default function App() {
                   </div>
                 </div>
               </div>
-              <div className="flex min-w-28 flex-col overflow-hidden rounded-r-2xl border border-l-0 border-stone-200 p-0">
-                <div className="flex flex-1 items-stretch bg-blue-50 text-left text-blue-950 first:rounded-tr-2xl">
+              <div className="flex min-w-28 flex-col overflow-hidden border border-l-0 border-stone-200 p-0">
+                <div className="flex flex-1 items-stretch bg-blue-50 text-left text-blue-950">
                   <div className="flex flex-1 items-center justify-between gap-2">
                     <p className="min-w-0 flex-1 truncate pl-3 text-xs font-bold">
                       {teams[0].name}
                     </p>
-                    <strong className="flex self-stretch items-center rounded-l-lg bg-blue-600 px-3 py-0 text-lg font-black tabular-nums text-white">
+                    <strong className="flex self-stretch items-center bg-blue-600 px-3 py-0 text-lg font-black tabular-nums text-white">
                       {blue}
                     </strong>
                   </div>
                 </div>
-                <div className="flex flex-1 items-stretch bg-red-50 text-left text-red-950 last:rounded-br-2xl">
+                <div className="flex flex-1 items-stretch bg-red-50 text-left text-red-950">
                   <div className="flex flex-1 items-center justify-between gap-2">
                     <p className="min-w-0 flex-1 truncate pl-3 text-xs font-bold">
                       {teams[1].name}
                     </p>
-                    <strong className="flex self-stretch items-center rounded-l-lg bg-red-600 px-3 py-0 text-lg font-black tabular-nums text-white">
+                    <strong className="flex self-stretch items-center bg-red-600 px-3 py-0 text-lg font-black tabular-nums text-white">
                       {red}
                     </strong>
                   </div>
