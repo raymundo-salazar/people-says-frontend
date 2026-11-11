@@ -2425,7 +2425,7 @@ export default function App() {
                     !["faceoff", "tiebreaker", "decision"].includes(state.phase) && "hidden"
                   )}
                 >
-                  <p className="mb-2 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
+                  <p className="text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
                     Enfrentamiento
                   </p>
                   <div className="grid min-h-14 grid-cols-[1fr_auto_1fr] items-center gap-2">
