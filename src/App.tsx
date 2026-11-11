@@ -71,6 +71,7 @@ type State = {
   answerCount?: number
   revealed: number[]
   strikes: { blue: number; red: number }
+  faceoffStrikeTeam?: "blue" | "red"
   pot: number
   scores: { blue: number; red: number }
   control: "blue" | "red" | null
@@ -2097,7 +2098,9 @@ export default function App() {
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
                   {[0, 1, 2].map((index) => {
-                    const active = index < Math.max(state.strikes.blue, state.strikes.red)
+                    const active =
+                      index < Math.max(state.strikes.blue, state.strikes.red) ||
+                      (index === 0 && Boolean(state.faceoffStrikeTeam))
                     return (
                       <span key={index} className="relative block size-9" aria-hidden="true">
                         {active ? (
@@ -2218,7 +2221,9 @@ export default function App() {
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
                   {[0, 1, 2].map((index) => {
-                    const active = index < Math.max(state.strikes.blue, state.strikes.red)
+                    const active =
+                      index < Math.max(state.strikes.blue, state.strikes.red) ||
+                      (index === 0 && Boolean(state.faceoffStrikeTeam))
                     return (
                       <span key={index} className="relative block size-10" aria-hidden="true">
                         {active ? (
@@ -2496,7 +2501,9 @@ export default function App() {
                 </div>
                 <div className="flex w-fit justify-center gap-3" aria-label="Errores de la ronda">
                   {[0, 1, 2].map((index) => {
-                    const active = index < Math.max(state.strikes.blue, state.strikes.red)
+                    const active =
+                      index < Math.max(state.strikes.blue, state.strikes.red) ||
+                      (index === 0 && Boolean(state.faceoffStrikeTeam))
                     return active ? (
                       <SquareX key={index} size={64} strokeWidth={1.8} className="text-red-400" />
                     ) : (
