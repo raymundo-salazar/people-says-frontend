@@ -1879,7 +1879,7 @@ export default function App() {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
-                  className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-4 border-blue-800 bg-blue-600 px-5 py-4 text-left text-white shadow-lg transition hover:bg-blue-700 active:translate-y-1 active:border-b-0 active:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-4 border-blue-800 bg-blue-600 px-5 py-4 text-left text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-blue-700 active:translate-y-1 active:border-b-0 active:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
                   onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
                 >
@@ -1893,7 +1893,7 @@ export default function App() {
                 </button>
                 <button
                   type="button"
-                  className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-4 border-red-800 bg-red-600 px-5 py-4 text-left text-white shadow-lg transition hover:bg-red-700 active:translate-y-1 active:border-b-0 active:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-4 border-red-800 bg-red-600 px-5 py-4 text-left text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-red-700 active:translate-y-1 active:border-b-0 active:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
                   onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
                 >
