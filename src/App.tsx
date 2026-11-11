@@ -1730,7 +1730,7 @@ export default function App() {
                     faceoffFirstTeam === "blue"
                       ? "scale-150"
                       : faceoffFirstTeam === "red"
-                        ? "opacity-40"
+                        ? "scale-75 opacity-0"
                         : ""
                   )}
                 >
@@ -1739,14 +1739,21 @@ export default function App() {
                     {state.faceoff?.bluePlayer ?? "—"}
                   </p>
                 </div>
-                <span className="text-xs font-black text-stone-400">VS</span>
+                <span
+                  className={cx(
+                    "text-xs font-black text-stone-400 transition duration-300",
+                    faceoffFirstTeam && "opacity-0"
+                  )}
+                >
+                  VS
+                </span>
                 <div
                   className={cx(
                     "min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm transition duration-300",
                     faceoffFirstTeam === "red"
                       ? "scale-150"
                       : faceoffFirstTeam === "blue"
-                        ? "opacity-40"
+                        ? "scale-75 opacity-0"
                         : ""
                   )}
                 >
