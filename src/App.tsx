@@ -1848,7 +1848,10 @@ export default function App() {
                     )
                   })}
                 </div>
-                <Button secondary onClick={() => emitAction({ type: "strike", team: teamId })}>
+                <Button
+                  className="bg-red-600 hover:bg-red-700"
+                  onClick={() => emitAction({ type: "strike", team: teamId })}
+                >
                   <SquareX size={16} aria-hidden="true" /> Error
                 </Button>
               </div>
@@ -1897,38 +1900,41 @@ export default function App() {
                 </span>
               </button>
             </div>
-          </aside>
-          <section className="rounded-2xl border border-stone-200 bg-white p-5 lg:col-start-1">
-            <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
-              Errores
-            </h2>
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2">
-                {[0, 1, 2].map((index) => {
-                  const active = index < Math.max(state.strikes.blue, state.strikes.red)
-                  return (
-                    <span key={index} className="relative block size-7" aria-hidden="true">
-                      {active ? (
-                        <SquareX size={28} strokeWidth={1.8} className="text-red-600" />
-                      ) : (
-                        <>
-                          <SquareDashed size={28} strokeWidth={1.8} className="text-stone-300" />
-                          <X
-                            className="absolute inset-0 m-auto text-stone-300"
-                            size={12}
-                            strokeWidth={2}
-                          />
-                        </>
-                      )}
-                    </span>
-                  )
-                })}
+            <section className="rounded-2xl border border-stone-200 bg-white p-5">
+              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
+                Errores
+              </h2>
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  {[0, 1, 2].map((index) => {
+                    const active = index < Math.max(state.strikes.blue, state.strikes.red)
+                    return (
+                      <span key={index} className="relative block size-7" aria-hidden="true">
+                        {active ? (
+                          <SquareX size={28} strokeWidth={1.8} className="text-red-600" />
+                        ) : (
+                          <>
+                            <SquareDashed size={28} strokeWidth={1.8} className="text-stone-300" />
+                            <X
+                              className="absolute inset-0 m-auto text-stone-300"
+                              size={12}
+                              strokeWidth={2}
+                            />
+                          </>
+                        )}
+                      </span>
+                    )
+                  })}
+                </div>
+                <Button
+                  className="bg-red-600 hover:bg-red-700"
+                  onClick={() => emitAction({ type: "strike", team: teamId })}
+                >
+                  <SquareX size={16} aria-hidden="true" /> Error
+                </Button>
               </div>
-              <Button secondary onClick={() => emitAction({ type: "strike", team: teamId })}>
-                <SquareX size={16} aria-hidden="true" /> Error
-              </Button>
-            </div>
-          </section>
+            </section>
+          </aside>
         </div>
       </Shell>
     )
