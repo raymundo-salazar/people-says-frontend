@@ -2345,7 +2345,16 @@ export default function App() {
         <div className="relative z-10 mx-auto max-w-7xl">
           <div className="flex justify-end">{pauseControl}</div>
           <div className="grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]">
-            <div className="mb-4 rounded-2xl bg-gradient-to-br from-blue-900/60 via-blue-700/40 to-blue-400/20 px-4 py-4 text-center shadow-[0_10px_34px_rgba(0,0,0,0.38)] backdrop-blur-sm">
+            <div
+              className={cx(
+                "mb-4 rounded-2xl bg-gradient-to-br from-blue-900/60 via-blue-700/40 to-blue-400/20 px-4 py-4 text-center shadow-[0_10px_34px_rgba(0,0,0,0.38)] backdrop-blur-sm transition duration-300",
+                faceoffFirstTeam === "blue"
+                  ? "z-10 scale-125 bg-blue-600 shadow-[0_0_42px_rgba(37,99,235,0.75)]"
+                  : faceoffFirstTeam === "red"
+                    ? "scale-75 opacity-30"
+                    : ""
+              )}
+            >
               <p className="text-sm font-black uppercase tracking-wide text-blue-100">
                 {teams[0].name}
               </p>
@@ -2422,43 +2431,63 @@ export default function App() {
                   <div className="grid min-h-14 grid-cols-[1fr_auto_1fr] items-center gap-2">
                     <div
                       className={cx(
-                        "rounded-lg bg-blue-500/30 px-2 py-1.5 transition duration-300",
+                        "rounded-lg bg-white/85 px-2 py-1.5 text-center shadow-sm transition duration-300",
                         faceoffFirstTeam === "blue"
-                          ? "scale-110 bg-blue-600 text-white"
+                          ? "z-10 scale-150 translate-x-1/2 bg-gradient-to-br from-blue-700 to-blue-500 text-white"
                           : faceoffFirstTeam === "red"
-                            ? "scale-75 opacity-30"
-                            : "text-white"
+                            ? "scale-75 opacity-0"
+                            : ""
                       )}
                     >
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-blue-200">
+                      <p
+                        className={cx(
+                          "text-[10px] font-bold uppercase tracking-wider",
+                          faceoffFirstTeam === "blue" ? "text-white/70" : "text-blue-700"
+                        )}
+                      >
                         {teams[0].name}
                       </p>
-                      <p className="truncate text-base font-black">
+                      <p
+                        className={cx(
+                          "truncate text-base font-black",
+                          faceoffFirstTeam === "blue" ? "text-white" : "text-blue-950"
+                        )}
+                      >
                         {state.faceoff?.bluePlayer ?? "—"}
                       </p>
                     </div>
                     <span
                       className={cx(
                         "text-xs font-black text-amber-200 transition duration-300",
-                        faceoffFirstTeam && "scale-75 opacity-0"
+                        faceoffFirstTeam && "opacity-0"
                       )}
                     >
                       VS
                     </span>
                     <div
                       className={cx(
-                        "rounded-lg bg-red-500/30 px-2 py-1.5 transition duration-300",
+                        "rounded-lg bg-white/85 px-2 py-1.5 text-center shadow-sm transition duration-300",
                         faceoffFirstTeam === "red"
-                          ? "scale-110 bg-red-600 text-white"
+                          ? "z-10 scale-150 -translate-x-1/2 bg-gradient-to-bl from-red-700 to-red-500 text-white"
                           : faceoffFirstTeam === "blue"
-                            ? "scale-75 opacity-30"
-                            : "text-white"
+                            ? "scale-75 opacity-0"
+                            : ""
                       )}
                     >
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-red-200">
+                      <p
+                        className={cx(
+                          "text-[10px] font-bold uppercase tracking-wider",
+                          faceoffFirstTeam === "red" ? "text-white/70" : "text-red-700"
+                        )}
+                      >
                         {teams[1].name}
                       </p>
-                      <p className="truncate text-base font-black">
+                      <p
+                        className={cx(
+                          "truncate text-base font-black",
+                          faceoffFirstTeam === "red" ? "text-white" : "text-red-950"
+                        )}
+                      >
                         {state.faceoff?.redPlayer ?? "—"}
                       </p>
                     </div>
@@ -2479,7 +2508,16 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className="mb-4 rounded-2xl bg-gradient-to-bl from-red-900/60 via-red-700/40 to-red-400/20 px-4 py-4 text-center shadow-[0_10px_34px_rgba(0,0,0,0.38)] backdrop-blur-sm">
+            <div
+              className={cx(
+                "mb-4 rounded-2xl bg-gradient-to-bl from-red-900/60 via-red-700/40 to-red-400/20 px-4 py-4 text-center shadow-[0_10px_34px_rgba(0,0,0,0.38)] backdrop-blur-sm transition duration-300",
+                faceoffFirstTeam === "red"
+                  ? "z-10 scale-125 bg-red-600 shadow-[0_0_42px_rgba(220,38,38,0.75)]"
+                  : faceoffFirstTeam === "blue"
+                    ? "scale-75 opacity-30"
+                    : ""
+              )}
+            >
               <p className="text-sm font-black uppercase tracking-wide text-red-100">
                 {teams[1].name}
               </p>
