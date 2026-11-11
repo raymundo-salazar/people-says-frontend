@@ -1709,32 +1709,6 @@ export default function App() {
           />
         </div>
         <GameStatusCard state={state} />
-        {["faceoff", "tiebreaker"].includes(state.phase) && (
-          <section className="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4">
-            <div className="flex flex-wrap items-center justify-center gap-3 text-center sm:gap-6">
-              <span className="text-base font-bold text-stone-900 sm:text-lg">
-                {state.faceoff?.bluePlayer ?? "Equipo Azul"}
-              </span>
-              <span className="text-xs font-black tracking-widest text-emerald-800">VS</span>
-              <span className="text-base font-bold text-stone-900 sm:text-lg">
-                {state.faceoff?.redPlayer ?? "Equipo Rojo"}
-              </span>
-            </div>
-            <div className="mx-auto mt-3 grid max-w-sm grid-cols-2 gap-2">
-              <Button
-                onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
-              >
-                {state.teams[0].name}
-              </Button>
-              <Button
-                secondary
-                onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
-              >
-                {state.teams[1].name}
-              </Button>
-            </div>
-          </section>
-        )}
         {error && (
           <p className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error}
@@ -1788,6 +1762,38 @@ export default function App() {
             </div>
           </section>
           <aside className="space-y-4">
+            <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+              <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                Enfrentamiento
+              </p>
+              <div className="mt-3 flex items-center justify-between gap-2 text-center">
+                <span className="min-w-0 flex-1 truncate text-sm font-bold text-stone-900">
+                  {state.faceoff?.bluePlayer ?? "Equipo Azul"}
+                </span>
+                <span className="text-xs font-black tracking-widest text-emerald-800">VS</span>
+                <span className="min-w-0 flex-1 truncate text-sm font-bold text-stone-900">
+                  {state.faceoff?.redPlayer ?? "Equipo Rojo"}
+                </span>
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  className="min-h-10 cursor-pointer rounded-xl bg-blue-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
+                  onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
+                >
+                  Pulsador azul
+                </button>
+                <button
+                  type="button"
+                  className="min-h-10 cursor-pointer rounded-xl bg-red-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
+                  onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
+                >
+                  Pulsador rojo
+                </button>
+              </div>
+            </section>
             <Score blue={blue} red={red} />
             <div className="rounded-2xl border border-stone-200 bg-white p-5">
               <p className="text-xs text-stone-500">Pozo</p>
