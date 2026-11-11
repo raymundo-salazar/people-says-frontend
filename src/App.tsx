@@ -1807,7 +1807,7 @@ export default function App() {
                     <Pointer
                       size={72}
                       strokeWidth={1.8}
-                      className="faceoff-lock-pointer absolute right-8 top-1/2 text-amber-300"
+                      className="faceoff-lock-pointer absolute right-8 top-[45%] text-amber-300"
                       aria-hidden="true"
                     />
                     <Lock size={48} strokeWidth={1.7} aria-hidden="true" />
