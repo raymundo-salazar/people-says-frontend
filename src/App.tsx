@@ -2217,9 +2217,6 @@ export default function App() {
                 <p className="text-2xl font-black text-white sm:text-3xl">{state.questionPrompt}</p>
               </div>
               <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
-                <p className="mb-3 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
-                  Respuestas
-                </p>
                 <div className="grid gap-2 sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-5">
                   {answers.length === 0 &&
                     [0, 1, 2, 3, 4].map((index) => (
