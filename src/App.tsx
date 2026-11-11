@@ -2211,7 +2211,7 @@ export default function App() {
             </div>
             <div>
               <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
-                <p className="text-2xl font-black text-white sm:text-3xl">{state.questionPrompt}</p>
+                <p className="text-xl font-black text-white sm:text-2xl">{state.questionPrompt}</p>
               </div>
               <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
                 <div className="grid gap-2 sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-5">
