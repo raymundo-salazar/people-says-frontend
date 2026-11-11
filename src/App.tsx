@@ -2433,7 +2433,7 @@ export default function App() {
                       className={cx(
                         "rounded-lg bg-white/85 px-2 py-1.5 text-center shadow-sm transition duration-300",
                         faceoffFirstTeam === "blue"
-                          ? "z-10 scale-150 translate-x-3/4 bg-gradient-to-br from-blue-700 to-blue-500 text-white"
+                          ? "z-10 scale-125 translate-x-3/4 bg-gradient-to-br from-blue-700 to-blue-500 text-white"
                           : faceoffFirstTeam === "red"
                             ? "scale-75 opacity-0"
                             : ""
@@ -2468,7 +2468,7 @@ export default function App() {
                       className={cx(
                         "rounded-lg bg-white/85 px-2 py-1.5 text-center shadow-sm transition duration-300",
                         faceoffFirstTeam === "red"
-                          ? "z-10 scale-150 -translate-x-3/4 bg-gradient-to-bl from-red-700 to-red-500 text-white"
+                          ? "z-10 scale-125 -translate-x-3/4 bg-gradient-to-bl from-red-700 to-red-500 text-white"
                           : faceoffFirstTeam === "blue"
                             ? "scale-75 opacity-0"
                             : ""
