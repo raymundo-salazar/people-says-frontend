@@ -2409,10 +2409,10 @@ export default function App() {
                   })}
                 </div>
               </div>
-              <div className="mt-3 grid items-center gap-3 lg:grid-cols-[1fr_auto]">
+              <div className="mt-3 grid grid-cols-[auto_auto] items-center justify-center gap-3">
                 <div
                   className={cx(
-                    "rounded-2xl border border-white/20 bg-black/20 px-3 py-3 text-center shadow-lg transition duration-300",
+                    "w-fit rounded-2xl border border-white/20 bg-black/20 px-3 py-3 text-center shadow-lg transition duration-300",
                     !["faceoff", "tiebreaker", "decision"].includes(state.phase) && "hidden"
                   )}
                 >
@@ -2464,7 +2464,7 @@ export default function App() {
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-center gap-3" aria-label="Errores de la ronda">
+                <div className="flex w-fit justify-center gap-3" aria-label="Errores de la ronda">
                   {[0, 1, 2].map((index) => {
                     const active = index < Math.max(state.strikes.blue, state.strikes.red)
                     return active ? (
