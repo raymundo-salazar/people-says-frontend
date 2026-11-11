@@ -2023,15 +2023,15 @@ export default function App() {
                   {[0, 1, 2].map((index) => {
                     const active = index < Math.max(state.strikes.blue, state.strikes.red)
                     return (
-                      <span key={index} className="relative block size-7" aria-hidden="true">
+                      <span key={index} className="relative block size-10" aria-hidden="true">
                         {active ? (
-                          <SquareX size={28} strokeWidth={1.8} className="text-red-600" />
+                          <SquareX size={40} strokeWidth={1.8} className="text-red-600" />
                         ) : (
                           <>
-                            <SquareDashed size={28} strokeWidth={1.8} className="text-stone-300" />
+                            <SquareDashed size={40} strokeWidth={1.8} className="text-stone-300" />
                             <X
                               className="absolute inset-0 m-auto text-stone-300"
-                              size={12}
+                              size={17}
                               strokeWidth={2}
                             />
                           </>
