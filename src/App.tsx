@@ -1648,9 +1648,7 @@ export default function App() {
           </div>
         )}
         <Heading
-          k="Juego en curso"
-          title="Panel de presentador"
-          detail="Controla la ronda, revela respuestas y administra el marcador."
+          k="Panel del presentador"
           aside={
             <div className="flex min-w-56 items-stretch text-left">
               <div className="rounded-l-2xl rounded-r-none border border-r-0 border-stone-200 bg-white p-4">

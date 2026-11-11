@@ -237,7 +237,7 @@ export function Heading({
   footer,
 }: {
   k: string
-  title: string
+  title?: string
   detail?: string
   aside?: ReactNode
   footer?: ReactNode
@@ -248,7 +248,7 @@ export function Heading({
         <p className="mb-3 text-[11px] font-semibold uppercase tracking-[.17em] text-emerald-800">
           {k}
         </p>
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
+        {title && <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>}
         {detail && <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-500">{detail}</p>}
         {footer && <div className="mt-3">{footer}</div>}
       </div>
