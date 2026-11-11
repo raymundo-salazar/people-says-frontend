@@ -1762,7 +1762,7 @@ export default function App() {
               </Button>
             </div>
           </section>
-          <aside className="space-y-4">
+          <aside className="space-y-4 rounded-2xl border border-stone-200 bg-white p-5">
             <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
                 Enfrentamiento
@@ -1816,7 +1816,7 @@ export default function App() {
                 Cerrar ronda <ArrowRight size={16} aria-hidden="true" />
               </Button>
             )}
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+            <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl bg-blue-600 px-5 py-4 text-left text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
