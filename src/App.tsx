@@ -1715,7 +1715,10 @@ export default function App() {
           aside={
             <div className="min-w-44 rounded-2xl border border-stone-200 bg-white p-4 text-right">
               <div className="flex items-center justify-end gap-2">
-                <p className="text-xs font-bold text-stone-500">Ronda {state.roundIndex + 1}</p>
+                <p className="text-sm font-bold text-stone-700">Ronda {state.roundIndex + 1}</p>
+                <span className="text-xs text-stone-300" aria-hidden="true">
+                  ·
+                </span>
                 <p className="text-xs font-black text-emerald-900">x{roundMultiplier}</p>
               </div>
               <p className="mt-1 text-2xl font-black tabular-nums text-stone-900">
