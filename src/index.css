@@ -170,3 +170,17 @@ button:not(:disabled) {
   backface-visibility: hidden;
   transform-style: preserve-3d;
 }
+
+@keyframes faceoff-lock-pointer {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  75% {
+    transform: translateX(24px);
+  }
+}
+
+.faceoff-lock-pointer {
+  animation: faceoff-lock-pointer 2.8s linear infinite;
+}

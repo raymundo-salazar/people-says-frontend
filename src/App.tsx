@@ -13,6 +13,7 @@ import {
   LoaderCircle,
   LogIn,
   LogOut,
+  MousePointer2,
   Pause,
   SquareDashed,
   SquareX,
@@ -1803,6 +1804,12 @@ export default function App() {
                 </div>
                 {["faceoff", "tiebreaker"].includes(state.phase) && !faceoffFirstTeam && (
                   <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 rounded-2xl bg-black/65 px-6 text-center text-white backdrop-blur-[1px]">
+                    <MousePointer2
+                      size={52}
+                      strokeWidth={1.8}
+                      className="faceoff-lock-pointer absolute right-8 top-1/2 text-amber-300"
+                      aria-hidden="true"
+                    />
                     <Lock size={48} strokeWidth={1.7} aria-hidden="true" />
                     <strong className="text-sm font-black">Respuestas bloqueadas</strong>
                     <span className="max-w-sm text-xs font-bold">
