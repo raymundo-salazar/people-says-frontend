@@ -1796,10 +1796,6 @@ export default function App() {
               </div>
             </section>
             <Score blue={blue} red={red} />
-            <div className="rounded-2xl border border-stone-200 bg-white p-5">
-              <p className="text-xs text-stone-500">Pozo</p>
-              <p className="mt-2 text-4xl font-black">{state.pot}</p>
-            </div>
             {state.phase === "steal" && (
               <Button className="w-full" onClick={() => setScreen("steal")}>
                 Resolver robo <ArrowRight size={16} aria-hidden="true" />
