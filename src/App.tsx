@@ -873,6 +873,9 @@ export default function App() {
   const teamName = teamId === "blue" ? teams[0].name : teams[1].name
   const faceoffFirstTeam = state.faceoff?.firstTeam
   const strikeTeam = faceoffFirstTeam ?? teamId
+  const canRegisterStrike =
+    state.phase === "turn" ||
+    (["faceoff", "decision", "tiebreaker"].includes(state.phase) && Boolean(faceoffFirstTeam))
   const connectedDeviceCount = devices.length + 1
   const roundMultiplier = state.roundConfigs[state.roundIndex]?.multiplier ?? 1
   const baseRoundPoints = revealed.reduce(
@@ -2120,6 +2123,7 @@ export default function App() {
                   })}
                 </div>
                 <Button
+                  disabled={!canRegisterStrike}
                   className="bg-red-600 hover:bg-red-700"
                   onClick={() => {
                     setStrikeVisible(true)
@@ -2243,6 +2247,7 @@ export default function App() {
                   })}
                 </div>
                 <Button
+                  disabled={!canRegisterStrike}
                   className="bg-red-600 hover:bg-red-700"
                   onClick={() => {
                     setStrikeVisible(true)
