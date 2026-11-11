@@ -2368,19 +2368,19 @@ export default function App() {
               </div>
               <div
                 className={cx(
-                  "mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg transition duration-300",
+                  "mb-4 rounded-2xl border border-white/20 bg-black/20 px-3 py-3 text-center shadow-lg transition duration-300",
                   !["faceoff", "tiebreaker", "decision"].includes(state.phase) && "hidden"
                 )}
               >
-                <p className="mb-3 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
+                <p className="mb-2 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
                   Enfrentamiento
                 </p>
-                <div className="grid min-h-16 grid-cols-[1fr_auto_1fr] items-center gap-3">
+                <div className="grid min-h-14 grid-cols-[1fr_auto_1fr] items-center gap-2">
                   <div
                     className={cx(
-                      "rounded-xl bg-blue-500/30 px-3 py-2 transition duration-300",
+                      "rounded-lg bg-blue-500/30 px-2 py-1.5 transition duration-300",
                       faceoffFirstTeam === "blue"
-                        ? "scale-125 bg-blue-600 text-white"
+                        ? "scale-110 bg-blue-600 text-white"
                         : faceoffFirstTeam === "red"
                           ? "scale-75 opacity-30"
                           : "text-white"
@@ -2389,7 +2389,7 @@ export default function App() {
                     <p className="text-[10px] font-bold uppercase tracking-wider text-blue-200">
                       {teams[0].name}
                     </p>
-                    <p className="truncate text-lg font-black">
+                    <p className="truncate text-base font-black">
                       {state.faceoff?.bluePlayer ?? "—"}
                     </p>
                   </div>
@@ -2403,9 +2403,9 @@ export default function App() {
                   </span>
                   <div
                     className={cx(
-                      "rounded-xl bg-red-500/30 px-3 py-2 transition duration-300",
+                      "rounded-lg bg-red-500/30 px-2 py-1.5 transition duration-300",
                       faceoffFirstTeam === "red"
-                        ? "scale-125 bg-red-600 text-white"
+                        ? "scale-110 bg-red-600 text-white"
                         : faceoffFirstTeam === "blue"
                           ? "scale-75 opacity-30"
                           : "text-white"
@@ -2414,7 +2414,9 @@ export default function App() {
                     <p className="text-[10px] font-bold uppercase tracking-wider text-red-200">
                       {teams[1].name}
                     </p>
-                    <p className="truncate text-lg font-black">{state.faceoff?.redPlayer ?? "—"}</p>
+                    <p className="truncate text-base font-black">
+                      {state.faceoff?.redPlayer ?? "—"}
+                    </p>
                   </div>
                 </div>
               </div>
