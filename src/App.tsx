@@ -1747,7 +1747,7 @@ export default function App() {
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
                 Respuestas
               </h2>
-              <div className="grid gap-x-4 md:grid-cols-2">
+              <div className="grid gap-2 md:grid-cols-2">
                 {answers.map((answer, index) => {
                   const visible = revealed.includes(index)
                   return (
@@ -1756,7 +1756,7 @@ export default function App() {
                       disabled={state.phase !== "turn"}
                       onClick={() => reveal(index)}
                       className={cx(
-                        "mb-2 flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-70",
+                        "flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-70",
                         visible
                           ? "border-emerald-300 bg-emerald-50"
                           : "border-stone-200 bg-white hover:border-emerald-500"
