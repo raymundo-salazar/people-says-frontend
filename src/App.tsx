@@ -2188,7 +2188,6 @@ export default function App() {
         <div className="display-floating-accent display-floating-accent-left pointer-events-none absolute -bottom-36 -left-28 size-[360px] rounded-full border-[50px] border-white/5" />
         <div className="relative z-10 mx-auto max-w-7xl">
           <div className="flex justify-end">{pauseControl}</div>
-          <p className="text-center text-2xl font-bold">La gente dice.</p>
           <div className="mb-4 text-center">
             <strong className="block text-7xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-8xl lg:text-9xl">
               {multipliedRoundPoints}
