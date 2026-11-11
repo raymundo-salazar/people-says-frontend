@@ -2368,12 +2368,48 @@ export default function App() {
                   </p>
                 </div>
               </div>
-              <div className="mb-4 grid items-stretch gap-3 lg:grid-cols-[1fr_auto]">
-                <div className="rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
-                  <p className="text-xl font-black text-white sm:text-2xl">
-                    {state.questionPrompt}
-                  </p>
+              <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
+                <p className="text-xl font-black text-white sm:text-2xl">{state.questionPrompt}</p>
+              </div>
+              <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
+                <div className="grid gap-2 sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-5">
+                  {answers.length === 0 &&
+                    [0, 1, 2, 3, 4].map((index) => (
+                      <Skeleton key={`answer-skeleton-${index}`} className="h-20 bg-white/10" />
+                    ))}
+                  {answers.map((answer, index) => {
+                    const visible = revealed.includes(index)
+                    return visible ? (
+                      <div
+                        key={`${answer.text}-${index}`}
+                        className="public-answer-flip flex min-h-[68px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[80px]"
+                      >
+                        <div className="grid w-11 shrink-0 place-items-center border-r border-white/15 bg-black/20 font-mono text-base font-black tabular-nums text-amber-200 sm:w-14 sm:text-xl">
+                          {String(index + 1).padStart(2, "0")}
+                        </div>
+                        <div className="flex min-w-0 flex-1 items-center px-3 sm:px-5">
+                          <span className="truncate text-base font-black text-white sm:text-xl">
+                            {answer.text}
+                          </span>
+                        </div>
+                        <div className="grid w-14 shrink-0 place-items-center border-l border-white/15 bg-amber-300 font-mono text-lg font-black tabular-nums text-emerald-950 sm:w-20 sm:text-2xl">
+                          {answer.points}
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        key={`${answer.text}-${index}`}
+                        className="flex min-h-[68px] items-stretch overflow-hidden rounded-xl border border-white/20 bg-black/20 shadow-md sm:min-h-[80px]"
+                      >
+                        <div className="grid w-full shrink-0 place-items-center border-r border-white/15 font-mono text-sm font-black tabular-nums text-amber-200 sm:text-4xl">
+                          {String(index + 1).padStart(2, "0")}
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
+              </div>
+              <div className="mt-3 grid items-center gap-3 lg:grid-cols-[1fr_auto]">
                 <div
                   className={cx(
                     "rounded-2xl border border-white/20 bg-black/20 px-3 py-3 text-center shadow-lg transition duration-300",
@@ -2428,57 +2464,19 @@ export default function App() {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
-                <div className="grid gap-2 sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-5">
-                  {answers.length === 0 &&
-                    [0, 1, 2, 3, 4].map((index) => (
-                      <Skeleton key={`answer-skeleton-${index}`} className="h-20 bg-white/10" />
-                    ))}
-                  {answers.map((answer, index) => {
-                    const visible = revealed.includes(index)
-                    return visible ? (
-                      <div
-                        key={`${answer.text}-${index}`}
-                        className="public-answer-flip flex min-h-[68px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[80px]"
-                      >
-                        <div className="grid w-11 shrink-0 place-items-center border-r border-white/15 bg-black/20 font-mono text-base font-black tabular-nums text-amber-200 sm:w-14 sm:text-xl">
-                          {String(index + 1).padStart(2, "0")}
-                        </div>
-                        <div className="flex min-w-0 flex-1 items-center px-3 sm:px-5">
-                          <span className="truncate text-base font-black text-white sm:text-xl">
-                            {answer.text}
-                          </span>
-                        </div>
-                        <div className="grid w-14 shrink-0 place-items-center border-l border-white/15 bg-amber-300 font-mono text-lg font-black tabular-nums text-emerald-950 sm:w-20 sm:text-2xl">
-                          {answer.points}
-                        </div>
-                      </div>
+                <div className="flex justify-center gap-3" aria-label="Errores de la ronda">
+                  {[0, 1, 2].map((index) => {
+                    const active = index < Math.max(state.strikes.blue, state.strikes.red)
+                    return active ? (
+                      <SquareX key={index} size={64} strokeWidth={1.8} className="text-red-400" />
                     ) : (
-                      <div
-                        key={`${answer.text}-${index}`}
-                        className="flex min-h-[68px] items-stretch overflow-hidden rounded-xl border border-white/20 bg-black/20 shadow-md sm:min-h-[80px]"
-                      >
-                        <div className="grid w-full shrink-0 place-items-center border-r border-white/15 font-mono text-sm font-black tabular-nums text-amber-200 sm:text-4xl">
-                          {String(index + 1).padStart(2, "0")}
-                        </div>
-                      </div>
+                      <span key={index} className="relative block size-16 text-white/25">
+                        <SquareDashed size={64} strokeWidth={1.8} />
+                        <X className="absolute inset-0 m-auto" size={28} strokeWidth={2} />
+                      </span>
                     )
                   })}
                 </div>
-              </div>
-              <div className="mt-3 flex justify-center gap-3" aria-label="Errores de la ronda">
-                {[0, 1, 2].map((index) => {
-                  const active = index < Math.max(state.strikes.blue, state.strikes.red)
-                  return active ? (
-                    <SquareX key={index} size={64} strokeWidth={1.8} className="text-red-400" />
-                  ) : (
-                    <span key={index} className="relative block size-16 text-white/25">
-                      <SquareDashed size={64} strokeWidth={1.8} />
-                      <X className="absolute inset-0 m-auto" size={28} strokeWidth={2} />
-                    </span>
-                  )
-                })}
               </div>
             </div>
             <div className="mb-4 rounded-2xl bg-gradient-to-bl from-red-900/60 via-red-700/40 to-red-400/20 px-4 py-4 text-center shadow-[0_10px_34px_rgba(0,0,0,0.38)] backdrop-blur-sm">
