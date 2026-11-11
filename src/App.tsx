@@ -1795,6 +1795,18 @@ export default function App() {
                 <SquareX size={16} aria-hidden="true" /> Terminar partida
               </Button>
             </div>
+            <section className="flex items-center gap-3 rounded-2xl border border-stone-200 bg-white p-4">
+              <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-700">
+                <Monitor size={24} aria-hidden="true" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h2 className="text-sm font-bold text-stone-900">Dispositivos conectados</h2>
+                <p className="mt-1 text-xs text-stone-500">Partida actual</p>
+              </div>
+              <span className="text-3xl font-black tabular-nums text-stone-900">
+                {connectedDeviceCount}
+              </span>
+            </section>
             <section className="hidden rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
                 Enfrentamiento
