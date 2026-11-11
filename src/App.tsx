@@ -294,6 +294,21 @@ export default function App() {
     "create" | "teams" | "rounds" | "start" | "join" | null
   >(null)
   const [showConnectedDevices, setShowConnectedDevices] = useState(false)
+  const [timerSeconds, setTimerSeconds] = useState(30)
+  const [timerRunning, setTimerRunning] = useState(false)
+  useEffect(() => {
+    if (!timerRunning) return
+    const timer = window.setInterval(() => {
+      setTimerSeconds((seconds) => {
+        if (seconds <= 1) {
+          setTimerRunning(false)
+          return 0
+        }
+        return seconds - 1
+      })
+    }, 1000)
+    return () => window.clearInterval(timer)
+  }, [timerRunning])
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
@@ -1852,6 +1867,28 @@ export default function App() {
                   ))}
                 </div>
               </div>
+            </section>
+            <section className="rounded-2xl border border-stone-200 bg-white p-4">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-[11px] font-bold uppercase tracking-wide text-stone-900">
+                  Temporizador
+                </h2>
+                <span className="text-3xl font-black tabular-nums text-stone-900">
+                  {timerSeconds}s
+                </span>
+              </div>
+              <Button
+                secondary
+                className="mt-3 w-full"
+                disabled={timerRunning}
+                onClick={() => {
+                  setTimerSeconds(30)
+                  setTimerRunning(true)
+                }}
+              >
+                Ya hice la pregunta
+              </Button>
+              <p className="mt-2 text-xs text-stone-500">Comienza el tiempo para responder.</p>
             </section>
             <section className="hidden rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
               <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
