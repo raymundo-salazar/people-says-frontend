@@ -1744,23 +1744,6 @@ export default function App() {
                 })}
               </div>
             </section>
-            <section className="rounded-2xl border border-stone-200 bg-white p-5">
-              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
-                Marcador general
-              </h2>
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
-                  <p className="text-sm font-bold text-blue-950">{state.teams[0].name}</p>
-                  <p className="mt-1 text-xs text-blue-700">Equipo azul</p>
-                  <p className="mt-3 text-3xl font-black tabular-nums text-blue-950">{blue}</p>
-                </div>
-                <div className="rounded-xl border border-red-200 bg-red-50 p-4">
-                  <p className="text-sm font-bold text-red-950">{state.teams[1].name}</p>
-                  <p className="mt-1 text-xs text-red-700">Equipo rojo</p>
-                  <p className="mt-3 text-3xl font-black tabular-nums text-red-950">{red}</p>
-                </div>
-              </div>
-            </section>
           </div>
           <aside className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
