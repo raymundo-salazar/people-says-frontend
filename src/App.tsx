@@ -1872,34 +1872,38 @@ export default function App() {
                 Cerrar ronda <ArrowRight size={16} aria-hidden="true" />
               </Button>
             )}
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl bg-blue-600 px-5 py-4 text-left text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-                disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
-                onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
-              >
-                <Hand size={32} strokeWidth={2.2} aria-hidden="true" />
-                <span>
-                  <span className="block text-xl font-black">{state.teams[0].name}</span>
-                  <span className="mt-1 block text-xs font-semibold text-blue-100">
-                    Equipo azul
+            <section className="rounded-2xl border border-stone-200 bg-white p-5">
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl bg-blue-600 px-5 py-4 text-left text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
+                  onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
+                >
+                  <Hand size={32} strokeWidth={2.2} aria-hidden="true" />
+                  <span>
+                    <span className="block text-xl font-black">{state.teams[0].name}</span>
+                    <span className="mt-1 block text-xs font-semibold text-blue-100">
+                      Equipo azul
+                    </span>
                   </span>
-                </span>
-              </button>
-              <button
-                type="button"
-                className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl bg-red-600 px-5 py-4 text-left text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
-                disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
-                onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
-              >
-                <Hand size={32} strokeWidth={2.2} aria-hidden="true" />
-                <span>
-                  <span className="block text-xl font-black">{state.teams[1].name}</span>
-                  <span className="mt-1 block text-xs font-semibold text-red-100">Equipo rojo</span>
-                </span>
-              </button>
-            </div>
+                </button>
+                <button
+                  type="button"
+                  className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl bg-red-600 px-5 py-4 text-left text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
+                  onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
+                >
+                  <Hand size={32} strokeWidth={2.2} aria-hidden="true" />
+                  <span>
+                    <span className="block text-xl font-black">{state.teams[1].name}</span>
+                    <span className="mt-1 block text-xs font-semibold text-red-100">
+                      Equipo rojo
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </section>
             <section className="rounded-2xl border border-stone-200 bg-white p-5">
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
                 Errores
