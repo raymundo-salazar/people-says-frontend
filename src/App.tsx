@@ -72,7 +72,12 @@ type State = {
   pot: number
   scores: { blue: number; red: number }
   control: "blue" | "red" | null
-  faceoff?: { bluePlayer?: string; redPlayer?: string }
+  faceoff?: {
+    bluePlayer?: string
+    redPlayer?: string
+    firstTeam?: "blue" | "red"
+    firstIndex?: number
+  }
   teams: [{ name: string; players: string[] }, { name: string; players: string[] }]
 }
 const screens: Screen[] = [
@@ -871,6 +876,7 @@ export default function App() {
   }
   const teamId = state.control ?? "blue"
   const teamName = teamId === "blue" ? teams[0].name : teams[1].name
+  const faceoffFirstTeam = state.faceoff?.firstTeam
   const connectedDeviceCount = devices.length + 1
   const roundMultiplier = state.roundConfigs[state.roundIndex]?.multiplier ?? 1
   const baseRoundPoints = revealed.reduce(
@@ -1723,14 +1729,32 @@ export default function App() {
                 Enfrentamiento
               </h2>
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-1">
-                <div className="min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm">
+                <div
+                  className={cx(
+                    "min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm transition duration-300",
+                    faceoffFirstTeam === "blue"
+                      ? "scale-150"
+                      : faceoffFirstTeam === "red"
+                        ? "opacity-40"
+                        : ""
+                  )}
+                >
                   <p className="truncate text-[10px] font-bold text-blue-700">Azul</p>
                   <p className="truncate text-sm font-black text-blue-950">
                     {state.faceoff?.bluePlayer ?? "—"}
                   </p>
                 </div>
                 <span className="text-xs font-black text-stone-400">VS</span>
-                <div className="min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm">
+                <div
+                  className={cx(
+                    "min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm transition duration-300",
+                    faceoffFirstTeam === "red"
+                      ? "scale-150"
+                      : faceoffFirstTeam === "blue"
+                        ? "opacity-40"
+                        : ""
+                  )}
+                >
                   <p className="truncate text-[10px] font-bold text-red-700">Rojo</p>
                   <p className="truncate text-sm font-black text-red-950">
                     {state.faceoff?.redPlayer ?? "—"}
@@ -1951,7 +1975,9 @@ export default function App() {
                 <button
                   type="button"
                   className="min-h-10 cursor-pointer rounded-xl bg-blue-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-                  disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
+                  disabled={
+                    !["faceoff", "tiebreaker"].includes(state.phase) || Boolean(faceoffFirstTeam)
+                  }
                   onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
                 >
                   Pulsador azul
@@ -1959,7 +1985,9 @@ export default function App() {
                 <button
                   type="button"
                   className="min-h-10 cursor-pointer rounded-xl bg-red-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
-                  disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
+                  disabled={
+                    !["faceoff", "tiebreaker"].includes(state.phase) || Boolean(faceoffFirstTeam)
+                  }
                   onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
                 >
                   Pulsador rojo
@@ -2027,7 +2055,9 @@ export default function App() {
                 <button
                   type="button"
                   className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-8 border-blue-800 bg-blue-600 px-5 py-4 text-left text-white shadow-lg transition-all duration-150 hover:-translate-y-1 hover:scale-[1.02] hover:brightness-105 hover:shadow-xl active:translate-y-1 active:scale-[0.98] active:border-b-0 active:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
-                  disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
+                  disabled={
+                    !["faceoff", "tiebreaker"].includes(state.phase) || Boolean(faceoffFirstTeam)
+                  }
                   onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
                 >
                   <Hand size={32} strokeWidth={2.2} aria-hidden="true" />
@@ -2041,7 +2071,9 @@ export default function App() {
                 <button
                   type="button"
                   className="flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-8 border-red-800 bg-red-600 px-5 py-4 text-left text-white shadow-lg transition-all duration-150 hover:-translate-y-1 hover:scale-[1.02] hover:brightness-105 hover:shadow-xl active:translate-y-1 active:scale-[0.98] active:border-b-0 active:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
-                  disabled={!["faceoff", "tiebreaker"].includes(state.phase)}
+                  disabled={
+                    !["faceoff", "tiebreaker"].includes(state.phase) || Boolean(faceoffFirstTeam)
+                  }
                   onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
                 >
                   <Hand size={32} strokeWidth={2.2} aria-hidden="true" />
