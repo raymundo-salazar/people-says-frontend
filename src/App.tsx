@@ -378,7 +378,7 @@ export default function App() {
       setRevealedLobbyQuestions((current) => current.filter((index) => index !== roundIndex))
     }, 3000)
   }
-  const [timerSeconds, setTimerSeconds] = useState(30)
+  const [timerSeconds, setTimerSeconds] = useState(5)
   const [timerRunning, setTimerRunning] = useState(false)
   const [strikeVisible, setStrikeVisible] = useState(false)
   const [publicStrikeVisible, setPublicStrikeVisible] = useState(false)
@@ -2586,7 +2586,7 @@ export default function App() {
                 className="mt-3 w-full"
                 disabled={timerRunning}
                 onClick={() => {
-                  setTimerSeconds(30)
+                  setTimerSeconds(5)
                   setTimerRunning(true)
                 }}
               >
