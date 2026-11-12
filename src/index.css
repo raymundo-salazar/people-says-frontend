@@ -72,7 +72,7 @@ body {
 }
 
 .team-back-banner-content {
-  animation: team-back-banner 6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation: team-back-banner 6s linear both;
 }
 html {
   scrollbar-gutter: stable;
