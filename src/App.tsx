@@ -954,7 +954,7 @@ export default function App() {
   const stealTeamName = stealTeamId === "blue" ? teams[0].name : teams[1].name
   const stealBanner = teamBackVisible ? (
     <>
-      <div className="team-back-overlay pointer-events-none fixed inset-0 z-30 bg-black/50" />
+      <div className="team-back-overlay pointer-events-auto fixed inset-0 z-30 bg-black/50" />
       <div
         className={cx(
           "team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r py-12 text-center text-white shadow-2xl",
@@ -1739,7 +1739,7 @@ export default function App() {
       <Shell wide>
         {stealBanner}
         {strikeVisible && (
-          <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/50">
+          <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/50">
             <div
               className="public-strike-animation flex items-center justify-center gap-3 text-red-600 drop-shadow-2xl"
               aria-label="Strike registrado"
@@ -2464,7 +2464,7 @@ export default function App() {
       <div className="public-display relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 px-5 py-10 text-white">
         {stealBanner}
         {publicStrikeVisible && (
-          <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/50">
+          <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/50">
             <div
               className="public-strike-animation flex items-center justify-center gap-3 text-red-600"
               aria-label="Strike registrado"
