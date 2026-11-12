@@ -360,6 +360,7 @@ export default function App() {
   const [error, setError] = useState("")
   const [copied, setCopied] = useState<"code" | "url" | null>(null)
   const [showQrModal, setShowQrModal] = useState(false)
+  const [qrLoaded, setQrLoaded] = useState(false)
   const [loadingAction, setLoadingAction] = useState<
     "create" | "teams" | "rounds" | "start" | "join" | null
   >(null)
@@ -1462,7 +1463,14 @@ export default function App() {
               <p className="mt-3 text-xs text-stone-500">
                 Escanea el código QR para unirte a la sala
               </p>
-              <Button secondary onClick={() => setShowQrModal(true)} className="mt-4">
+              <Button
+                secondary
+                onClick={() => {
+                  setQrLoaded(false)
+                  setShowQrModal(true)
+                }}
+                className="mt-4"
+              >
                 <Maximize2 size={16} aria-hidden="true" /> Ver en grande
               </Button>
             </div>
@@ -1627,13 +1635,26 @@ export default function App() {
               <p className="text-xs font-bold uppercase tracking-widest text-stone-500">
                 Código QR
               </p>
-              <div className="mt-5 size-[min(70vw,420px)] rounded-2xl border border-stone-200 bg-white p-5">
+              <div className="relative mt-5 size-[min(70vw,420px)] rounded-2xl border border-stone-200 bg-white p-5">
+                {!qrLoaded && (
+                  <span className="absolute inset-0 grid place-items-center text-emerald-800">
+                    <LoaderCircle
+                      size={32}
+                      className="animate-spin"
+                      aria-label="Cargando código QR"
+                    />
+                  </span>
+                )}
                 <img
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=${encodeURIComponent(shareUrl)}`}
                   alt="Código QR ampliado para unirse a la sala"
                   width="420"
                   height="420"
-                  className="block size-full object-contain"
+                  className={cx(
+                    "block size-full object-contain transition-opacity",
+                    !qrLoaded && "opacity-0"
+                  )}
+                  onLoad={() => setQrLoaded(true)}
                 />
               </div>
               <p className="mt-4 text-center text-sm text-stone-500">
