@@ -1700,7 +1700,7 @@ export default function App() {
     return (
       <Shell wide>
         {strikeVisible && (
-          <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/35">
+          <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/50">
             <div
               className="public-strike-animation flex items-center justify-center gap-3 text-red-400 drop-shadow-2xl"
               aria-label="Strike registrado"
@@ -2429,7 +2429,7 @@ export default function App() {
     return (
       <div className="public-display relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 px-5 py-10 text-white">
         {publicStrikeVisible && (
-          <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/35">
+          <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/50">
             <div
               className="public-strike-animation flex items-center justify-center gap-3 text-red-400"
               aria-label="Strike registrado"
