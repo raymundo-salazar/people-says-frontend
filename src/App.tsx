@@ -1548,6 +1548,9 @@ export default function App() {
               <p className="mt-1 text-xs text-stone-500">
                 Consulta las preguntas asignadas a cada ronda.
               </p>
+              <p className="mt-1 text-[11px] text-stone-400">
+                Por seguridad, las preguntas permanecen ocultas hasta que las selecciones.
+              </p>
             </div>
             <ChevronDown
               size={18}
