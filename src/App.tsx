@@ -1852,7 +1852,7 @@ export default function App() {
                           className={cx(
                             "grid size-8 shrink-0 place-items-center rounded-lg border text-sm",
                             visible
-                              ? "border-emerald-300 bg-emerald-300 text-white"
+                              ? "border-emerald-800 bg-emerald-800 text-white"
                               : "border-stone-100 bg-stone-100 text-stone-600"
                           )}
                         >
@@ -1863,7 +1863,7 @@ export default function App() {
                           className={cx(
                             "-my-3 -mr-4 grid w-16 shrink-0 self-stretch place-items-center rounded-r-xl border-l px-3 font-bold tabular-nums",
                             visible
-                              ? "border-emerald-300 bg-emerald-100 text-emerald-300"
+                              ? "border-emerald-800 bg-emerald-100 text-emerald-800"
                               : "border-stone-200 bg-stone-100 text-stone-700"
                           )}
                         >
