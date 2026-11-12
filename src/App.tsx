@@ -1860,7 +1860,7 @@ export default function App() {
                         </span>
                         <span className="flex-1 text-sm font-semibold">{answer.text}</span>
                         <span className="font-bold tabular-nums">
-                          {visible ? answer.points : "-"}
+                          {visible ? String(answer.points).padStart(2, "0") : "-"}
                         </span>
                       </button>
                     )
@@ -2456,7 +2456,7 @@ export default function App() {
                           </span>
                         </div>
                         <div className="grid w-14 shrink-0 place-items-center border-l border-white/15 bg-amber-300 font-mono text-lg font-black tabular-nums text-emerald-950 sm:w-20 sm:text-2xl">
-                          {answer.points}
+                          {String(answer.points).padStart(2, "0")}
                         </div>
                       </div>
                     ) : (
