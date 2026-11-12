@@ -1390,7 +1390,6 @@ export default function App() {
   if (screen === "lobby")
     return (
       <Shell onBack={() => setScreen("create", `/${roomCode}/edit`)}>
-        <WizardProgress step={4} />
         <Heading
           k="04 / Sala de espera"
           title="Todo listo para jugar"
