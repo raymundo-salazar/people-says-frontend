@@ -64,7 +64,7 @@ export function GameSetupStep({
               disabled={item.id === "auto"}
               onClick={() => item.id !== "auto" && onModeChange(item.id)}
               aria-pressed={mode === item.id}
-              className={`relative min-h-32 overflow-hidden rounded-xl border p-5 text-left transition ${item.id === "auto" ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : mode === item.id ? "cursor-pointer border-emerald-700 bg-emerald-50" : "cursor-pointer border-stone-200 hover:border-emerald-500"}`}
+              className={`relative min-h-32 overflow-hidden rounded-xl border p-4 text-left transition ${item.id === "auto" ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : mode === item.id ? "cursor-pointer border-emerald-700 bg-emerald-50" : "cursor-pointer border-stone-200 hover:border-emerald-500"}`}
             >
               <span
                 aria-hidden="true"
@@ -78,12 +78,12 @@ export function GameSetupStep({
                 </span>
               )}
               <div className="flex items-center gap-3 pl-8">
-                <span className={`grid size-10 shrink-0 place-items-center rounded-lg ${item.id === "auto" ? "bg-stone-100 text-stone-400" : mode === item.id ? "bg-emerald-900 text-white" : "bg-emerald-50 text-emerald-900"}`}>
+                <span className={`grid size-12 shrink-0 place-items-center rounded-lg ${item.id === "auto" ? "bg-stone-100 text-stone-400" : mode === item.id ? "bg-emerald-900 text-white" : "bg-emerald-50 text-emerald-900"}`}>
                   {(() => { const Icon = modeIcons[item.id]; return <Icon size={20} strokeWidth={1.8} aria-hidden="true" /> })()}
                 </span>
                 <span>
-                  <b className="block text-sm">{item.title}</b>
-                  <small className="text-stone-500">{item.detail}</small>
+                  <b className={`block text-sm font-bold uppercase tracking-wider ${item.id === "auto" ? "text-stone-400" : "text-emerald-800"}`}>{item.title}</b>
+                  <small className="mt-1 block text-xs text-stone-500">{item.detail}</small>
                 </span>
               </div>
             </button>
