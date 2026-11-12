@@ -2738,11 +2738,10 @@ export default function App() {
               <Button
                 className="w-full"
                 onClick={() => {
-                  emitAction({ type: "finish_round", winner: teamId })
-                  setScreen("roundResult")
+                  emitAction({ type: "next_round" })
                 }}
               >
-                Cerrar ronda <ArrowRight size={16} aria-hidden="true" />
+                Siguiente ronda <ArrowRight size={16} aria-hidden="true" />
               </Button>
             )}
             <section className="rounded-2xl border border-stone-200 bg-white p-5">
