@@ -1134,11 +1134,13 @@ export default function App() {
   const teamId = state.activeTeam ?? state.control ?? "blue"
   const teamName = teamId === "blue" ? teams[0].name : teams[1].name
   const faceoffFirstTeam =
-    (strikeVisible || publicStrikeVisible
-      ? (state.faceoffStrikeTeam ?? state.faceoff?.activeTeam)
-      : state.faceoff?.activeTeam) ??
-    state.faceoff?.firstTeam ??
-    state.control
+    state.phase === "steal"
+      ? state.activeTeam
+      : ((strikeVisible || publicStrikeVisible
+          ? (state.faceoffStrikeTeam ?? state.faceoff?.activeTeam)
+          : state.faceoff?.activeTeam) ??
+        state.faceoff?.firstTeam ??
+        state.control)
   const strikeTeam =
     state.phase === "steal" ? (state.stealTeam ?? teamId) : (faceoffFirstTeam ?? teamId)
   const faceoffMode = ["faceoff", "decision", "tiebreaker"].includes(state.phase)
