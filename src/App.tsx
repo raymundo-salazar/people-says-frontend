@@ -13,6 +13,7 @@ import {
   LoaderCircle,
   LogIn,
   LogOut,
+  Maximize2,
   Unlink,
   Pause,
   Pointer,
@@ -358,6 +359,7 @@ export default function App() {
   >([])
   const [error, setError] = useState("")
   const [copied, setCopied] = useState<"code" | "url" | null>(null)
+  const [showQrModal, setShowQrModal] = useState(false)
   const [loadingAction, setLoadingAction] = useState<
     "create" | "teams" | "rounds" | "start" | "join" | null
   >(null)
@@ -1460,6 +1462,9 @@ export default function App() {
               <p className="mt-3 text-xs text-stone-500">
                 Escanea el código QR para unirte a la sala
               </p>
+              <Button secondary onClick={() => setShowQrModal(true)} className="mt-4">
+                <Maximize2 size={16} aria-hidden="true" /> Ver en grande
+              </Button>
             </div>
           </section>
           <section className="rounded-2xl border border-stone-200 bg-white p-6">
@@ -1599,6 +1604,44 @@ export default function App() {
           </Button>
         </div>
         {error && <p className="mt-4 text-right text-sm text-red-700">{error}</p>}
+        {showQrModal && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/75 p-5"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Código QR ampliado"
+            onClick={() => setShowQrModal(false)}
+          >
+            <div
+              className="relative flex w-full max-w-lg flex-col items-center rounded-2xl bg-white p-6 shadow-2xl"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button
+                type="button"
+                className="absolute right-4 top-4 cursor-pointer rounded-lg p-2 text-stone-500 transition hover:bg-stone-100 hover:text-stone-900"
+                aria-label="Cerrar código QR ampliado"
+                onClick={() => setShowQrModal(false)}
+              >
+                <X size={20} aria-hidden="true" />
+              </button>
+              <p className="text-xs font-bold uppercase tracking-widest text-stone-500">
+                Código QR
+              </p>
+              <div className="mt-5 rounded-2xl border border-stone-200 bg-white p-5">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=${encodeURIComponent(shareUrl)}`}
+                  alt="Código QR ampliado para unirse a la sala"
+                  width="420"
+                  height="420"
+                  className="h-auto w-full max-w-[min(70vw,420px)]"
+                />
+              </div>
+              <p className="mt-4 text-center text-sm text-stone-500">
+                Escanea el código QR para unirte a la sala
+              </p>
+            </div>
+          </div>
+        )}
       </Shell>
     )
   if (screen === "joinInvite")
