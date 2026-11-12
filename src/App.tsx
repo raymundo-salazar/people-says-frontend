@@ -316,6 +316,7 @@ export default function App() {
   const [timerRunning, setTimerRunning] = useState(false)
   const [strikeVisible, setStrikeVisible] = useState(false)
   const [publicStrikeVisible, setPublicStrikeVisible] = useState(false)
+  const [strikeOverlayCount, setStrikeOverlayCount] = useState(1)
   const [publicAnswerFlipIndex, setPublicAnswerFlipIndex] = useState<number | null>(null)
   useEffect(() => {
     if (!timerRunning) return
@@ -492,7 +493,11 @@ export default function App() {
       setError(errorCode)
     }
     const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
-    const strike = () => setPublicStrikeVisible(true)
+    const strike = (payload: { count?: number }) => {
+      setStrikeOverlayCount(Math.max(1, payload.count ?? 1))
+      setPublicStrikeVisible(true)
+      setStrikeVisible(true)
+    }
     const answerRevealed = (payload: { index?: number }) => {
       if (!Number.isInteger(payload.index)) return
       setPublicAnswerFlipIndex(payload.index ?? null)
@@ -1696,12 +1701,14 @@ export default function App() {
       <Shell wide>
         {strikeVisible && (
           <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/35">
-            <SquareX
-              size={180}
-              strokeWidth={1.5}
-              className="public-strike-animation text-red-400 drop-shadow-2xl"
+            <div
+              className="public-strike-animation flex items-center justify-center gap-3 text-red-400 drop-shadow-2xl"
               aria-label="Strike registrado"
-            />
+            >
+              {Array.from({ length: strikeOverlayCount }, (_, index) => (
+                <SquareX key={index} size={140} strokeWidth={1.5} />
+              ))}
+            </div>
           </div>
         )}
         <Heading
@@ -2423,12 +2430,14 @@ export default function App() {
       <div className="public-display relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 px-5 py-10 text-white">
         {publicStrikeVisible && (
           <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/35">
-            <SquareX
-              size={180}
-              strokeWidth={1.5}
-              className="public-strike-animation text-red-400"
+            <div
+              className="public-strike-animation flex items-center justify-center gap-3 text-red-400"
               aria-label="Strike registrado"
-            />
+            >
+              {Array.from({ length: strikeOverlayCount }, (_, index) => (
+                <SquareX key={index} size={140} strokeWidth={1.5} />
+              ))}
+            </div>
           </div>
         )}
         <div className="display-floating-accent display-floating-accent-right pointer-events-none absolute -right-40 -top-48 size-[480px] rounded-full border-[65px] border-white/5" />
