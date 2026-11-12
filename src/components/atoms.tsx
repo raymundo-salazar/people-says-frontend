@@ -303,7 +303,7 @@ export function AnimatedNumber({ value, padStart = 0 }: { value: number; padStar
     return () => cancelAnimationFrame(frame)
   }, [value])
 
-  return <>{String(displayValue).padStart(padStart, "0")}</>
+  return <>{displayValue === 0 ? "0" : String(displayValue).padStart(padStart, "0")}</>
 }
 export function Strikes({ count = 0, light = false }: { count?: number; light?: boolean }) {
   return (
