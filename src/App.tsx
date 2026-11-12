@@ -1844,7 +1844,7 @@ export default function App() {
                         className={cx(
                           "relative flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-70",
                           visible
-                            ? "border-emerald-600 bg-emerald-50"
+                            ? "border-emerald-400 bg-emerald-50"
                             : "border-stone-200 bg-white hover:border-emerald-500"
                         )}
                       >
@@ -1852,7 +1852,7 @@ export default function App() {
                           className={cx(
                             "grid size-8 shrink-0 place-items-center rounded-lg border text-sm",
                             visible
-                              ? "border-emerald-600 bg-emerald-600 text-white"
+                              ? "border-emerald-400 bg-emerald-400 text-white"
                               : "border-stone-100 bg-stone-100 text-stone-600"
                           )}
                         >
@@ -1863,7 +1863,7 @@ export default function App() {
                           className={cx(
                             "-my-3 -mr-4 grid w-16 shrink-0 self-stretch place-items-center rounded-r-xl border-l px-3 font-bold tabular-nums",
                             visible
-                              ? "border-emerald-600 bg-emerald-100 text-emerald-600"
+                              ? "border-emerald-400 bg-emerald-100 text-emerald-400"
                               : "border-stone-200 bg-stone-100 text-stone-700"
                           )}
                         >
