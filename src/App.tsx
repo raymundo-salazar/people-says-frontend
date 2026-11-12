@@ -943,7 +943,7 @@ export default function App() {
     state.phase === "steal" ? (
       <div
         className={cx(
-          "team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r py-8 text-center text-white shadow-2xl",
+          "team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r py-12 text-center text-white shadow-2xl",
           stealTeamId === "blue"
             ? "from-blue-950 via-blue-900 to-blue-950"
             : "from-red-950 via-red-900 to-red-950"
