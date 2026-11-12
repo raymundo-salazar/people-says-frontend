@@ -339,7 +339,7 @@ export default function App() {
       .then((response) => (response.ok ? response.json() : []))
       .then((data: SetupCategory[]) => {
         setCategories(data)
-        setSelectedCategoryIds(data.filter((category) => category.questionCount > 0).slice(0, 1).map((category) => category.id))
+        setSelectedCategoryIds(data.filter((category) => category.questionCount > 0).map((category) => category.id))
       })
       .catch(() => setCategories([]))
   }, [])
@@ -397,7 +397,7 @@ export default function App() {
     if (!canAddRound) return
     setRounds((old) => [...old, { answerCount: "4", multiplier: 1 }])
   }
-  const validGameSetup = gameName.trim().length > 0 && (categories.length === 0 || selectedCategoryIds.length === 1)
+  const validGameSetup = gameName.trim().length > 0 && (categories.length === 0 || selectedCategoryIds.length > 0)
   const savedRoomCode = localStorage.getItem("people-says-room-code") ?? ""
   const savedHostToken = localStorage.getItem("people-says-host-token") ?? ""
   const isPrincipalDevice =
@@ -1177,7 +1177,7 @@ export default function App() {
         selectedCategoryIds={selectedCategoryIds}
         onCategoryToggle={(id) =>
           setSelectedCategoryIds((current) =>
-            current.includes(id) ? current : [id]
+            current.includes(id) ? current.filter((categoryId) => categoryId !== id) : [...current, id]
           )
         }
       />
