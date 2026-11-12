@@ -2,7 +2,7 @@ import { ArrowLeft, ArrowRight, Plus, Trash2 } from "lucide-react"
 import { Button, Heading, Shell, WizardProgress } from "./atoms"
 import { ParticipantRow, ParticipantsSubtitle, TeamNameField } from "./participants"
 
-export type SetupMode = "classic" | "stage" | "buttons" | "auto"
+export type SetupMode = "classic" | "auto"
 export type SetupTeam = { name: string; color: "blue" | "red"; players: string[] }
 export type SetupRound = { answerCount: string; multiplier: 1 | 2 | 3 }
 export type SetupModeOption = { id: SetupMode; title: string; detail: string }
@@ -59,9 +59,16 @@ export function GameSetupStep({
           {modes.map((item) => (
             <button
               key={item.id}
-              onClick={() => onModeChange(item.id)}
-              className={`rounded-xl border p-4 text-left ${mode === item.id ? "border-emerald-700 bg-emerald-50" : "border-stone-200"}`}
+              type="button"
+              disabled={item.id === "auto"}
+              onClick={() => item.id !== "auto" && onModeChange(item.id)}
+              className={`relative overflow-hidden rounded-xl border p-4 text-left transition ${item.id === "auto" ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : mode === item.id ? "cursor-pointer border-emerald-700 bg-emerald-50" : "cursor-pointer border-stone-200 hover:border-emerald-500"}`}
             >
+              {item.id === "auto" && (
+                <span className="pointer-events-none absolute right-[-2.5rem] top-3 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">
+                  Próximamente
+                </span>
+              )}
               <b className="block text-sm">{item.title}</b>
               <small className="text-stone-500">{item.detail}</small>
             </button>

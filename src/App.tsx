@@ -58,7 +58,7 @@ type Screen =
   | "steal"
   | "roundResult"
   | "final"
-type Mode = "classic" | "stage" | "buttons" | "auto"
+type Mode = "classic" | "auto"
 type DeviceRole = "host" | "display" | "blue_button" | "red_button" | "pending"
 type Team = { name: string; color: "blue" | "red"; players: string[] }
 type RoundDraft = { answerCount: string; multiplier: 1 | 2 | 3 }
@@ -237,8 +237,6 @@ const defaultState: State = {
 }
 const modes: { id: Mode; title: string; detail: string }[] = [
   { id: "classic", title: "Juego clásico", detail: "Un dispositivo para el presentador." },
-  { id: "stage", title: "Modo escenario", detail: "Pantalla pública y presentador." },
-  { id: "buttons", title: "Modo botones", detail: "Pulsadores digitales por equipo." },
   { id: "auto", title: "Modo automático", detail: "La máquina dirige la partida." },
 ]
 
