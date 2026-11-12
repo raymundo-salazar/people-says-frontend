@@ -346,7 +346,7 @@ export default function App() {
     window.clearTimeout(lobbyQuestionTimers.current[roundIndex])
     lobbyQuestionTimers.current[roundIndex] = window.setTimeout(() => {
       setRevealedLobbyQuestions((current) => current.filter((index) => index !== roundIndex))
-    }, 5000)
+    }, 3000)
   }
   const [timerSeconds, setTimerSeconds] = useState(30)
   const [timerRunning, setTimerRunning] = useState(false)
