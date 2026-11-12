@@ -268,13 +268,15 @@ export function Score({ blue = 180, red = 125 }: { blue?: number; red?: number }
       <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
         <p className="text-xs font-medium text-blue-800">Equipo Azul</p>
         <p className="mt-1 text-3xl font-bold tabular-nums text-blue-950">
-          <AnimatedNumber value={blue} /> <span className="text-xs font-normal">pts</span>
+          <AnimatedNumber value={blue} padStart={2} />{" "}
+          <span className="text-xs font-normal">pts</span>
         </p>
       </div>
       <div className="rounded-xl border border-red-200 bg-red-50 p-4">
         <p className="text-xs font-medium text-red-800">Equipo Rojo</p>
         <p className="mt-1 text-3xl font-bold tabular-nums text-red-950">
-          <AnimatedNumber value={red} /> <span className="text-xs font-normal">pts</span>
+          <AnimatedNumber value={red} padStart={2} />{" "}
+          <span className="text-xs font-normal">pts</span>
         </p>
       </div>
     </div>
