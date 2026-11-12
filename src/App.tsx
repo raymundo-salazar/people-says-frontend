@@ -82,6 +82,7 @@ type State = {
     bluePlayer?: string
     redPlayer?: string
     firstTeam?: "blue" | "red"
+    activeTeam?: "blue" | "red"
     firstIndex?: number
   }
   teams: [{ name: string; players: string[] }, { name: string; players: string[] }]
@@ -884,7 +885,7 @@ export default function App() {
   }
   const teamId = state.control ?? "blue"
   const teamName = teamId === "blue" ? teams[0].name : teams[1].name
-  const faceoffFirstTeam = state.faceoff?.firstTeam
+  const faceoffFirstTeam = state.faceoff?.activeTeam ?? state.faceoff?.firstTeam
   const strikeTeam = faceoffFirstTeam ?? teamId
   const canRegisterStrike =
     state.phase === "turn" ||
