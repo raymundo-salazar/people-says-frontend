@@ -386,6 +386,7 @@ export default function App() {
   const [publicStrikeVisible, setPublicStrikeVisible] = useState(false)
   const [strikeOverlayCount, setStrikeOverlayCount] = useState(1)
   const [teamBackVisible, setTeamBackVisible] = useState(false)
+  const [stealPromptVisible, setStealPromptVisible] = useState(false)
   const [teamBackTeam, setTeamBackTeam] = useState<"blue" | "red">("red")
   const [publicAnswerFlipIndex, setPublicAnswerFlipIndex] = useState<number | null>(null)
   useEffect(() => {
@@ -449,6 +450,11 @@ export default function App() {
     const timeout = window.setTimeout(() => setTeamBackVisible(false), 5200)
     return () => window.clearTimeout(timeout)
   }, [teamBackVisible])
+  useEffect(() => {
+    if (!stealPromptVisible) return
+    const timeout = window.setTimeout(() => setStealPromptVisible(false), 5200)
+    return () => window.clearTimeout(timeout)
+  }, [stealPromptVisible])
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
@@ -605,6 +611,10 @@ export default function App() {
       if (payload.count === 2) {
         setTeamBackTeam(payload.team === "blue" ? "red" : "blue")
         window.setTimeout(() => setTeamBackVisible(true), 3000)
+      }
+      if (payload.count === 3) {
+        setTeamBackTeam(payload.team === "blue" ? "red" : "blue")
+        window.setTimeout(() => setStealPromptVisible(true), 3000)
       }
     }
     const answerRevealed = (payload: { index?: number }) => {
@@ -1178,33 +1188,39 @@ export default function App() {
     0
   )
   const multipliedRoundPoints = baseRoundPoints * roundMultiplier
-  const stealTeamId = teamBackVisible
-    ? teamBackTeam
-    : (state.stealTeam ?? (state.control === "blue" ? "red" : "blue"))
+  const stealTeamId =
+    teamBackVisible || stealPromptVisible
+      ? teamBackTeam
+      : (state.stealTeam ?? (state.control === "blue" ? "red" : "blue"))
   const stealTeamName = stealTeamId === "blue" ? teams[0].name : teams[1].name
-  const stealBanner = teamBackVisible ? (
-    <>
-      <div className="team-back-overlay pointer-events-auto fixed inset-0 z-30 bg-black/50" />
-      <div
-        className={cx(
-          "team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r py-12 text-center text-white shadow-2xl",
-          stealTeamId === "blue"
-            ? "from-blue-950 via-blue-900 to-blue-950"
-            : "from-red-950 via-red-900 to-red-950"
-        )}
-      >
-        <div className="team-back-banner-content mx-auto w-fit px-8">
-          <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
-            {stealTeamName}
-          </p>
-          <h2 className="mt-1 text-3xl font-black sm:text-5xl">¡Hagan team back!</h2>
-          <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
-            Prepárense para robar los puntos.
-          </p>
+  const stealBanner =
+    teamBackVisible || stealPromptVisible ? (
+      <>
+        <div className="team-back-overlay pointer-events-auto fixed inset-0 z-30 bg-black/50" />
+        <div
+          className={cx(
+            "team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r py-12 text-center text-white shadow-2xl",
+            stealTeamId === "blue"
+              ? "from-blue-950 via-blue-900 to-blue-950"
+              : "from-red-950 via-red-900 to-red-950"
+          )}
+        >
+          <div className="team-back-banner-content mx-auto w-fit px-8">
+            <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
+              {stealTeamName}
+            </p>
+            <h2 className="mt-1 text-3xl font-black sm:text-5xl">
+              {stealPromptVisible ? "¡Es hora de robar puntos!" : "¡Hagan team back!"}
+            </h2>
+            <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
+              {stealPromptVisible
+                ? "Elige una sola respuesta correcta para ganar el pozo."
+                : "Prepárense para robar los puntos."}
+            </p>
+          </div>
         </div>
-      </div>
-    </>
-  ) : null
+      </>
+    ) : null
   useEffect(() => {
     if (state.phase !== "lobby") setLoadingAction(null)
     if (screen === "joinLobby" && state.phase !== "lobby") {
