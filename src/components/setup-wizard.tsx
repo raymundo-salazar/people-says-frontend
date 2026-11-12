@@ -1,11 +1,11 @@
-import { ArrowLeft, ArrowRight, Bot, MicVocal, Plus, Trash2 } from "lucide-react"
+import { ArrowLeft, ArrowRight, Bot, MicVocal, MonitorSmartphone, Plus, Trash2 } from "lucide-react"
 import { Button, Heading, Shell, WizardProgress } from "./atoms"
 import { ParticipantRow, ParticipantsSubtitle, TeamNameField } from "./participants"
 
 export type SetupMode = "classic" | "auto"
 export type SetupTeam = { name: string; color: "blue" | "red"; players: string[] }
 export type SetupRound = { answerCount: string; multiplier: 1 | 2 | 3 }
-export type SetupModeOption = { id: SetupMode; title: string; detail: string }
+export type SetupModeOption = { id: SetupMode; title: string; detail: string; devices: string }
 const modeIcons = { classic: MicVocal, auto: Bot }
 
 type GameSetupProps = {
@@ -84,6 +84,10 @@ export function GameSetupStep({
                 <span>
                   <b className={`block text-sm font-bold uppercase tracking-wider ${item.id === "auto" ? "text-stone-400" : "text-emerald-800"}`}>{item.title}</b>
                   <small className="mt-1 block text-xs text-stone-500">{item.detail}</small>
+                  <span className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-stone-500">
+                    <MonitorSmartphone size={14} strokeWidth={1.8} aria-hidden="true" />
+                    {item.devices}
+                  </span>
                 </span>
               </div>
             </button>

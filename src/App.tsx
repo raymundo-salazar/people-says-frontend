@@ -38,6 +38,7 @@ import {
 } from "./components/atoms"
 import type { DeviceType } from "./components/atoms"
 import { GameSetupStep, RoundsStep, TeamsStep } from "./components/setup-wizard"
+import type { SetupModeOption } from "./components/setup-wizard"
 import { cx } from "./lib/cx"
 
 type Screen =
@@ -235,16 +236,18 @@ const defaultState: State = {
     { name: "Rojo", players: ["Sofía"] },
   ],
 }
-const modes: { id: Mode; title: string; detail: string }[] = [
+const modes: SetupModeOption[] = [
   {
     id: "classic",
     title: "Juego clásico",
     detail: "Controla la partida desde un dispositivo y conecta hasta tres dispositivos adicionales para mostrar el tablero o usar pulsadores.",
+    devices: "De 1 a 4 dispositivos",
   },
   {
     id: "auto",
     title: "Modo automático",
     detail: "La máquina presenta y administra la partida mientras de dos a tres dispositivos participan como pantalla o pulsadores.",
+    devices: "De 2 a 3 dispositivos",
   },
 ]
 
