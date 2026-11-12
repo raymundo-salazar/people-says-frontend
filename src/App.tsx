@@ -81,6 +81,7 @@ type State = {
   scores: { blue: number; red: number }
   turnIndex: { blue: number; red: number }
   control: "blue" | "red" | null
+  stealTeam?: "blue" | "red" | null
   faceoff?: {
     bluePlayer?: string
     redPlayer?: string
@@ -936,6 +937,29 @@ export default function App() {
     0
   )
   const multipliedRoundPoints = baseRoundPoints * roundMultiplier
+  const stealTeamId = state.stealTeam ?? (state.control === "blue" ? "red" : "blue")
+  const stealTeamName = stealTeamId === "blue" ? teams[0].name : teams[1].name
+  const stealBanner =
+    state.phase === "steal" ? (
+      <div
+        className={cx(
+          "team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r py-6 text-center text-white shadow-2xl",
+          stealTeamId === "blue"
+            ? "from-blue-950 via-blue-900 to-blue-950"
+            : "from-red-950 via-red-900 to-red-950"
+        )}
+      >
+        <div className="team-back-banner-content mx-auto w-fit px-8">
+          <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
+            {stealTeamName}
+          </p>
+          <h2 className="mt-1 text-3xl font-black sm:text-5xl">¡Hagan team back!</h2>
+          <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
+            Prepárense para robar los puntos.
+          </p>
+        </div>
+      </div>
+    ) : null
   useEffect(() => {
     if (state.phase !== "lobby") setLoadingAction(null)
     if (screen === "joinLobby" && state.phase !== "lobby") {
@@ -979,7 +1003,6 @@ export default function App() {
       }
       return
     }
-    if (state.phase === "steal" && screen === "host") setScreen("steal")
     if (state.phase === "decision" && screen === "faceoff") setScreen("decision")
     if (state.phase === "turn" && (screen === "faceoff" || screen === "decision")) setScreen("host")
   }, [state.phase, screen, currentDeviceRole, hostToken, roomCode])
@@ -1699,6 +1722,7 @@ export default function App() {
   if (screen === "host")
     return (
       <Shell wide>
+        {stealBanner}
         {strikeVisible && (
           <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/50">
             <div
@@ -2206,11 +2230,6 @@ export default function App() {
                 </Button>
               </div>
             </section>
-            {state.phase === "steal" && (
-              <Button className="w-full" onClick={() => setScreen("steal")}>
-                Resolver robo <ArrowRight size={16} aria-hidden="true" />
-              </Button>
-            )}
             {state.phase === "round_result" && (
               <Button
                 className="w-full"
@@ -2428,6 +2447,7 @@ export default function App() {
   if (screen === "display")
     return (
       <div className="public-display relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 px-5 py-10 text-white">
+        {stealBanner}
         {publicStrikeVisible && (
           <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/50">
             <div
