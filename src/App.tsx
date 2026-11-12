@@ -1861,7 +1861,7 @@ export default function App() {
                 Respuestas
               </h2>
               <div>
-                <div className="grid gap-1 md:grid-cols-2">
+                <div className="grid gap-1 md:grid-flow-col md:grid-cols-2 md:grid-rows-5">
                   {answers.map((answer, index) => {
                     const visible = revealed.includes(index)
                     return (
