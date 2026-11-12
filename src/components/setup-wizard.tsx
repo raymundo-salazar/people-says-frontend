@@ -67,7 +67,7 @@ export function GameSetupStep({
             >
               <span
                 aria-hidden="true"
-                className={`absolute left-4 top-4 grid size-5 place-items-center rounded-full border ${mode === item.id ? "border-emerald-700" : "border-stone-300"}`}
+                className={`absolute left-4 top-1/2 grid size-5 -translate-y-1/2 place-items-center rounded-full border ${mode === item.id ? "border-emerald-700" : "border-stone-300"}`}
               >
                 {mode === item.id && <span className="size-2.5 rounded-full bg-emerald-700" />}
               </span>
