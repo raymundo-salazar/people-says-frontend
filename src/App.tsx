@@ -2114,7 +2114,7 @@ export default function App() {
                   disabled={
                     !["faceoff", "tiebreaker"].includes(state.phase) || Boolean(faceoffFirstTeam)
                   }
-                  onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
+                  onClick={() => gameSocket.emit("buzzer:press", { code: roomCode, team: "blue" })}
                 >
                   Pulsador azul
                 </button>
@@ -2124,7 +2124,7 @@ export default function App() {
                   disabled={
                     !["faceoff", "tiebreaker"].includes(state.phase) || Boolean(faceoffFirstTeam)
                   }
-                  onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
+                  onClick={() => gameSocket.emit("buzzer:press", { code: roomCode, team: "red" })}
                 >
                   Pulsador rojo
                 </button>
