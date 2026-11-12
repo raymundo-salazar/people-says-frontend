@@ -1863,7 +1863,7 @@ export default function App() {
                           className={cx(
                             "-my-3 -mr-4 grid w-16 shrink-0 self-stretch place-items-center rounded-r-xl border-l px-3 font-bold tabular-nums",
                             visible
-                              ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                              ? "border-emerald-200 bg-emerald-100 text-emerald-800"
                               : "border-stone-200 bg-stone-100 text-stone-700"
                           )}
                         >
