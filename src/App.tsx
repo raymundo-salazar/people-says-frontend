@@ -236,8 +236,16 @@ const defaultState: State = {
   ],
 }
 const modes: { id: Mode; title: string; detail: string }[] = [
-  { id: "classic", title: "Juego clásico", detail: "De 1 a 4 dispositivos conectados." },
-  { id: "auto", title: "Modo automático", detail: "De 2 a 3 dispositivos conectados." },
+  {
+    id: "classic",
+    title: "Juego clásico",
+    detail: "Controla la partida desde un dispositivo y conecta hasta tres dispositivos adicionales para mostrar el tablero o usar pulsadores.",
+  },
+  {
+    id: "auto",
+    title: "Modo automático",
+    detail: "La máquina presenta y administra la partida mientras de dos a tres dispositivos participan como pantalla o pulsadores.",
+  },
 ]
 
 export default function App() {
