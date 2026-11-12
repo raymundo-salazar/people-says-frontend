@@ -75,6 +75,21 @@ body {
   animation: team-back-banner 5s linear both;
 }
 
+@keyframes team-back-strip-fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  6%,
+  96% {
+    opacity: 1;
+  }
+}
+
+.team-back-banner {
+  animation: team-back-strip-fade 5s ease-in-out both;
+}
+
 @keyframes team-back-overlay {
   0% {
     opacity: 0;
