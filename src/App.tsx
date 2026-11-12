@@ -77,6 +77,7 @@ type State = {
   displayStrikes?: { blue: number; red: number }
   pot: number
   scores: { blue: number; red: number }
+  turnIndex: { blue: number; red: number }
   control: "blue" | "red" | null
   faceoff?: {
     bluePlayer?: string
@@ -223,6 +224,7 @@ const defaultState: State = {
   strikes: { blue: 0, red: 0 },
   pot: 0,
   scores: { blue: 0, red: 0 },
+  turnIndex: { blue: 0, red: 0 },
   control: null,
   teams: [
     { name: "Azul", players: ["Ana"] },
@@ -891,6 +893,14 @@ export default function App() {
       ? (state.faceoffStrikeTeam ?? state.faceoff?.activeTeam)
       : state.faceoff?.activeTeam) ?? state.faceoff?.firstTeam
   const strikeTeam = faceoffFirstTeam ?? teamId
+  const blueFaceoffPlayer =
+    state.faceoff?.bluePlayer ??
+    teams[0].players[state.turnIndex.blue % Math.max(teams[0].players.length, 1)] ??
+    "—"
+  const redFaceoffPlayer =
+    state.faceoff?.redPlayer ??
+    teams[1].players[state.turnIndex.red % Math.max(teams[1].players.length, 1)] ??
+    "—"
   const canRegisterStrike =
     state.phase === "turn" ||
     (["faceoff", "decision", "tiebreaker"].includes(state.phase) && Boolean(faceoffFirstTeam))
@@ -1776,7 +1786,7 @@ export default function App() {
                       faceoffFirstTeam === "blue" ? "text-white" : "text-blue-950"
                     )}
                   >
-                    {state.faceoff?.bluePlayer ?? "—"}
+                    {blueFaceoffPlayer}
                   </p>
                 </div>
                 <span
@@ -1811,7 +1821,7 @@ export default function App() {
                       faceoffFirstTeam === "red" ? "text-white" : "text-red-950"
                     )}
                   >
-                    {state.faceoff?.redPlayer ?? "—"}
+                    {redFaceoffPlayer}
                   </p>
                 </div>
               </div>
@@ -2089,16 +2099,12 @@ export default function App() {
               <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-1">
                 <div className="min-w-0 rounded-lg bg-blue-50 px-2 py-2 text-center">
                   <p className="truncate text-[10px] font-bold text-blue-700">Azul</p>
-                  <p className="truncate text-sm font-black text-blue-950">
-                    {state.faceoff?.bluePlayer ?? "—"}
-                  </p>
+                  <p className="truncate text-sm font-black text-blue-950">{blueFaceoffPlayer}</p>
                 </div>
                 <span className="text-xs font-black text-stone-400">VS</span>
                 <div className="min-w-0 rounded-lg bg-red-50 px-2 py-2 text-center">
                   <p className="truncate text-[10px] font-bold text-red-700">Rojo</p>
-                  <p className="truncate text-sm font-black text-red-950">
-                    {state.faceoff?.redPlayer ?? "—"}
-                  </p>
+                  <p className="truncate text-sm font-black text-red-950">{redFaceoffPlayer}</p>
                 </div>
               </div>
               <div className="hidden">
@@ -2483,7 +2489,7 @@ export default function App() {
                 <div
                   className={cx(
                     "w-fit rounded-2xl border border-white/20 bg-black/20 px-3 py-3 text-center shadow-lg transition duration-300",
-                    !["faceoff", "tiebreaker", "decision"].includes(state.phase) && "hidden"
+                    ""
                   )}
                 >
                   <p className="mb-2 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
@@ -2514,7 +2520,7 @@ export default function App() {
                           faceoffFirstTeam === "blue" ? "text-white" : "text-blue-950"
                         )}
                       >
-                        {state.faceoff?.bluePlayer ?? "—"}
+                        {blueFaceoffPlayer}
                       </p>
                     </div>
                     <span
@@ -2549,7 +2555,7 @@ export default function App() {
                           faceoffFirstTeam === "red" ? "text-white" : "text-red-950"
                         )}
                       >
-                        {state.faceoff?.redPlayer ?? "—"}
+                        {redFaceoffPlayer}
                       </p>
                     </div>
                   </div>
