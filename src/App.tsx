@@ -73,6 +73,8 @@ type State = {
   strikes: { blue: number; red: number }
   faceoffStrikes?: { blue: number; red: number }
   faceoffStrikeTeam?: "blue" | "red"
+  strikeLimit?: 3 | 5
+  displayStrikes?: { blue: number; red: number }
   pot: number
   scores: { blue: number; red: number }
   control: "blue" | "red" | null
@@ -2111,29 +2113,32 @@ export default function App() {
               </h2>
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
-                  {Array.from(
-                    { length: ["faceoff", "decision", "tiebreaker"].includes(state.phase) ? 5 : 3 },
-                    (_, index) => index
-                  ).map((index) => {
-                    const active =
-                      index < state.strikes[strikeTeam] + (state.faceoffStrikes?.[strikeTeam] ?? 0)
-                    return (
-                      <span key={index} className="relative block size-9" aria-hidden="true">
-                        {active ? (
-                          <SquareX size={36} strokeWidth={1.8} className="text-red-600" />
-                        ) : (
-                          <>
-                            <SquareDashed size={36} strokeWidth={1.8} className="text-stone-300" />
-                            <X
-                              className="absolute inset-0 m-auto text-stone-300"
-                              size={15}
-                              strokeWidth={2}
-                            />
-                          </>
-                        )}
-                      </span>
-                    )
-                  })}
+                  {Array.from({ length: state.strikeLimit ?? 3 }, (_, index) => index).map(
+                    (index) => {
+                      const active =
+                        index < (state.displayStrikes?.[strikeTeam] ?? state.strikes[strikeTeam])
+                      return (
+                        <span key={index} className="relative block size-9" aria-hidden="true">
+                          {active ? (
+                            <SquareX size={36} strokeWidth={1.8} className="text-red-600" />
+                          ) : (
+                            <>
+                              <SquareDashed
+                                size={36}
+                                strokeWidth={1.8}
+                                className="text-stone-300"
+                              />
+                              <X
+                                className="absolute inset-0 m-auto text-stone-300"
+                                size={15}
+                                strokeWidth={2}
+                              />
+                            </>
+                          )}
+                        </span>
+                      )
+                    }
+                  )}
                 </div>
                 <Button
                   disabled={!canRegisterStrike}
@@ -2237,29 +2242,32 @@ export default function App() {
               </h2>
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
-                  {Array.from(
-                    { length: ["faceoff", "decision", "tiebreaker"].includes(state.phase) ? 5 : 3 },
-                    (_, index) => index
-                  ).map((index) => {
-                    const active =
-                      index < state.strikes[strikeTeam] + (state.faceoffStrikes?.[strikeTeam] ?? 0)
-                    return (
-                      <span key={index} className="relative block size-10" aria-hidden="true">
-                        {active ? (
-                          <SquareX size={40} strokeWidth={1.8} className="text-red-600" />
-                        ) : (
-                          <>
-                            <SquareDashed size={40} strokeWidth={1.8} className="text-stone-300" />
-                            <X
-                              className="absolute inset-0 m-auto text-stone-300"
-                              size={17}
-                              strokeWidth={2}
-                            />
-                          </>
-                        )}
-                      </span>
-                    )
-                  })}
+                  {Array.from({ length: state.strikeLimit ?? 3 }, (_, index) => index).map(
+                    (index) => {
+                      const active =
+                        index < (state.displayStrikes?.[strikeTeam] ?? state.strikes[strikeTeam])
+                      return (
+                        <span key={index} className="relative block size-10" aria-hidden="true">
+                          {active ? (
+                            <SquareX size={40} strokeWidth={1.8} className="text-red-600" />
+                          ) : (
+                            <>
+                              <SquareDashed
+                                size={40}
+                                strokeWidth={1.8}
+                                className="text-stone-300"
+                              />
+                              <X
+                                className="absolute inset-0 m-auto text-stone-300"
+                                size={17}
+                                strokeWidth={2}
+                              />
+                            </>
+                          )}
+                        </span>
+                      )
+                    }
+                  )}
                 </div>
                 <Button
                   disabled={!canRegisterStrike}
@@ -2530,23 +2538,22 @@ export default function App() {
                   </div>
                 </div>
                 <div className="flex w-fit justify-center gap-3" aria-label="Errores de la ronda">
-                  {Array.from(
-                    { length: ["faceoff", "decision", "tiebreaker"].includes(state.phase) ? 5 : 3 },
-                    (_, index) => index
-                  ).map((index) => {
-                    const active =
-                      index <
-                      state.strikes[faceoffFirstTeam ?? teamId] +
-                        (state.faceoffStrikes?.[faceoffFirstTeam ?? teamId] ?? 0)
-                    return active ? (
-                      <SquareX key={index} size={64} strokeWidth={1.8} className="text-red-400" />
-                    ) : (
-                      <span key={index} className="relative block size-16 text-white/25">
-                        <SquareDashed size={64} strokeWidth={1.8} />
-                        <X className="absolute inset-0 m-auto" size={28} strokeWidth={2} />
-                      </span>
-                    )
-                  })}
+                  {Array.from({ length: state.strikeLimit ?? 3 }, (_, index) => index).map(
+                    (index) => {
+                      const active =
+                        index <
+                        (state.displayStrikes?.[faceoffFirstTeam ?? teamId] ??
+                          state.strikes[faceoffFirstTeam ?? teamId])
+                      return active ? (
+                        <SquareX key={index} size={64} strokeWidth={1.8} className="text-red-400" />
+                      ) : (
+                        <span key={index} className="relative block size-16 text-white/25">
+                          <SquareDashed size={64} strokeWidth={1.8} />
+                          <X className="absolute inset-0 m-auto" size={28} strokeWidth={2} />
+                        </span>
+                      )
+                    }
+                  )}
                 </div>
               </div>
             </div>
