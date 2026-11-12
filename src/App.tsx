@@ -2298,7 +2298,7 @@ export default function App() {
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
                 {state.phase === "round_result" ? "Equipo ganador" : participantStatusTitle}
               </h2>
-              {state.phase === "round_result" && roundWinner ? (
+              {state.phase === "round_result" ? (
                 <div className="flex min-h-16 items-center justify-center gap-3 rounded-lg bg-white/85 px-4 py-3 text-center shadow-sm">
                   <strong
                     className={cx(
@@ -2975,7 +2975,7 @@ export default function App() {
         <div className="display-floating-accent display-floating-accent-left pointer-events-none absolute -bottom-36 -left-28 size-[360px] rounded-full border-[50px] border-white/5" />
         <div className="relative z-10 mx-auto w-full max-w-7xl">
           <div className="flex justify-end">{pauseControl}</div>
-          {state.phase === "round_result" && roundWinner ? (
+          {state.phase === "round_result" ? (
             <section className="mx-auto w-full max-w-2xl rounded-2xl border border-white/20 bg-black/20 px-6 py-8 text-center shadow-lg">
               <p className="text-xs font-black uppercase tracking-[.24em] text-amber-100/80">
                 Ronda {String(state.roundIndex + 1).padStart(2, "0")}
