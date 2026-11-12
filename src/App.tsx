@@ -1414,6 +1414,10 @@ export default function App() {
               <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
                 <span className="text-stone-500">Partida</span>
                 <span className="text-right font-semibold text-stone-900">{gameName}</span>
+                <span className="text-stone-500">Código de partida</span>
+                <span className="text-right font-mono font-bold tracking-wider text-stone-900">
+                  {roomCode}
+                </span>
                 <span className="text-stone-500">Nombre del dispositivo</span>
                 <span className="text-right font-semibold text-stone-900">{deviceName}</span>
                 <span className="text-stone-500">Tipo de dispositivo</span>
