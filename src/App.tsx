@@ -336,6 +336,11 @@ export default function App() {
     const timeout = window.setTimeout(() => setStrikeVisible(false), 3000)
     return () => window.clearTimeout(timeout)
   }, [strikeVisible])
+  useEffect(() => {
+    if (!publicStrikeVisible) return
+    const timeout = window.setTimeout(() => setPublicStrikeVisible(false), 3000)
+    return () => window.clearTimeout(timeout)
+  }, [publicStrikeVisible])
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
