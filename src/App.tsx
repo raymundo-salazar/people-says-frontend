@@ -37,8 +37,8 @@ import {
   DeviceTypeIcon,
 } from "./components/atoms"
 import type { DeviceType } from "./components/atoms"
-import { GameSetupStep, RoundsStep, TeamsStep } from "./components/setup-wizard"
-import type { SetupCategory, SetupModeOption } from "./components/setup-wizard"
+import { GameSetupStep, QuestionsStep, RoundsStep, TeamsStep } from "./components/setup-wizard"
+import type { SetupCategory, SetupModeOption, SetupQuestion } from "./components/setup-wizard"
 import { cx } from "./lib/cx"
 
 type Screen =
@@ -47,6 +47,7 @@ type Screen =
   | "create"
   | "teams"
   | "rounds"
+  | "questions"
   | "lobby"
   | "join"
   | "joinInvite"
@@ -99,6 +100,7 @@ const screens: Screen[] = [
   "create",
   "teams",
   "rounds",
+  "questions",
   "lobby",
   "join",
   "joinInvite",
@@ -272,6 +274,9 @@ export default function App() {
     { answerCount: "5", multiplier: 2 },
     { answerCount: "4", multiplier: 3 },
   ])
+  const [selectedQuestions, setSelectedQuestions] = useState<SetupQuestion[]>([])
+  const [questionsLoading, setQuestionsLoading] = useState(false)
+  const [questionLoadingRound, setQuestionLoadingRound] = useState<number | null>(null)
   const [roomCode, setRoomCode] = useState(
     () => roomCodeFromLocation() || localStorage.getItem("people-says-room-code") || ""
   )
@@ -417,7 +422,7 @@ export default function App() {
   const setScreen = (next: Screen, path?: string) => {
     const nextPath =
       path ??
-      (next === "create" || next === "teams" || next === "rounds"
+      (next === "create" || next === "teams" || next === "rounds" || next === "questions"
         ? hostToken
           ? `/edit${next === "create" ? "" : `/${next}`}`
           : `/${next}`
@@ -668,6 +673,7 @@ export default function App() {
           })),
           teams: normalizedTeams,
           categoryIds: selectedCategoryIds,
+          questions: selectedQuestions.map((question) => ({ id: question.id, answerCount: question.answerCount })),
         }),
       })
       const data = await response.json()
@@ -751,7 +757,8 @@ export default function App() {
     if (!validRounds) return
     setLoadingAction("rounds")
     if (!roomCode) {
-      await createRoom(true)
+      setLoadingAction(null)
+      await prepareQuestions()
       setLoadingAction(null)
       return
     }
@@ -775,6 +782,38 @@ export default function App() {
     } finally {
       setLoadingAction(null)
     }
+  }
+  const fetchQuestion = async (answerCount: number, excludedIds: number[]) => {
+    const response = await fetch(`${api}/api/questions/selection?categoryIds=${selectedCategoryIds.join(",")}&answerCount=${answerCount}&excludeIds=${excludedIds.join(",")}`)
+    const data = await response.json()
+    if (!response.ok) throw new Error(data.error)
+    return data as { id: number; prompt: string; answerCount: number }
+  }
+  const prepareQuestions = async () => {
+    setError("")
+    setQuestionsLoading(true)
+    try {
+      const used: number[] = []
+      const next = []
+      for (const round of rounds) {
+        const question = await fetchQuestion(Number(round.answerCount), used)
+        used.push(question.id)
+        next.push({ ...question, multiplier: round.multiplier as 1 | 2 | 3 })
+      }
+      setSelectedQuestions(next)
+      setScreen("questions")
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No se pudieron seleccionar las preguntas")
+    } finally { setQuestionsLoading(false) }
+  }
+  const replaceQuestion = async (index: number) => {
+    setQuestionLoadingRound(index)
+    try {
+      const excluded = selectedQuestions.map((question) => question.id)
+      const question = await fetchQuestion(Number(rounds[index].answerCount), excluded)
+      setSelectedQuestions((current) => current.map((item, itemIndex) => itemIndex === index ? { ...question, multiplier: rounds[index].multiplier } : item))
+    } catch (e) { setError(e instanceof Error ? e.message : "No se pudo cambiar la pregunta") }
+    finally { setQuestionLoadingRound(null) }
   }
   const selectJoinRole = (role: DeviceRole) => {
     const code = joinCode.trim().toUpperCase()
@@ -1205,6 +1244,18 @@ export default function App() {
         onAdd={addRound}
         onBack={() => setScreen("teams")}
         onSave={saveRounds}
+      />
+    )
+  if (screen === "questions")
+    return (
+      <QuestionsStep
+        rounds={rounds}
+        questions={selectedQuestions}
+        initialLoading={questionsLoading}
+        loadingRound={questionLoadingRound}
+        onChange={replaceQuestion}
+        onBack={() => setScreen("rounds")}
+        onSave={() => createRoom(true)}
       />
     )
   if (screen === "lobby")

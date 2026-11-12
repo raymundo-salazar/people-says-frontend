@@ -1,5 +1,5 @@
-import { ArrowLeft, ArrowRight, Bot, Check, MicVocal, MonitorSmartphone, Plus, Trash2 } from "lucide-react"
-import { Button, Heading, Shell, WizardProgress } from "./atoms"
+import { ArrowLeft, ArrowRight, Bot, Check, MicVocal, MonitorSmartphone, Plus, RefreshCw, Trash2 } from "lucide-react"
+import { Button, Heading, Shell, Skeleton, WizardProgress } from "./atoms"
 import { ParticipantRow, ParticipantsSubtitle, TeamNameField } from "./participants"
 
 export type SetupMode = "classic" | "auto"
@@ -7,6 +7,7 @@ export type SetupTeam = { name: string; color: "blue" | "red"; players: string[]
 export type SetupRound = { answerCount: string; multiplier: 1 | 2 | 3 }
 export type SetupModeOption = { id: SetupMode; title: string; detail: string; devices: string }
 export type SetupCategory = { id: number; name: string; description: string; questionCount: number }
+export type SetupQuestion = { id: number; prompt: string; answerCount: number; multiplier: 1 | 2 | 3 }
 const modeIcons = { classic: MicVocal, auto: Bot }
 
 type GameSetupProps = {
@@ -345,6 +346,46 @@ export function RoundsStep({
           <Button loading={loading} onClick={onSave}>
             Guardar configuración <ArrowRight size={16} aria-hidden="true" />
           </Button>
+        </div>
+      </div>
+    </Shell>
+  )
+}
+
+type QuestionsStepProps = { rounds: SetupRound[]; questions: SetupQuestion[]; initialLoading: boolean; loadingRound: number | null; onChange: (index: number) => void; onBack: () => void; onSave: () => void }
+export function QuestionsStep({ rounds, questions, initialLoading, loadingRound, onChange, onBack, onSave }: QuestionsStepProps) {
+  return (
+    <Shell>
+      <WizardProgress step={4} />
+      <Heading k="04 / Preguntas" title="Confirma las preguntas" detail="Cada ronda usará una pregunta de las categorías seleccionadas." />
+      <div className="rounded-2xl border border-stone-200 bg-white p-6">
+        {initialLoading ? (
+          <div className="space-y-3" aria-busy="true">
+            {rounds.map((_, index) => <Skeleton key={index} className="h-16 w-full rounded-xl" />)}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {rounds.map((round, index) => {
+              const question = questions[index]
+              const loading = loadingRound === index
+              return (
+                <div key={index} className="flex items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3">
+                  <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm font-bold text-stone-600">{String(index + 1).padStart(2, "0")}</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-stone-500">Ronda {index + 1} · {round.answerCount} respuestas · x{round.multiplier}</p>
+                    {loading ? <Skeleton className="mt-2 h-5 w-4/5 rounded" /> : <p className="mt-1 text-sm font-semibold text-stone-900">{question?.prompt}</p>}
+                  </div>
+                  <Button secondary disabled={loading} loading={loading} onClick={() => onChange(index)} className="shrink-0 !px-3" aria-label={`Cambiar pregunta de la ronda ${index + 1}`}>
+                    {!loading && <RefreshCw size={15} aria-hidden="true" />} Cambiar
+                  </Button>
+                </div>
+              )
+            })}
+          </div>
+        )}
+        <div className="mt-6 flex items-center justify-between gap-3">
+          <Button ghost onClick={onBack}> <ArrowLeft size={16} aria-hidden="true" /> Atrás </Button>
+          <Button disabled={initialLoading || questions.length !== rounds.length} onClick={onSave}>Crear partida <ArrowRight size={16} aria-hidden="true" /></Button>
         </div>
       </div>
     </Shell>
