@@ -2111,7 +2111,10 @@ export default function App() {
               </h2>
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
-                  {[0, 1, 2].map((index) => {
+                  {Array.from(
+                    { length: ["faceoff", "decision", "tiebreaker"].includes(state.phase) ? 5 : 3 },
+                    (_, index) => index
+                  ).map((index) => {
                     const active =
                       index < state.strikes[strikeTeam] + (state.faceoffStrikes?.[strikeTeam] ?? 0)
                     return (
@@ -2234,7 +2237,10 @@ export default function App() {
               </h2>
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
-                  {[0, 1, 2].map((index) => {
+                  {Array.from(
+                    { length: ["faceoff", "decision", "tiebreaker"].includes(state.phase) ? 5 : 3 },
+                    (_, index) => index
+                  ).map((index) => {
                     const active =
                       index < state.strikes[strikeTeam] + (state.faceoffStrikes?.[strikeTeam] ?? 0)
                     return (
@@ -2524,7 +2530,10 @@ export default function App() {
                   </div>
                 </div>
                 <div className="flex w-fit justify-center gap-3" aria-label="Errores de la ronda">
-                  {[0, 1, 2].map((index) => {
+                  {Array.from(
+                    { length: ["faceoff", "decision", "tiebreaker"].includes(state.phase) ? 5 : 3 },
+                    (_, index) => index
+                  ).map((index) => {
                     const active =
                       index <
                       state.strikes[faceoffFirstTeam ?? teamId] +
