@@ -71,6 +71,7 @@ type State = {
   answerCount?: number
   revealed: number[]
   strikes: { blue: number; red: number }
+  faceoffStrikes?: { blue: number; red: number }
   faceoffStrikeTeam?: "blue" | "red"
   pot: number
   scores: { blue: number; red: number }
@@ -308,7 +309,7 @@ export default function App() {
   const [timerRunning, setTimerRunning] = useState(false)
   const [strikeVisible, setStrikeVisible] = useState(false)
   const [publicStrikeVisible, setPublicStrikeVisible] = useState(false)
-  const publicStrikeKey = `${state.faceoffStrikeTeam ?? ""}-${state.strikes.blue}-${state.strikes.red}`
+  const publicStrikeKey = `${state.faceoffStrikeTeam ?? ""}-${state.faceoffStrikes?.blue ?? 0}-${state.faceoffStrikes?.red ?? 0}-${state.strikes.blue}-${state.strikes.red}`
   const previousPublicStrikeKey = useRef(publicStrikeKey)
   useEffect(() => {
     if (!timerRunning) return
@@ -2112,8 +2113,7 @@ export default function App() {
                 <div className="flex items-center gap-2">
                   {[0, 1, 2].map((index) => {
                     const active =
-                      index < state.strikes[strikeTeam] ||
-                      (index === 0 && state.faceoffStrikeTeam === strikeTeam)
+                      index < state.strikes[strikeTeam] + (state.faceoffStrikes?.[strikeTeam] ?? 0)
                     return (
                       <span key={index} className="relative block size-9" aria-hidden="true">
                         {active ? (
@@ -2236,8 +2236,7 @@ export default function App() {
                 <div className="flex items-center gap-2">
                   {[0, 1, 2].map((index) => {
                     const active =
-                      index < state.strikes[strikeTeam] ||
-                      (index === 0 && state.faceoffStrikeTeam === strikeTeam)
+                      index < state.strikes[strikeTeam] + (state.faceoffStrikes?.[strikeTeam] ?? 0)
                     return (
                       <span key={index} className="relative block size-10" aria-hidden="true">
                         {active ? (
@@ -2527,8 +2526,9 @@ export default function App() {
                 <div className="flex w-fit justify-center gap-3" aria-label="Errores de la ronda">
                   {[0, 1, 2].map((index) => {
                     const active =
-                      index < state.strikes[faceoffFirstTeam ?? teamId] ||
-                      (index === 0 && state.faceoffStrikeTeam === (faceoffFirstTeam ?? teamId))
+                      index <
+                      state.strikes[faceoffFirstTeam ?? teamId] +
+                        (state.faceoffStrikes?.[faceoffFirstTeam ?? teamId] ?? 0)
                     return active ? (
                       <SquareX key={index} size={64} strokeWidth={1.8} className="text-red-400" />
                     ) : (
