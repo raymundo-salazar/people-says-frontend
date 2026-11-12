@@ -62,7 +62,7 @@ export function GameSetupStep({
               type="button"
               disabled={item.id === "auto"}
               onClick={() => item.id !== "auto" && onModeChange(item.id)}
-              className={`relative overflow-hidden rounded-xl border p-4 text-left transition ${item.id === "auto" ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : mode === item.id ? "cursor-pointer border-emerald-700 bg-emerald-50" : "cursor-pointer border-stone-200 hover:border-emerald-500"}`}
+              className={`relative min-h-32 overflow-hidden rounded-xl border p-5 text-left transition ${item.id === "auto" ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : mode === item.id ? "cursor-pointer border-emerald-700 bg-emerald-50" : "cursor-pointer border-stone-200 hover:border-emerald-500"}`}
             >
               {item.id === "auto" && (
                 <span className="pointer-events-none absolute right-[-2.5rem] top-3 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">
