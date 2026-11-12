@@ -55,7 +55,7 @@ body {
   }
   5% {
     opacity: 1;
-    transform: translateX(5vw);
+    transform: translateX(10vw);
   }
   95% {
     opacity: 1;
