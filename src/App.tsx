@@ -673,7 +673,7 @@ export default function App() {
           })),
           teams: normalizedTeams,
           categoryIds: selectedCategoryIds,
-          questions: selectedQuestions.map((question) => ({ id: question.id, answerCount: question.answerCount })),
+          questions: selectedQuestions.map((question, index) => ({ id: question.id, answerCount: Number(rounds[index].answerCount) })),
         }),
       })
       const data = await response.json()
