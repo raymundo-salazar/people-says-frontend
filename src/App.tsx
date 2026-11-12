@@ -2918,7 +2918,7 @@ export default function App() {
         )}
         <div className="display-floating-accent display-floating-accent-right pointer-events-none absolute -right-40 -top-48 size-[480px] rounded-full border-[65px] border-white/5" />
         <div className="display-floating-accent display-floating-accent-left pointer-events-none absolute -bottom-36 -left-28 size-[360px] rounded-full border-[50px] border-white/5" />
-        <div className="relative z-10 mx-auto max-w-4xl">
+        <div className="relative z-10 mx-auto w-full max-w-4xl">
           <div className="flex justify-end">{pauseControl}</div>
           <div className="grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]">
             <div
