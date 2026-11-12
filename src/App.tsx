@@ -1450,8 +1450,6 @@ export default function App() {
                     key={`${question.roundIndex}-${question.questionId}`}
                     type="button"
                     onClick={() => revealLobbyQuestion(question.roundIndex)}
-                    onMouseEnter={() => revealLobbyQuestion(question.roundIndex)}
-                    onFocus={() => revealLobbyQuestion(question.roundIndex)}
                     className="group flex w-full cursor-pointer items-start gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3 text-left transition hover:bg-white focus-within:border-emerald-600"
                     aria-label={`Revelar pregunta de la ronda ${question.roundIndex + 1}`}
                   >
