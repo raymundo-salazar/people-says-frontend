@@ -1429,7 +1429,7 @@ export default function App() {
             )}
           </section>
         </div>
-        <section className="mt-3 overflow-hidden rounded-2xl border border-stone-200 bg-white">
+        <section className="mt-5 overflow-hidden rounded-2xl border border-stone-200 bg-white">
           <button
             type="button"
             onClick={() => setShowLobbyQuestions((open) => !open)}
