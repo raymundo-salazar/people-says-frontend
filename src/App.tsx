@@ -352,7 +352,7 @@ export default function App() {
   }, [publicStrikeVisible])
   useEffect(() => {
     if (!teamBackVisible) return
-    const timeout = window.setTimeout(() => setTeamBackVisible(false), 4400)
+    const timeout = window.setTimeout(() => setTeamBackVisible(false), 5200)
     return () => window.clearTimeout(timeout)
   }, [teamBackVisible])
   const answers =
@@ -1741,7 +1741,7 @@ export default function App() {
         {strikeVisible && (
           <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/50">
             <div
-              className="public-strike-animation flex items-center justify-center gap-3 text-red-400 drop-shadow-2xl"
+              className="public-strike-animation flex items-center justify-center gap-3 text-red-600 drop-shadow-2xl"
               aria-label="Strike registrado"
             >
               {Array.from({ length: strikeOverlayCount }, (_, index) => (
@@ -2466,7 +2466,7 @@ export default function App() {
         {publicStrikeVisible && (
           <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/50">
             <div
-              className="public-strike-animation flex items-center justify-center gap-3 text-red-400"
+              className="public-strike-animation flex items-center justify-center gap-3 text-red-600"
               aria-label="Strike registrado"
             >
               {Array.from({ length: strikeOverlayCount }, (_, index) => (
@@ -2642,7 +2642,7 @@ export default function App() {
                         (state.displayStrikes?.[faceoffFirstTeam ?? teamId] ??
                           state.strikes[faceoffFirstTeam ?? teamId])
                       return active ? (
-                        <SquareX key={index} size={64} strokeWidth={1.8} className="text-red-400" />
+                        <SquareX key={index} size={64} strokeWidth={1.8} className="text-red-600" />
                       ) : (
                         <span key={index} className="relative block size-16 text-white/25">
                           <SquareDashed size={64} strokeWidth={1.8} />
