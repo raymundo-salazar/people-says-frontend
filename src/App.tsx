@@ -1627,13 +1627,13 @@ export default function App() {
               <p className="text-xs font-bold uppercase tracking-widest text-stone-500">
                 Código QR
               </p>
-              <div className="mt-5 rounded-2xl border border-stone-200 bg-white p-5">
+              <div className="mt-5 size-[min(70vw,420px)] rounded-2xl border border-stone-200 bg-white p-5">
                 <img
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=${encodeURIComponent(shareUrl)}`}
                   alt="Código QR ampliado para unirse a la sala"
                   width="420"
                   height="420"
-                  className="h-auto w-full max-w-[min(70vw,420px)]"
+                  className="block size-full object-contain"
                 />
               </div>
               <p className="mt-4 text-center text-sm text-stone-500">
