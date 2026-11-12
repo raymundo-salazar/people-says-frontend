@@ -77,6 +77,7 @@ type CreateDraft = {
 }
 type Answer = { text: string; points: number }
 type State = {
+  activeTeam?: "blue" | "red" | null
   phase: string
   roundIndex: number
   roundConfigs: Array<{ answerCount: number; multiplier: number }>
@@ -550,12 +551,14 @@ export default function App() {
     })
     const receive = (payload: {
       state?: State
+      activeTeam?: "blue" | "red" | null
       activePlayer?: { id: number; name: string; team: "blue" | "red" } | null
       devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
     }) => {
       if (payload.state)
         setState({
           ...payload.state,
+          activeTeam: payload.activeTeam ?? payload.state.activeTeam,
           activePlayer: payload.activePlayer ?? payload.state.activePlayer,
         })
       if (payload.devices) {
@@ -649,7 +652,11 @@ export default function App() {
         const data = await response.json()
         if (!response.ok) throw new Error(data.error)
         setGameName(data.name ?? "La gente dice")
-        setState((old) => ({ ...old, ...data.state }))
+        setState((old) => ({
+          ...old,
+          ...data.state,
+          activeTeam: data.activeTeam ?? data.state.activeTeam,
+        }))
         setDevices(
           (data.devices ?? []).filter((device: { id?: string }) => device.id !== deviceToken)
         )
@@ -1124,7 +1131,7 @@ export default function App() {
   const reveal = (index: number) => {
     if (!revealed.includes(index)) emitAction({ type: "reveal_answer", index })
   }
-  const teamId = state.control ?? "blue"
+  const teamId = state.activeTeam ?? state.control ?? "blue"
   const teamName = teamId === "blue" ? teams[0].name : teams[1].name
   const faceoffFirstTeam =
     (strikeVisible || publicStrikeVisible
