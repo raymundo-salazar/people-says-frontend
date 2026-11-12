@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, Bot, MicVocal, MonitorSmartphone, Plus, Trash2 } from "lucide-react"
+import { ArrowLeft, ArrowRight, Bot, Check, MicVocal, MonitorSmartphone, Plus, Trash2 } from "lucide-react"
 import { Button, Heading, Shell, WizardProgress } from "./atoms"
 import { ParticipantRow, ParticipantsSubtitle, TeamNameField } from "./participants"
 
@@ -6,6 +6,7 @@ export type SetupMode = "classic" | "auto"
 export type SetupTeam = { name: string; color: "blue" | "red"; players: string[] }
 export type SetupRound = { answerCount: string; multiplier: 1 | 2 | 3 }
 export type SetupModeOption = { id: SetupMode; title: string; detail: string; devices: string }
+export type SetupCategory = { id: number; name: string; description: string }
 const modeIcons = { classic: MicVocal, auto: Bot }
 
 type GameSetupProps = {
@@ -19,6 +20,9 @@ type GameSetupProps = {
   onGameNameChange: (value: string) => void
   onModeChange: (mode: SetupMode) => void
   onContinue: () => void
+  categories: SetupCategory[]
+  selectedCategoryIds: number[]
+  onCategoryToggle: (id: number) => void
 }
 
 export function GameSetupStep({
@@ -32,6 +36,9 @@ export function GameSetupStep({
   onGameNameChange,
   onModeChange,
   onContinue,
+  categories,
+  selectedCategoryIds,
+  onCategoryToggle,
 }: GameSetupProps) {
   return (
     <Shell showBack={false}>
@@ -93,6 +100,35 @@ export function GameSetupStep({
             </button>
           ))}
         </div>
+        {categories.length > 0 && (
+          <div>
+            <p className="mb-3 text-xs font-medium text-stone-500">
+              Categorías de preguntas <span className="text-red-600">*</span>
+            </p>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {categories.map((category) => {
+                const selected = selectedCategoryIds.includes(category.id)
+                return (
+                  <button
+                    key={category.id}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => onCategoryToggle(category.id)}
+                    className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 text-left transition ${selected ? "border-emerald-700 bg-emerald-50" : "border-stone-200 bg-white hover:border-emerald-500"}`}
+                  >
+                    <span className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-md border ${selected ? "border-emerald-700 bg-emerald-900 text-white" : "border-stone-300 text-transparent"}`}>
+                      <Check size={13} strokeWidth={3} aria-hidden="true" />
+                    </span>
+                    <span>
+                      <b className="block text-sm">{category.name}</b>
+                      <small className="mt-1 block text-xs leading-5 text-stone-500">{category.description}</small>
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
         <div className="flex items-center justify-between gap-3 pt-2">
           <span aria-hidden="true" />
           <Button disabled={!valid} loading={loading} onClick={onContinue}>

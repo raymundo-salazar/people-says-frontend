@@ -38,7 +38,7 @@ import {
 } from "./components/atoms"
 import type { DeviceType } from "./components/atoms"
 import { GameSetupStep, RoundsStep, TeamsStep } from "./components/setup-wizard"
-import type { SetupModeOption } from "./components/setup-wizard"
+import type { SetupCategory, SetupModeOption } from "./components/setup-wizard"
 import { cx } from "./lib/cx"
 
 type Screen =
@@ -259,6 +259,8 @@ export default function App() {
   const [mode, setMode] = useState<Mode>("classic")
   const [state, setState] = useState<State>(defaultState)
   const [gameName, setGameName] = useState("")
+  const [categories, setCategories] = useState<SetupCategory[]>([])
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([])
   const [teams, setTeams] = useState<Team[]>([
     { name: "Azul", color: "blue", players: [""] },
     { name: "Rojo", color: "red", players: [""] },
@@ -333,6 +335,15 @@ export default function App() {
   const [teamBackTeam, setTeamBackTeam] = useState<"blue" | "red">("red")
   const [publicAnswerFlipIndex, setPublicAnswerFlipIndex] = useState<number | null>(null)
   useEffect(() => {
+    fetch(`${api}/api/categories`)
+      .then((response) => (response.ok ? response.json() : []))
+      .then((data: SetupCategory[]) => {
+        setCategories(data)
+        setSelectedCategoryIds(data.map((category) => category.id))
+      })
+      .catch(() => setCategories([]))
+  }, [])
+  useEffect(() => {
     if (!timerRunning) return
     const timer = window.setInterval(() => {
       setTimerSeconds((seconds) => {
@@ -386,7 +397,7 @@ export default function App() {
     if (!canAddRound) return
     setRounds((old) => [...old, { answerCount: "4", multiplier: 1 }])
   }
-  const validGameSetup = gameName.trim().length > 0
+  const validGameSetup = gameName.trim().length > 0 && (categories.length === 0 || selectedCategoryIds.length > 0)
   const savedRoomCode = localStorage.getItem("people-says-room-code") ?? ""
   const savedHostToken = localStorage.getItem("people-says-host-token") ?? ""
   const isPrincipalDevice =
@@ -656,6 +667,7 @@ export default function App() {
             multiplier: round.multiplier,
           })),
           teams: normalizedTeams,
+          categoryIds: selectedCategoryIds,
         }),
       })
       const data = await response.json()
@@ -1161,6 +1173,13 @@ export default function App() {
         onGameNameChange={setGameName}
         onModeChange={setMode}
         onContinue={saveGameConfig}
+        categories={categories}
+        selectedCategoryIds={selectedCategoryIds}
+        onCategoryToggle={(id) =>
+          setSelectedCategoryIds((current) =>
+            current.includes(id) ? current.filter((categoryId) => categoryId !== id) : [...current, id]
+          )
+        }
       />
     )
   if (screen === "teams")
