@@ -941,24 +941,27 @@ export default function App() {
   const stealTeamName = stealTeamId === "blue" ? teams[0].name : teams[1].name
   const stealBanner =
     state.phase === "steal" ? (
-      <div
-        className={cx(
-          "team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r py-12 text-center text-white shadow-2xl",
-          stealTeamId === "blue"
-            ? "from-blue-950 via-blue-900 to-blue-950"
-            : "from-red-950 via-red-900 to-red-950"
-        )}
-      >
-        <div className="team-back-banner-content mx-auto w-fit px-8">
-          <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
-            {stealTeamName}
-          </p>
-          <h2 className="mt-1 text-3xl font-black sm:text-5xl">¡Hagan team back!</h2>
-          <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
-            Prepárense para robar los puntos.
-          </p>
+      <>
+        <div className="public-strike-overlay pointer-events-none fixed inset-0 z-30 bg-black/50" />
+        <div
+          className={cx(
+            "team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r py-12 text-center text-white shadow-2xl",
+            stealTeamId === "blue"
+              ? "from-blue-950 via-blue-900 to-blue-950"
+              : "from-red-950 via-red-900 to-red-950"
+          )}
+        >
+          <div className="team-back-banner-content mx-auto w-fit px-8">
+            <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
+              {stealTeamName}
+            </p>
+            <h2 className="mt-1 text-3xl font-black sm:text-5xl">¡Hagan team back!</h2>
+            <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
+              Prepárense para robar los puntos.
+            </p>
+          </div>
         </div>
-      </div>
+      </>
     ) : null
   useEffect(() => {
     if (state.phase !== "lobby") setLoadingAction(null)
