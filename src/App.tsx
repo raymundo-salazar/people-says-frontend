@@ -352,7 +352,7 @@ export default function App() {
   }, [publicStrikeVisible])
   useEffect(() => {
     if (!teamBackVisible) return
-    const timeout = window.setTimeout(() => setTeamBackVisible(false), 4000)
+    const timeout = window.setTimeout(() => setTeamBackVisible(false), 4400)
     return () => window.clearTimeout(timeout)
   }, [teamBackVisible])
   const answers =
@@ -954,7 +954,7 @@ export default function App() {
   const stealTeamName = stealTeamId === "blue" ? teams[0].name : teams[1].name
   const stealBanner = teamBackVisible ? (
     <>
-      <div className="public-strike-overlay pointer-events-none fixed inset-0 z-30 bg-black/50" />
+      <div className="team-back-overlay pointer-events-none fixed inset-0 z-30 bg-black/50" />
       <div
         className={cx(
           "team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r py-12 text-center text-white shadow-2xl",

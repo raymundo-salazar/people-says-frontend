@@ -72,7 +72,26 @@ body {
 }
 
 .team-back-banner-content {
-  animation: team-back-banner 4s linear both;
+  animation: team-back-banner 4.4s linear both;
+}
+
+@keyframes team-back-overlay {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.team-back-overlay {
+  animation: team-back-overlay 4.4s ease-in-out both;
 }
 html {
   scrollbar-gutter: stable;
