@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, Plus, Trash2 } from "lucide-react"
+import { ArrowLeft, ArrowRight, Bot, MicVocal, Plus, Trash2 } from "lucide-react"
 import { Button, Heading, Shell, WizardProgress } from "./atoms"
 import { ParticipantRow, ParticipantsSubtitle, TeamNameField } from "./participants"
 
@@ -6,6 +6,7 @@ export type SetupMode = "classic" | "auto"
 export type SetupTeam = { name: string; color: "blue" | "red"; players: string[] }
 export type SetupRound = { answerCount: string; multiplier: 1 | 2 | 3 }
 export type SetupModeOption = { id: SetupMode; title: string; detail: string }
+const modeIcons = { classic: MicVocal, auto: Bot }
 
 type GameSetupProps = {
   editing: boolean
@@ -76,8 +77,15 @@ export function GameSetupStep({
                   Próximamente
                 </span>
               )}
-              <b className="block pl-8 text-sm">{item.title}</b>
-              <small className="pl-8 text-stone-500">{item.detail}</small>
+              <div className="flex items-center gap-3 pl-8">
+                <span className={`grid size-10 shrink-0 place-items-center rounded-lg ${item.id === "auto" ? "bg-stone-100 text-stone-400" : "bg-emerald-50 text-emerald-900"}`}>
+                  {(() => { const Icon = modeIcons[item.id]; return <Icon size={20} strokeWidth={1.8} aria-hidden="true" /> })()}
+                </span>
+                <span>
+                  <b className="block text-sm">{item.title}</b>
+                  <small className="text-stone-500">{item.detail}</small>
+                </span>
+              </div>
             </button>
           ))}
         </div>
