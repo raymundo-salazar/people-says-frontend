@@ -507,7 +507,7 @@ export default function App() {
       setStrikeVisible(true)
       if (payload.count === 2) {
         setTeamBackTeam(payload.team === "blue" ? "red" : "blue")
-        setTeamBackVisible(true)
+        window.setTimeout(() => setTeamBackVisible(true), 3000)
       }
     }
     const answerRevealed = (payload: { index?: number }) => {
