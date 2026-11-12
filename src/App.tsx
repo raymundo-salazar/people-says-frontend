@@ -1214,7 +1214,7 @@ export default function App() {
             </h2>
             <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
               {stealPromptVisible
-                ? "Elige una sola respuesta correcta para ganar el pozo."
+                ? "Elige una sola respuesta correcta para llevarte los puntos acumulados."
                 : "Prepárense para robar los puntos."}
             </p>
           </div>
