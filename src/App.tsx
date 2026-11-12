@@ -659,7 +659,7 @@ export default function App() {
       setError("Completa el nombre y al menos un jugador en cada equipo")
       return
     }
-    setLoadingAction(finalize ? "rounds" : "create")
+    setLoadingAction("create")
     try {
       const response = await fetch(`${api}/api/rooms`, {
         method: "POST",
@@ -1253,6 +1253,7 @@ export default function App() {
         questions={selectedQuestions}
         initialLoading={questionsLoading}
         loadingRound={questionLoadingRound}
+        creating={loadingAction === "create"}
         onChange={replaceQuestion}
         onBack={() => setScreen("rounds")}
         onSave={() => createRoom(true)}

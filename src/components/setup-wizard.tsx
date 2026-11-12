@@ -357,8 +357,8 @@ export function RoundsStep({
   )
 }
 
-type QuestionsStepProps = { rounds: SetupRound[]; questions: SetupQuestion[]; initialLoading: boolean; loadingRound: number | null; onChange: (index: number) => void; onBack: () => void; onSave: () => void }
-export function QuestionsStep({ rounds, questions, initialLoading, loadingRound, onChange, onBack, onSave }: QuestionsStepProps) {
+type QuestionsStepProps = { rounds: SetupRound[]; questions: SetupQuestion[]; initialLoading: boolean; loadingRound: number | null; creating: boolean; onChange: (index: number) => void; onBack: () => void; onSave: () => void }
+export function QuestionsStep({ rounds, questions, initialLoading, loadingRound, creating, onChange, onBack, onSave }: QuestionsStepProps) {
   return (
     <Shell>
       <WizardProgress step={4} />
@@ -380,7 +380,7 @@ export function QuestionsStep({ rounds, questions, initialLoading, loadingRound,
                     <p className="text-[10px] font-bold uppercase tracking-wide text-stone-500">Ronda {index + 1} · {round.answerCount} respuestas · x{round.multiplier}</p>
                     {loading ? <Skeleton className="mt-2 h-5 w-4/5 rounded" /> : <p className="mt-1 text-sm font-semibold text-stone-900">{question?.prompt}</p>}
                   </div>
-                  <Button secondary disabled={loading} loading={loading} onClick={() => onChange(index)} className="shrink-0 !px-3" aria-label={`Cambiar pregunta de la ronda ${index + 1}`}>
+                  <Button secondary disabled={loading || creating} loading={loading} onClick={() => onChange(index)} className="shrink-0 !px-3" aria-label={`Cambiar pregunta de la ronda ${index + 1}`}>
                     {!loading && <RefreshCw size={15} aria-hidden="true" />} Cambiar
                   </Button>
                 </div>
@@ -389,8 +389,8 @@ export function QuestionsStep({ rounds, questions, initialLoading, loadingRound,
           </div>
         )}
         <div className="mt-6 flex items-center justify-between gap-3">
-          <Button ghost onClick={onBack}> <ArrowLeft size={16} aria-hidden="true" /> Atrás </Button>
-          <Button disabled={initialLoading || questions.length !== rounds.length} onClick={onSave}>Crear partida <ArrowRight size={16} aria-hidden="true" /></Button>
+          <Button ghost disabled={creating} onClick={onBack}> <ArrowLeft size={16} aria-hidden="true" /> Atrás </Button>
+          <Button loading={creating} disabled={initialLoading || creating || questions.length !== rounds.length} onClick={onSave}>Crear partida <ArrowRight size={16} aria-hidden="true" /></Button>
         </div>
       </div>
     </Shell>
