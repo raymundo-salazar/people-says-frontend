@@ -64,7 +64,11 @@ export function GameSetupStep({
             className="w-full rounded-xl border border-stone-200 px-4 py-3 text-sm"
           />
         </label>
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div>
+          <p className="mb-3 text-xs font-medium text-stone-500">
+            Tipo de juego <span className="text-red-600">*</span>
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
           {modes.map((item) => (
             <button
               key={item.id}
@@ -100,6 +104,7 @@ export function GameSetupStep({
               </div>
             </button>
           ))}
+          </div>
         </div>
         {categories.length > 0 && (
           <div>
