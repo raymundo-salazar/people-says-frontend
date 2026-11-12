@@ -64,6 +64,7 @@ type Mode = "classic" | "auto"
 type DeviceRole = "host" | "display" | "blue_button" | "red_button" | "pending"
 type Team = { name: string; color: "blue" | "red"; players: string[] }
 type RoundDraft = { answerCount: string; multiplier: 1 | 2 | 3 }
+type CreateDraft = { gameName: string; mode: Mode; teams: Team[]; rounds: RoundDraft[]; selectedCategoryIds: number[]; selectedQuestions: SetupQuestion[]; screen: Screen }
 type Answer = { text: string; points: number }
 type State = {
   phase: string
@@ -252,29 +253,34 @@ const modes: SetupModeOption[] = [
     devices: "De 2 a 3 dispositivos",
   },
 ]
+const createDraftKey = "people-says-create-draft"
+const readCreateDraft = (): Partial<CreateDraft> => {
+  try { return JSON.parse(localStorage.getItem(createDraftKey) ?? "{}") as Partial<CreateDraft> } catch { return {} }
+}
 
 export default function App() {
   const location = useLocation()
   const navigate = useNavigate()
   const savedDeviceConfig = getSavedDeviceConfig()
-  const [screen, setScreenState] = useState<Screen>(screenFromLocation)
-  const [mode, setMode] = useState<Mode>("classic")
+  const savedCreateDraft = readCreateDraft()
+  const [screen, setScreenState] = useState<Screen>(() => screenFromLocation() === "home" ? savedCreateDraft.screen ?? "home" : screenFromLocation())
+  const [mode, setMode] = useState<Mode>(savedCreateDraft.mode ?? "classic")
   const [state, setState] = useState<State>(defaultState)
-  const [gameName, setGameName] = useState("")
+  const [gameName, setGameName] = useState(savedCreateDraft.gameName ?? "")
   const [categories, setCategories] = useState<SetupCategory[]>([])
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([])
-  const [teams, setTeams] = useState<Team[]>([
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>(savedCreateDraft.selectedCategoryIds ?? [])
+  const [teams, setTeams] = useState<Team[]>(savedCreateDraft.teams ?? [
     { name: "Azul", color: "blue", players: [""] },
     { name: "Rojo", color: "red", players: [""] },
   ])
-  const [rounds, setRounds] = useState<RoundDraft[]>([
+  const [rounds, setRounds] = useState<RoundDraft[]>(savedCreateDraft.rounds ?? [
     { answerCount: "10", multiplier: 1 },
     { answerCount: "8", multiplier: 1 },
     { answerCount: "6", multiplier: 1 },
     { answerCount: "5", multiplier: 2 },
     { answerCount: "4", multiplier: 3 },
   ])
-  const [selectedQuestions, setSelectedQuestions] = useState<SetupQuestion[]>([])
+  const [selectedQuestions, setSelectedQuestions] = useState<SetupQuestion[]>(savedCreateDraft.selectedQuestions ?? [])
   const [questionsLoading, setQuestionsLoading] = useState(false)
   const [questionLoadingRound, setQuestionLoadingRound] = useState<number | null>(null)
   const [roomCode, setRoomCode] = useState(
@@ -340,11 +346,15 @@ export default function App() {
   const [teamBackTeam, setTeamBackTeam] = useState<"blue" | "red">("red")
   const [publicAnswerFlipIndex, setPublicAnswerFlipIndex] = useState<number | null>(null)
   useEffect(() => {
+    if (roomCode || !["create", "teams", "rounds", "questions"].includes(screen)) return
+    localStorage.setItem(createDraftKey, JSON.stringify({ gameName, mode, teams, rounds, selectedCategoryIds, selectedQuestions, screen }))
+  }, [roomCode, screen, gameName, mode, teams, rounds, selectedCategoryIds, selectedQuestions])
+  useEffect(() => {
     fetch(`${api}/api/categories`)
       .then((response) => (response.ok ? response.json() : []))
       .then((data: SetupCategory[]) => {
         setCategories(data)
-        setSelectedCategoryIds(data.filter((category) => category.questionCount > 0).map((category) => category.id))
+        if (!savedCreateDraft.selectedCategoryIds?.length) setSelectedCategoryIds(data.filter((category) => category.questionCount > 0).map((category) => category.id))
       })
       .catch(() => setCategories([]))
   }, [])
@@ -696,6 +706,7 @@ export default function App() {
       })
       localStorage.setItem("people-says-room-code", data.code)
       localStorage.setItem("people-says-host-token", data.hostToken)
+      localStorage.removeItem(createDraftKey)
       setScreen(finalize ? "lobby" : "teams")
     } catch (e) {
       setError(e instanceof Error ? e.message : "No se pudo crear la sala")
