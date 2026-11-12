@@ -82,7 +82,7 @@ export function GameSetupStep({
               </span>
               {item.id === "auto" && (
                 <span className="pointer-events-none absolute right-[-2.3rem] top-7 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">
-                  Próximamente
+                  Próx.
                 </span>
               )}
               <div className="flex items-center gap-3 pl-8">
@@ -118,7 +118,7 @@ export function GameSetupStep({
                     onClick={() => onCategoryToggle(category.id)}
                     className={`relative flex cursor-pointer items-start gap-3 overflow-hidden rounded-xl border p-3 text-left transition ${category.questionCount === 0 ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : selected ? "border-emerald-700 bg-emerald-50" : "border-stone-200 bg-white hover:border-emerald-500"}`}
                   >
-                    {category.questionCount === 0 && <span className="pointer-events-none absolute right-[-2.3rem] top-5 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">Próximamente</span>}
+                    {category.questionCount === 0 && <span className="pointer-events-none absolute right-[-2.3rem] top-5 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">Próx.</span>}
                     <span className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-md border ${selected ? "border-emerald-700 bg-emerald-900 text-white" : "border-stone-300 text-transparent"}`}>
                       <Check size={13} strokeWidth={3} aria-hidden="true" />
                     </span>
