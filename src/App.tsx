@@ -314,6 +314,9 @@ export default function App() {
   const [publicStrikeVisible, setPublicStrikeVisible] = useState(false)
   const publicStrikeKey = `${state.faceoffStrikeTeam ?? ""}-${state.faceoffStrikes?.blue ?? 0}-${state.faceoffStrikes?.red ?? 0}-${state.strikes.blue}-${state.strikes.red}`
   const previousPublicStrikeKey = useRef(publicStrikeKey)
+  const publicStrikeReady = useRef(false)
+  const skipPublicStrikeAnimation = useRef(true)
+  const publicStrikeHasReceivedState = useRef(false)
   useEffect(() => {
     if (!timerRunning) return
     const timer = window.setInterval(() => {
@@ -339,6 +342,17 @@ export default function App() {
     return () => window.clearTimeout(timeout)
   }, [strikeVisible])
   useEffect(() => {
+    if (skipPublicStrikeAnimation.current) {
+      skipPublicStrikeAnimation.current = false
+      previousPublicStrikeKey.current = publicStrikeKey
+      publicStrikeReady.current = true
+      return
+    }
+    if (!publicStrikeReady.current) {
+      previousPublicStrikeKey.current = publicStrikeKey
+      publicStrikeReady.current = true
+      return
+    }
     if (previousPublicStrikeKey.current === publicStrikeKey) return
     previousPublicStrikeKey.current = publicStrikeKey
     setPublicStrikeVisible(true)
@@ -448,7 +462,13 @@ export default function App() {
       state?: State
       devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
     }) => {
-      if (payload.state) setState(payload.state)
+      if (payload.state) {
+        if (!publicStrikeHasReceivedState.current) {
+          skipPublicStrikeAnimation.current = true
+          publicStrikeHasReceivedState.current = true
+        }
+        setState(payload.state)
+      }
       if (payload.devices) {
         setDevices(payload.devices.filter((device) => device.id !== deviceToken))
       }
