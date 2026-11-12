@@ -312,11 +312,6 @@ export default function App() {
   const [timerRunning, setTimerRunning] = useState(false)
   const [strikeVisible, setStrikeVisible] = useState(false)
   const [publicStrikeVisible, setPublicStrikeVisible] = useState(false)
-  const publicStrikeKey = `${state.faceoffStrikeTeam ?? ""}-${state.faceoffStrikes?.blue ?? 0}-${state.faceoffStrikes?.red ?? 0}-${state.strikes.blue}-${state.strikes.red}`
-  const previousPublicStrikeKey = useRef(publicStrikeKey)
-  const publicStrikeReady = useRef(false)
-  const skipPublicStrikeAnimation = useRef(true)
-  const publicStrikeHasReceivedState = useRef(false)
   useEffect(() => {
     if (!timerRunning) return
     const timer = window.setInterval(() => {
@@ -341,24 +336,6 @@ export default function App() {
     const timeout = window.setTimeout(() => setStrikeVisible(false), 3000)
     return () => window.clearTimeout(timeout)
   }, [strikeVisible])
-  useEffect(() => {
-    if (skipPublicStrikeAnimation.current) {
-      skipPublicStrikeAnimation.current = false
-      previousPublicStrikeKey.current = publicStrikeKey
-      publicStrikeReady.current = true
-      return
-    }
-    if (!publicStrikeReady.current) {
-      previousPublicStrikeKey.current = publicStrikeKey
-      publicStrikeReady.current = true
-      return
-    }
-    if (previousPublicStrikeKey.current === publicStrikeKey) return
-    previousPublicStrikeKey.current = publicStrikeKey
-    setPublicStrikeVisible(true)
-    const timeout = window.setTimeout(() => setPublicStrikeVisible(false), 3000)
-    return () => window.clearTimeout(timeout)
-  }, [publicStrikeKey])
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
@@ -463,10 +440,6 @@ export default function App() {
       devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
     }) => {
       if (payload.state) {
-        if (!publicStrikeHasReceivedState.current) {
-          skipPublicStrikeAnimation.current = true
-          publicStrikeHasReceivedState.current = true
-        }
         setState(payload.state)
       }
       if (payload.devices) {
@@ -506,6 +479,7 @@ export default function App() {
       setError(errorCode)
     }
     const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
+    const strike = () => setPublicStrikeVisible(true)
     const roleReplaced = (payload: { message?: string }) => {
       moveToRoleSelection(
         payload.message ??
@@ -517,6 +491,7 @@ export default function App() {
     gameSocket.on("room:presence", presence)
     gameSocket.on("game:error", failure)
     gameSocket.on("buzzer:winner", buzzer)
+    gameSocket.on("game:strike", strike)
     gameSocket.on("device:role-replaced", roleReplaced)
     gameSocket.on("buzzer:reset", () => setBuzzerWinner(null))
     return () => {
@@ -525,6 +500,7 @@ export default function App() {
       gameSocket.off("room:presence", presence)
       gameSocket.off("game:error", failure)
       gameSocket.off("buzzer:winner", buzzer)
+      gameSocket.off("game:strike", strike)
       gameSocket.off("device:role-replaced", roleReplaced)
       gameSocket.off("buzzer:reset")
     }
