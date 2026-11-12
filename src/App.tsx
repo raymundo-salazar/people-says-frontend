@@ -446,11 +446,14 @@ export default function App() {
     })
     const receive = (payload: {
       state?: State
+      activePlayer?: { id: number; name: string; team: "blue" | "red" } | null
       devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
     }) => {
-      if (payload.state) {
-        setState(payload.state)
-      }
+      if (payload.state)
+        setState({
+          ...payload.state,
+          activePlayer: payload.activePlayer ?? payload.state.activePlayer,
+        })
       if (payload.devices) {
         setDevices(payload.devices.filter((device) => device.id !== deviceToken))
       }
