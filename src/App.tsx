@@ -331,7 +331,7 @@ export default function App() {
   }, [hostToken, roomCode, state.control, timerRunning])
   useEffect(() => {
     if (!strikeVisible) return
-    const timeout = window.setTimeout(() => setStrikeVisible(false), 1800)
+    const timeout = window.setTimeout(() => setStrikeVisible(false), 3000)
     return () => window.clearTimeout(timeout)
   }, [strikeVisible])
   useEffect(() => {
@@ -1655,9 +1655,9 @@ export default function App() {
         {strikeVisible && (
           <div className="pointer-events-none fixed inset-0 z-50 grid place-items-center bg-red-950/10">
             <SquareX
-              size={132}
+              size={180}
               strokeWidth={1.5}
-              className="animate-bounce text-red-600 drop-shadow-2xl"
+              className="public-strike-animation text-red-400 drop-shadow-2xl"
               aria-label="Strike registrado"
             />
           </div>
