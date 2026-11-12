@@ -73,7 +73,7 @@ export function GameSetupStep({
                 {mode === item.id && <span className="size-2.5 rounded-full bg-emerald-700" />}
               </span>
               {item.id === "auto" && (
-                <span className="pointer-events-none absolute right-[-2.5rem] top-5 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">
+                <span className="pointer-events-none absolute right-[-1.5rem] top-7 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">
                   Próximamente
                 </span>
               )}
