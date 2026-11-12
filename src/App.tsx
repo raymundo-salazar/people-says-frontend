@@ -361,6 +361,7 @@ export default function App() {
   const [copied, setCopied] = useState<"code" | "url" | null>(null)
   const [showQrModal, setShowQrModal] = useState(false)
   const [qrLoaded, setQrLoaded] = useState(false)
+  const [lobbyQrLoaded, setLobbyQrLoaded] = useState(false)
   const [loadingAction, setLoadingAction] = useState<
     "create" | "teams" | "rounds" | "start" | "join" | null
   >(null)
@@ -1452,12 +1453,26 @@ export default function App() {
               </div>
             </div>
             <div className="mt-6 flex flex-col items-center">
-              <div className="rounded-xl border border-stone-200 bg-white p-3">
+              <div className="relative size-[194px] rounded-xl border border-stone-200 bg-white p-3">
+                {!lobbyQrLoaded && (
+                  <span className="absolute inset-0 grid place-items-center text-emerald-800">
+                    <LoaderCircle
+                      size={24}
+                      className="animate-spin"
+                      aria-label="Cargando código QR"
+                    />
+                  </span>
+                )}
                 <img
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=168x168&data=${encodeURIComponent(shareUrl)}`}
                   alt="Código QR para unirse a la sala"
                   width="168"
                   height="168"
+                  className={cx(
+                    "block size-full object-contain transition-opacity",
+                    !lobbyQrLoaded && "opacity-0"
+                  )}
+                  onLoad={() => setLobbyQrLoaded(true)}
                 />
               </div>
               <p className="mt-3 text-xs text-stone-500">
