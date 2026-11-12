@@ -13,6 +13,7 @@ import {
   LoaderCircle,
   LogIn,
   LogOut,
+  Unlink,
   Pause,
   Pointer,
   SquareDashed,
@@ -949,6 +950,10 @@ export default function App() {
     (["faceoff", "decision", "tiebreaker"].includes(state.phase) && Boolean(faceoffFirstTeam))
   const manualActiveTeam = state.phase === "turn" ? teamId : faceoffFirstTeam
   const connectedDeviceCount = devices.length + 1
+  const principalDeviceLinked =
+    Boolean(hostToken) ||
+    currentDeviceRole === "host" ||
+    devices.some((device) => device.role === "host")
   const roundMultiplier = state.roundConfigs[state.roundIndex]?.multiplier ?? 1
   const baseRoundPoints = revealed.reduce(
     (total, index) => total + (answers[index]?.points ?? 0),
@@ -1461,24 +1466,43 @@ export default function App() {
             <Brand />
           </div>
           <div className="mt-10 w-full rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm sm:p-8">
-            <div className="mx-auto grid size-16 place-items-center rounded-xl bg-emerald-50 text-emerald-900">
-              <LoaderCircle
-                size={32}
-                strokeWidth={1.8}
-                className="animate-spin"
-                aria-hidden="true"
-              />
+            <div
+              className={cx(
+                "mx-auto grid size-16 place-items-center rounded-xl",
+                principalDeviceLinked ? "bg-emerald-50 text-emerald-900" : "bg-red-50 text-red-700"
+              )}
+            >
+              {principalDeviceLinked ? (
+                <LoaderCircle
+                  size={32}
+                  strokeWidth={1.8}
+                  className="animate-spin"
+                  aria-hidden="true"
+                />
+              ) : (
+                <Unlink size={32} strokeWidth={1.8} aria-hidden="true" />
+              )}
             </div>
-            <div className="mx-auto mt-5 inline-flex items-center gap-2 rounded-full bg-yellow-50 px-3 py-1 text-xs font-semibold text-yellow-800">
+            <div
+              className={cx(
+                "mx-auto mt-5 inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold",
+                principalDeviceLinked ? "bg-yellow-50 text-yellow-800" : "bg-red-50 text-red-700"
+              )}
+            >
               <span
-                className="size-2 animate-pulse rounded-full bg-yellow-500"
+                className={cx(
+                  "size-2 rounded-full",
+                  principalDeviceLinked ? "animate-pulse bg-yellow-500" : "bg-red-600"
+                )}
                 aria-hidden="true"
               />
-              En sala de espera
+              {principalDeviceLinked ? "En sala de espera" : "Sin vinculación"}
             </div>
             <h1 className="mt-5 text-3xl font-semibold tracking-tight">Esperando inicio...</h1>
             <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-stone-500">
-              Tu dispositivo ya está vinculado. La partida comenzará en breve.
+              {principalDeviceLinked
+                ? "Tu dispositivo ya está vinculado. La partida comenzará en breve."
+                : "Tu dispositivo está conectado, pero aún no está vinculado al dispositivo principal."}
             </p>
             <div className="mt-7 rounded-xl border border-stone-200 bg-stone-50 p-4 text-left">
               <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
@@ -1499,9 +1523,20 @@ export default function App() {
                   {deviceRoleLabels[currentDeviceRole]}
                 </span>
                 <span className="text-stone-500">Conexión</span>
-                <span className="inline-flex items-center justify-end gap-1.5 font-semibold text-emerald-700">
-                  <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" />
-                  Vinculado
+                <span
+                  className={cx(
+                    "inline-flex items-center justify-end gap-1.5 font-semibold",
+                    principalDeviceLinked ? "text-emerald-700" : "text-red-700"
+                  )}
+                >
+                  <span
+                    className={cx(
+                      "size-2 rounded-full",
+                      principalDeviceLinked ? "bg-emerald-600" : "bg-red-600"
+                    )}
+                    aria-hidden="true"
+                  />
+                  {principalDeviceLinked ? "Vinculado" : "No vinculado"}
                 </span>
               </div>
             </div>
