@@ -891,7 +891,9 @@ export default function App() {
   const faceoffFirstTeam =
     (strikeVisible || publicStrikeVisible
       ? (state.faceoffStrikeTeam ?? state.faceoff?.activeTeam)
-      : state.faceoff?.activeTeam) ?? state.faceoff?.firstTeam
+      : state.faceoff?.activeTeam) ??
+    state.faceoff?.firstTeam ??
+    state.control
   const strikeTeam = faceoffFirstTeam ?? teamId
   const blueFaceoffPlayer =
     state.faceoff?.bluePlayer ??
