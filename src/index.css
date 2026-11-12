@@ -63,7 +63,7 @@ body {
   }
   82% {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(-2vw);
   }
   100% {
     opacity: 0;
