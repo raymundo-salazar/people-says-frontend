@@ -51,18 +51,22 @@ body {
 @keyframes team-back-banner {
   0% {
     opacity: 0;
+    filter: blur(8px);
     transform: translateX(110vw);
   }
   10% {
     opacity: 1;
+    filter: blur(0);
     transform: translateX(8vw);
   }
   90% {
     opacity: 1;
+    filter: blur(0);
     transform: translateX(0);
   }
   100% {
     opacity: 0;
+    filter: blur(8px);
     transform: translateX(-115vw);
   }
 }
