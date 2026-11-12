@@ -94,6 +94,7 @@ type State = {
     firstIndex?: number
   }
   teams: [{ name: string; players: string[] }, { name: string; players: string[] }]
+  roundQuestions?: Array<{ roundIndex: number; questionId: number; prompt: string }>
 }
 const screens: Screen[] = [
   "home",
@@ -337,6 +338,7 @@ export default function App() {
     "create" | "teams" | "rounds" | "start" | "join" | null
   >(null)
   const [showConnectedDevices, setShowConnectedDevices] = useState(false)
+  const [showLobbyQuestions, setShowLobbyQuestions] = useState(false)
   const [timerSeconds, setTimerSeconds] = useState(30)
   const [timerRunning, setTimerRunning] = useState(false)
   const [strikeVisible, setStrikeVisible] = useState(false)
@@ -1418,6 +1420,32 @@ export default function App() {
             )}
           </section>
         </div>
+        <section className="mt-3 overflow-hidden rounded-2xl border border-stone-200 bg-white">
+          <button
+            type="button"
+            onClick={() => setShowLobbyQuestions((open) => !open)}
+            className="flex w-full cursor-pointer items-center justify-between gap-3 p-4 text-left transition hover:bg-stone-50"
+            aria-expanded={showLobbyQuestions}
+          >
+            <div>
+              <h2 className="text-[11px] font-bold uppercase tracking-wide text-stone-900">Preguntas de la partida</h2>
+              <p className="mt-1 text-xs text-stone-500">Consulta las preguntas asignadas a cada ronda.</p>
+            </div>
+            <ChevronDown size={18} aria-hidden="true" className={cx("shrink-0 text-stone-500 transition-transform", showLobbyQuestions && "rotate-180")} />
+          </button>
+          {showLobbyQuestions && (
+            <div className="border-t border-stone-100 p-4">
+              <div className="space-y-2">
+                {(state.roundQuestions ?? []).map((question) => (
+                  <div key={`${question.roundIndex}-${question.questionId}`} className="flex items-start gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3">
+                    <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-xs font-bold text-stone-600">{String(question.roundIndex + 1).padStart(2, "0")}</span>
+                    <p className="pt-1 text-sm font-semibold text-stone-800">{question.prompt}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
         <div className="mt-5 flex items-center justify-between gap-3">
           <Button ghost onClick={() => setScreen("rounds")}>
             <ArrowLeft size={16} aria-hidden="true" /> Atrás
