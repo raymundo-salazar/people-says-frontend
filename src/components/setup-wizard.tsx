@@ -1,4 +1,14 @@
-import { ArrowLeft, ArrowRight, Bot, Check, MicVocal, MonitorSmartphone, Plus, RefreshCw, Trash2 } from "lucide-react"
+import {
+  ArrowLeft,
+  ArrowRight,
+  Bot,
+  Check,
+  MicVocal,
+  MonitorSmartphone,
+  Plus,
+  RefreshCw,
+  Trash2,
+} from "lucide-react"
 import { Button, Heading, Shell, Skeleton, WizardProgress } from "./atoms"
 import { ParticipantRow, ParticipantsSubtitle, TeamNameField } from "./participants"
 
@@ -7,7 +17,12 @@ export type SetupTeam = { name: string; color: "blue" | "red"; players: string[]
 export type SetupRound = { answerCount: string; multiplier: 1 | 2 | 3 }
 export type SetupModeOption = { id: SetupMode; title: string; detail: string; devices: string }
 export type SetupCategory = { id: number; name: string; description: string; questionCount: number }
-export type SetupQuestion = { id: number; prompt: string; answerCount: number; multiplier: 1 | 2 | 3 }
+export type SetupQuestion = {
+  id: number
+  prompt: string
+  answerCount: number
+  multiplier: 1 | 2 | 3
+}
 const modeIcons = { classic: MicVocal, auto: Bot }
 
 type GameSetupProps = {
@@ -69,41 +84,50 @@ export function GameSetupStep({
             Tipo de juego <span className="text-red-600">*</span>
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
-          {modes.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              disabled={item.id === "auto"}
-              onClick={() => item.id !== "auto" && onModeChange(item.id)}
-              aria-pressed={mode === item.id}
-              className={`relative min-h-32 overflow-hidden rounded-xl border p-4 text-left transition ${item.id === "auto" ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : mode === item.id ? "cursor-pointer border-emerald-700 bg-emerald-50" : "cursor-pointer border-stone-200 hover:border-emerald-500"}`}
-            >
-              <span
-                aria-hidden="true"
-                className={`absolute left-4 top-1/2 grid size-5 -translate-y-1/2 place-items-center rounded-full border ${mode === item.id ? "border-emerald-700" : "border-stone-300"}`}
+            {modes.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                disabled={item.id === "auto"}
+                onClick={() => item.id !== "auto" && onModeChange(item.id)}
+                aria-pressed={mode === item.id}
+                className={`relative min-h-32 overflow-hidden rounded-xl border p-4 text-left transition ${item.id === "auto" ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : mode === item.id ? "cursor-pointer border-emerald-700 bg-emerald-50" : "cursor-pointer border-stone-200 hover:border-emerald-500"}`}
               >
-                {mode === item.id && <span className="size-2.5 rounded-full bg-emerald-700" />}
-              </span>
-              {item.id === "auto" && (
-                <span className="pointer-events-none absolute right-[-2.3rem] top-7 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">
-                  Próx.
+                <span
+                  aria-hidden="true"
+                  className={`absolute left-4 top-1/2 grid size-5 -translate-y-1/2 place-items-center rounded-full border ${mode === item.id ? "border-emerald-700" : "border-stone-300"}`}
+                >
+                  {mode === item.id && <span className="size-2.5 rounded-full bg-emerald-700" />}
                 </span>
-              )}
-              <div className="flex items-center gap-3 pl-8">
-                <span className={`grid size-12 shrink-0 place-items-center rounded-lg ${item.id === "auto" ? "bg-stone-100 text-stone-400" : mode === item.id ? "bg-emerald-900 text-white" : "bg-emerald-50 text-emerald-900"}`}>
-                  {(() => { const Icon = modeIcons[item.id]; return <Icon size={20} strokeWidth={1.8} aria-hidden="true" /> })()}
-                </span>
-                <span>
-                  <b className={`block text-sm font-bold uppercase tracking-wider ${item.id === "auto" ? "text-stone-400" : "text-emerald-800"}`}>{item.title}</b>
-                  <small className="mt-1 block text-xs text-stone-500">{item.detail}</small>
-                  <span className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-stone-500">
-                    <MonitorSmartphone size={14} strokeWidth={1.8} aria-hidden="true" />
-                    {item.devices}
+                {item.id === "auto" && (
+                  <span className="pointer-events-none absolute right-[-2.3rem] top-7 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">
+                    Próx.
                   </span>
-                </span>
-              </div>
-            </button>
-          ))}
+                )}
+                <div className="flex items-center gap-3 pl-8">
+                  <span
+                    className={`grid size-12 shrink-0 place-items-center rounded-lg ${item.id === "auto" ? "bg-stone-100 text-stone-400" : mode === item.id ? "bg-emerald-900 text-white" : "bg-emerald-50 text-emerald-900"}`}
+                  >
+                    {(() => {
+                      const Icon = modeIcons[item.id]
+                      return <Icon size={20} strokeWidth={1.8} aria-hidden="true" />
+                    })()}
+                  </span>
+                  <span>
+                    <b
+                      className={`block text-sm font-bold uppercase tracking-wider ${item.id === "auto" ? "text-stone-400" : "text-emerald-800"}`}
+                    >
+                      {item.title}
+                    </b>
+                    <small className="mt-1 block text-xs text-stone-500">{item.detail}</small>
+                    <span className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-stone-500">
+                      <MonitorSmartphone size={14} strokeWidth={1.8} aria-hidden="true" />
+                      {item.devices}
+                    </span>
+                  </span>
+                </div>
+              </button>
+            ))}
           </div>
         </div>
         {categories.length > 0 && (
@@ -123,13 +147,21 @@ export function GameSetupStep({
                     onClick={() => onCategoryToggle(category.id)}
                     className={`relative flex cursor-pointer items-start gap-3 overflow-hidden rounded-xl border p-3 text-left transition ${category.questionCount === 0 ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : selected ? "border-emerald-700 bg-emerald-50" : "border-stone-200 bg-white hover:border-emerald-500"}`}
                   >
-                    {category.questionCount === 0 && <span className="pointer-events-none absolute right-[-2.3rem] top-5 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">Próx.</span>}
-                    <span className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-md border ${selected ? "border-emerald-700 bg-emerald-900 text-white" : "border-stone-300 text-transparent"}`}>
+                    {category.questionCount === 0 && (
+                      <span className="pointer-events-none absolute right-[-2.3rem] top-5 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">
+                        Próx.
+                      </span>
+                    )}
+                    <span
+                      className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-md border ${selected ? "border-emerald-700 bg-emerald-900 text-white" : "border-stone-300 text-transparent"}`}
+                    >
                       <Check size={13} strokeWidth={3} aria-hidden="true" />
                     </span>
                     <span>
                       <b className="block text-sm">{category.name}</b>
-                      <small className="mt-1 block text-xs leading-5 text-stone-500">{category.description}</small>
+                      <small className="mt-1 block text-xs leading-5 text-stone-500">
+                        {category.description}
+                      </small>
                     </span>
                   </button>
                 )
@@ -357,16 +389,42 @@ export function RoundsStep({
   )
 }
 
-type QuestionsStepProps = { rounds: SetupRound[]; questions: SetupQuestion[]; initialLoading: boolean; loadingRound: number | null; creating: boolean; onChange: (index: number) => void; onBack: () => void; onSave: () => void }
-export function QuestionsStep({ rounds, questions, initialLoading, loadingRound, creating, onChange, onBack, onSave }: QuestionsStepProps) {
+type QuestionsStepProps = {
+  rounds: SetupRound[]
+  questions: SetupQuestion[]
+  initialLoading: boolean
+  loadingRound: number | null
+  creating: boolean
+  editing?: boolean
+  onChange: (index: number) => void
+  onBack: () => void
+  onSave: () => void
+}
+export function QuestionsStep({
+  rounds,
+  questions,
+  initialLoading,
+  loadingRound,
+  creating,
+  editing = false,
+  onChange,
+  onBack,
+  onSave,
+}: QuestionsStepProps) {
   return (
     <Shell>
       <WizardProgress step={4} />
-      <Heading k="04 / Preguntas" title="Confirma las preguntas" detail="Cada ronda usará una pregunta de las categorías seleccionadas." />
+      <Heading
+        k="04 / Preguntas"
+        title={editing ? "Edita las preguntas" : "Confirma las preguntas"}
+        detail="Cada ronda usará una pregunta de las categorías seleccionadas."
+      />
       <div className="rounded-2xl border border-stone-200 bg-white p-6">
         {initialLoading ? (
           <div className="space-y-3" aria-busy="true">
-            {rounds.map((_, index) => <Skeleton key={index} className="h-16 w-full rounded-xl" />)}
+            {rounds.map((_, index) => (
+              <Skeleton key={index} className="h-16 w-full rounded-xl" />
+            ))}
           </div>
         ) : (
           <div className="space-y-2">
@@ -374,13 +432,33 @@ export function QuestionsStep({ rounds, questions, initialLoading, loadingRound,
               const question = questions[index]
               const loading = loadingRound === index
               return (
-                <div key={index} className="flex items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3">
-                  <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm font-bold text-stone-600">{String(index + 1).padStart(2, "0")}</span>
+                <div
+                  key={index}
+                  className="flex items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3"
+                >
+                  <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-stone-100 text-sm font-bold text-stone-600">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-[10px] font-bold uppercase tracking-wide text-stone-500">Ronda {index + 1} · {round.answerCount} respuestas · x{round.multiplier}</p>
-                    {loading ? <Skeleton className="mt-2 h-5 w-4/5 rounded" /> : <p className="mt-1 text-sm font-semibold text-stone-900">{question?.prompt}</p>}
+                    <p className="text-[10px] font-bold uppercase tracking-wide text-stone-500">
+                      Ronda {index + 1} · {round.answerCount} respuestas · x{round.multiplier}
+                    </p>
+                    {loading ? (
+                      <Skeleton className="mt-2 h-5 w-4/5 rounded" />
+                    ) : (
+                      <p className="mt-1 text-sm font-semibold text-stone-900">
+                        {question?.prompt}
+                      </p>
+                    )}
                   </div>
-                  <Button secondary disabled={loading || creating} loading={loading} onClick={() => onChange(index)} className="shrink-0 !px-3" aria-label={`Cambiar pregunta de la ronda ${index + 1}`}>
+                  <Button
+                    secondary
+                    disabled={loading || creating}
+                    loading={loading}
+                    onClick={() => onChange(index)}
+                    className="shrink-0 !px-3"
+                    aria-label={`Cambiar pregunta de la ronda ${index + 1}`}
+                  >
                     {!loading && <RefreshCw size={15} aria-hidden="true" />} Cambiar
                   </Button>
                 </div>
@@ -390,8 +468,18 @@ export function QuestionsStep({ rounds, questions, initialLoading, loadingRound,
         )}
       </div>
       <div className="mt-5 flex items-center justify-between gap-3">
-        <Button ghost disabled={creating} onClick={onBack}> <ArrowLeft size={16} aria-hidden="true" /> Atrás </Button>
-        <Button loading={creating} disabled={initialLoading || creating || questions.length !== rounds.length} onClick={onSave}>Crear partida <ArrowRight size={16} aria-hidden="true" /></Button>
+        <Button ghost disabled={creating} onClick={onBack}>
+          {" "}
+          <ArrowLeft size={16} aria-hidden="true" /> Atrás{" "}
+        </Button>
+        <Button
+          loading={creating}
+          disabled={initialLoading || creating || questions.length !== rounds.length}
+          onClick={onSave}
+        >
+          {editing ? "Guardar preguntas" : "Crear partida"}{" "}
+          <ArrowRight size={16} aria-hidden="true" />
+        </Button>
       </div>
     </Shell>
   )

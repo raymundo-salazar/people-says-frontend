@@ -64,7 +64,15 @@ type Mode = "classic" | "auto"
 type DeviceRole = "host" | "display" | "blue_button" | "red_button" | "pending"
 type Team = { name: string; color: "blue" | "red"; players: string[] }
 type RoundDraft = { answerCount: string; multiplier: 1 | 2 | 3 }
-type CreateDraft = { gameName: string; mode: Mode; teams: Team[]; rounds: RoundDraft[]; selectedCategoryIds: number[]; selectedQuestions: SetupQuestion[]; screen: Screen }
+type CreateDraft = {
+  gameName: string
+  mode: Mode
+  teams: Team[]
+  rounds: RoundDraft[]
+  selectedCategoryIds: number[]
+  selectedQuestions: SetupQuestion[]
+  screen: Screen
+}
 type Answer = { text: string; points: number }
 type State = {
   phase: string
@@ -244,19 +252,25 @@ const modes: SetupModeOption[] = [
   {
     id: "classic",
     title: "Juego clásico",
-    detail: "Controla la partida desde un dispositivo y conecta hasta tres dispositivos adicionales para mostrar el tablero o usar pulsadores.",
+    detail:
+      "Controla la partida desde un dispositivo y conecta hasta tres dispositivos adicionales para mostrar el tablero o usar pulsadores.",
     devices: "De 1 a 4 dispositivos",
   },
   {
     id: "auto",
     title: "Modo automático",
-    detail: "La máquina presenta y administra la partida mientras de dos a tres dispositivos participan como pantalla o pulsadores.",
+    detail:
+      "La máquina presenta y administra la partida mientras de dos a tres dispositivos participan como pantalla o pulsadores.",
     devices: "De 2 a 3 dispositivos",
   },
 ]
 const createDraftKey = "people-says-create-draft"
 const readCreateDraft = (): Partial<CreateDraft> => {
-  try { return JSON.parse(localStorage.getItem(createDraftKey) ?? "{}") as Partial<CreateDraft> } catch { return {} }
+  try {
+    return JSON.parse(localStorage.getItem(createDraftKey) ?? "{}") as Partial<CreateDraft>
+  } catch {
+    return {}
+  }
 }
 
 export default function App() {
@@ -264,24 +278,34 @@ export default function App() {
   const navigate = useNavigate()
   const savedDeviceConfig = getSavedDeviceConfig()
   const savedCreateDraft = readCreateDraft()
-  const [screen, setScreenState] = useState<Screen>(() => screenFromLocation() === "home" ? savedCreateDraft.screen ?? "home" : screenFromLocation())
+  const [screen, setScreenState] = useState<Screen>(() =>
+    screenFromLocation() === "home" ? (savedCreateDraft.screen ?? "home") : screenFromLocation()
+  )
   const [mode, setMode] = useState<Mode>(savedCreateDraft.mode ?? "classic")
   const [state, setState] = useState<State>(defaultState)
   const [gameName, setGameName] = useState(savedCreateDraft.gameName ?? "")
   const [categories, setCategories] = useState<SetupCategory[]>([])
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>(savedCreateDraft.selectedCategoryIds ?? [])
-  const [teams, setTeams] = useState<Team[]>(savedCreateDraft.teams ?? [
-    { name: "Azul", color: "blue", players: [""] },
-    { name: "Rojo", color: "red", players: [""] },
-  ])
-  const [rounds, setRounds] = useState<RoundDraft[]>(savedCreateDraft.rounds ?? [
-    { answerCount: "10", multiplier: 1 },
-    { answerCount: "8", multiplier: 1 },
-    { answerCount: "6", multiplier: 1 },
-    { answerCount: "5", multiplier: 2 },
-    { answerCount: "4", multiplier: 3 },
-  ])
-  const [selectedQuestions, setSelectedQuestions] = useState<SetupQuestion[]>(savedCreateDraft.selectedQuestions ?? [])
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>(
+    savedCreateDraft.selectedCategoryIds ?? []
+  )
+  const [teams, setTeams] = useState<Team[]>(
+    savedCreateDraft.teams ?? [
+      { name: "Azul", color: "blue", players: [""] },
+      { name: "Rojo", color: "red", players: [""] },
+    ]
+  )
+  const [rounds, setRounds] = useState<RoundDraft[]>(
+    savedCreateDraft.rounds ?? [
+      { answerCount: "10", multiplier: 1 },
+      { answerCount: "8", multiplier: 1 },
+      { answerCount: "6", multiplier: 1 },
+      { answerCount: "5", multiplier: 2 },
+      { answerCount: "4", multiplier: 3 },
+    ]
+  )
+  const [selectedQuestions, setSelectedQuestions] = useState<SetupQuestion[]>(
+    savedCreateDraft.selectedQuestions ?? []
+  )
   const [questionsLoading, setQuestionsLoading] = useState(false)
   const [questionLoadingRound, setQuestionLoadingRound] = useState<number | null>(null)
   const [roomCode, setRoomCode] = useState(
@@ -342,7 +366,9 @@ export default function App() {
   const [revealedLobbyQuestions, setRevealedLobbyQuestions] = useState<number[]>([])
   const lobbyQuestionTimers = useRef<Record<number, number>>({})
   const revealLobbyQuestion = (roundIndex: number) => {
-    setRevealedLobbyQuestions((current) => current.includes(roundIndex) ? current : [...current, roundIndex])
+    setRevealedLobbyQuestions((current) =>
+      current.includes(roundIndex) ? current : [...current, roundIndex]
+    )
     window.clearTimeout(lobbyQuestionTimers.current[roundIndex])
     lobbyQuestionTimers.current[roundIndex] = window.setTimeout(() => {
       setRevealedLobbyQuestions((current) => current.filter((index) => index !== roundIndex))
@@ -358,14 +384,28 @@ export default function App() {
   const [publicAnswerFlipIndex, setPublicAnswerFlipIndex] = useState<number | null>(null)
   useEffect(() => {
     if (roomCode || !["create", "teams", "rounds", "questions"].includes(screen)) return
-    localStorage.setItem(createDraftKey, JSON.stringify({ gameName, mode, teams, rounds, selectedCategoryIds, selectedQuestions, screen }))
+    localStorage.setItem(
+      createDraftKey,
+      JSON.stringify({
+        gameName,
+        mode,
+        teams,
+        rounds,
+        selectedCategoryIds,
+        selectedQuestions,
+        screen,
+      })
+    )
   }, [roomCode, screen, gameName, mode, teams, rounds, selectedCategoryIds, selectedQuestions])
   useEffect(() => {
     fetch(`${api}/api/categories`)
       .then((response) => (response.ok ? response.json() : []))
       .then((data: SetupCategory[]) => {
         setCategories(data)
-        if (!savedCreateDraft.selectedCategoryIds?.length) setSelectedCategoryIds(data.filter((category) => category.questionCount > 0).map((category) => category.id))
+        if (!savedCreateDraft.selectedCategoryIds?.length)
+          setSelectedCategoryIds(
+            data.filter((category) => category.questionCount > 0).map((category) => category.id)
+          )
       })
       .catch(() => setCategories([]))
   }, [])
@@ -423,7 +463,8 @@ export default function App() {
     if (!canAddRound) return
     setRounds((old) => [...old, { answerCount: "4", multiplier: 1 }])
   }
-  const validGameSetup = gameName.trim().length > 0 && (categories.length === 0 || selectedCategoryIds.length > 0)
+  const validGameSetup =
+    gameName.trim().length > 0 && (categories.length === 0 || selectedCategoryIds.length > 0)
   const savedRoomCode = localStorage.getItem("people-says-room-code") ?? ""
   const savedHostToken = localStorage.getItem("people-says-host-token") ?? ""
   const isPrincipalDevice =
@@ -663,6 +704,21 @@ export default function App() {
             )
           )
         }
+        if (data.state?.roundQuestions && data.state?.roundConfigs) {
+          setSelectedQuestions(
+            data.state.roundQuestions.map(
+              (question: { questionId: number; prompt: string; roundIndex: number }) => {
+                const round = data.state.roundConfigs[question.roundIndex]
+                return {
+                  id: question.questionId,
+                  prompt: question.prompt,
+                  answerCount: round?.answerCount ?? 4,
+                  multiplier: (round?.multiplier ?? 1) as 1 | 2 | 3,
+                }
+              }
+            )
+          )
+        }
       })
       .catch((error: unknown) =>
         setError(error instanceof Error ? error.message : "No se pudo cargar la partida")
@@ -694,7 +750,10 @@ export default function App() {
           })),
           teams: normalizedTeams,
           categoryIds: selectedCategoryIds,
-          questions: selectedQuestions.map((question, index) => ({ id: question.id, answerCount: Number(rounds[index].answerCount) })),
+          questions: selectedQuestions.map((question, index) => ({
+            id: question.id,
+            answerCount: Number(rounds[index].answerCount),
+          })),
         }),
       })
       const data = await response.json()
@@ -798,7 +857,20 @@ export default function App() {
       const data = await response.json()
       if (!response.ok) throw new Error(data.error)
       setState((old) => ({ ...old, ...data.state }))
-      setScreen("lobby")
+      if (isEditLocation()) {
+        const nextQuestions = (data.state?.roundQuestions ?? []).map(
+          (question: { questionId: number; prompt: string; roundIndex: number }) => ({
+            id: question.questionId,
+            prompt: question.prompt,
+            answerCount: Number(rounds[question.roundIndex]?.answerCount ?? 4),
+            multiplier: rounds[question.roundIndex]?.multiplier ?? 1,
+          })
+        )
+        setSelectedQuestions(nextQuestions)
+        setScreen("questions")
+      } else {
+        setScreen("lobby")
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "No se pudieron guardar las rondas")
     } finally {
@@ -806,7 +878,9 @@ export default function App() {
     }
   }
   const fetchQuestion = async (answerCount: number, excludedIds: number[]) => {
-    const response = await fetch(`${api}/api/questions/selection?categoryIds=${selectedCategoryIds.join(",")}&answerCount=${answerCount}&excludeIds=${excludedIds.join(",")}`)
+    const response = await fetch(
+      `${api}/api/questions/selection?categoryIds=${selectedCategoryIds.join(",")}&answerCount=${answerCount}&excludeIds=${excludedIds.join(",")}`
+    )
     const data = await response.json()
     if (!response.ok) throw new Error(data.error)
     return data as { id: number; prompt: string; answerCount: number }
@@ -826,16 +900,25 @@ export default function App() {
       setScreen("questions")
     } catch (e) {
       setError(e instanceof Error ? e.message : "No se pudieron seleccionar las preguntas")
-    } finally { setQuestionsLoading(false) }
+    } finally {
+      setQuestionsLoading(false)
+    }
   }
   const replaceQuestion = async (index: number) => {
     setQuestionLoadingRound(index)
     try {
       const excluded = selectedQuestions.map((question) => question.id)
       const question = await fetchQuestion(Number(rounds[index].answerCount), excluded)
-      setSelectedQuestions((current) => current.map((item, itemIndex) => itemIndex === index ? { ...question, multiplier: rounds[index].multiplier } : item))
-    } catch (e) { setError(e instanceof Error ? e.message : "No se pudo cambiar la pregunta") }
-    finally { setQuestionLoadingRound(null) }
+      setSelectedQuestions((current) =>
+        current.map((item, itemIndex) =>
+          itemIndex === index ? { ...question, multiplier: rounds[index].multiplier } : item
+        )
+      )
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No se pudo cambiar la pregunta")
+    } finally {
+      setQuestionLoadingRound(null)
+    }
   }
   const selectJoinRole = (role: DeviceRole) => {
     const code = joinCode.trim().toUpperCase()
@@ -1238,7 +1321,9 @@ export default function App() {
         selectedCategoryIds={selectedCategoryIds}
         onCategoryToggle={(id) =>
           setSelectedCategoryIds((current) =>
-            current.includes(id) ? current.filter((categoryId) => categoryId !== id) : [...current, id]
+            current.includes(id)
+              ? current.filter((categoryId) => categoryId !== id)
+              : [...current, id]
           )
         }
       />
@@ -1276,9 +1361,10 @@ export default function App() {
         initialLoading={questionsLoading}
         loadingRound={questionLoadingRound}
         creating={loadingAction === "create"}
+        editing={isEditLocation()}
         onChange={replaceQuestion}
         onBack={() => setScreen("rounds")}
-        onSave={() => createRoom(true)}
+        onSave={() => (isEditLocation() ? setScreen("lobby") : createRoom(true))}
       />
     )
   if (screen === "lobby")
@@ -1437,10 +1523,21 @@ export default function App() {
             aria-expanded={showLobbyQuestions}
           >
             <div>
-              <h2 className="text-[11px] font-bold uppercase tracking-wide text-stone-900">Preguntas de la partida</h2>
-              <p className="mt-1 text-xs text-stone-500">Consulta las preguntas asignadas a cada ronda.</p>
+              <h2 className="text-[11px] font-bold uppercase tracking-wide text-stone-900">
+                Preguntas de la partida
+              </h2>
+              <p className="mt-1 text-xs text-stone-500">
+                Consulta las preguntas asignadas a cada ronda.
+              </p>
             </div>
-            <ChevronDown size={18} aria-hidden="true" className={cx("shrink-0 text-stone-500 transition-transform", showLobbyQuestions && "rotate-180")} />
+            <ChevronDown
+              size={18}
+              aria-hidden="true"
+              className={cx(
+                "shrink-0 text-stone-500 transition-transform",
+                showLobbyQuestions && "rotate-180"
+              )}
+            />
           </button>
           {showLobbyQuestions && (
             <div className="border-t border-stone-100 p-4">
@@ -1453,8 +1550,17 @@ export default function App() {
                     className="group flex w-full cursor-pointer items-start gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3 text-left transition hover:bg-white focus-within:border-emerald-600"
                     aria-label={`Revelar pregunta de la ronda ${question.roundIndex + 1}`}
                   >
-                    <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-xs font-bold text-stone-600">{String(question.roundIndex + 1).padStart(2, "0")}</span>
-                    <p className={cx("min-w-0 flex-1 pt-1 text-sm font-semibold text-stone-800 transition duration-200", revealedLobbyQuestions.includes(question.roundIndex) ? "blur-0" : "blur-sm")}>{question.prompt}</p>
+                    <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-xs font-bold text-stone-600">
+                      {String(question.roundIndex + 1).padStart(2, "0")}
+                    </span>
+                    <p
+                      className={cx(
+                        "min-w-0 flex-1 pt-1 text-sm font-semibold text-stone-800 transition duration-200",
+                        revealedLobbyQuestions.includes(question.roundIndex) ? "blur-0" : "blur-sm"
+                      )}
+                    >
+                      {question.prompt}
+                    </p>
                   </button>
                 ))}
               </div>
