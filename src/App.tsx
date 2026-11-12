@@ -1446,7 +1446,16 @@ export default function App() {
                     aria-label={`Revelar pregunta de la ronda ${question.roundIndex + 1}`}
                   >
                     <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-xs font-bold text-stone-600">{String(question.roundIndex + 1).padStart(2, "0")}</span>
-                    <p className={cx("pt-1 text-sm font-semibold text-stone-800 transition duration-200 group-hover:blur-0 group-focus:blur-0", revealedLobbyQuestions.includes(question.roundIndex) ? "blur-0" : "blur-sm")}>{question.prompt}</p>
+                    <span className="relative min-w-0 flex-1">
+                      <p className="pt-1 text-sm font-semibold text-stone-800">{question.prompt}</p>
+                      <span
+                        aria-hidden="true"
+                        className={cx(
+                          "pointer-events-none absolute inset-0 bg-[linear-gradient(45deg,rgba(120,113,108,0.95)_25%,transparent_25%,transparent_75%,rgba(120,113,108,0.95)_75%),linear-gradient(45deg,rgba(168,162,158,0.95)_25%,transparent_25%,transparent_75%,rgba(168,162,158,0.95)_75%)] bg-[length:8px_8px] bg-[position:0_0,4px_4px] transition-opacity duration-200 group-hover:opacity-0 group-focus:opacity-0",
+                          revealedLobbyQuestions.includes(question.roundIndex) ? "opacity-0" : "opacity-100"
+                        )}
+                      />
+                    </span>
                   </button>
                 ))}
               </div>
