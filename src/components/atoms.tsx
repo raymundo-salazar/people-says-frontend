@@ -202,11 +202,13 @@ export function Shell({
   wide = false,
   showBack = true,
   onBack,
+  backLabel = "Regresar",
 }: {
   children: ReactNode
   wide?: boolean
   showBack?: boolean
   onBack?: () => void
+  backLabel?: string
 }) {
   const navigate = useNavigate()
 
@@ -219,7 +221,7 @@ export function Shell({
               onClick={onBack ?? (() => navigate(-1))}
               className="text-xs font-semibold text-stone-500 hover:text-emerald-800"
             >
-              <ArrowLeft size={14} /> Regresar
+              <ArrowLeft size={14} /> {backLabel}
             </button>
           ) : (
             <span />

@@ -920,6 +920,26 @@ export default function App() {
       setQuestionLoadingRound(null)
     }
   }
+  const saveEditedQuestions = async () => {
+    setLoadingAction("create")
+    try {
+      const response = await fetch(`${api}/api/rooms/${roomCode}/questions`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json", "x-host-token": hostToken },
+        body: JSON.stringify({
+          questions: selectedQuestions.map((question) => ({ id: question.id })),
+        }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error)
+      setState((old) => ({ ...old, ...data.state }))
+      setScreen("lobby")
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No se pudieron guardar las preguntas")
+    } finally {
+      setLoadingAction(null)
+    }
+  }
   const selectJoinRole = (role: DeviceRole) => {
     const code = joinCode.trim().toUpperCase()
     setRoomCode(code)
@@ -1364,12 +1384,12 @@ export default function App() {
         editing={isEditLocation()}
         onChange={replaceQuestion}
         onBack={() => setScreen("rounds")}
-        onSave={() => (isEditLocation() ? setScreen("lobby") : createRoom(true))}
+        onSave={() => (isEditLocation() ? saveEditedQuestions() : createRoom(true))}
       />
     )
   if (screen === "lobby")
     return (
-      <Shell onBack={() => setScreen("create", `/${roomCode}/edit`)}>
+      <Shell onBack={() => setScreen("questions")} backLabel="Editar">
         <WizardProgress step={4} />
         <Heading
           k="04 / Sala de espera"
