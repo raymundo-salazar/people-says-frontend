@@ -269,6 +269,7 @@ export default function App() {
     () => localStorage.getItem("people-says-host-token") ?? ""
   )
   const [showResumeDialog, setShowResumeDialog] = useState(false)
+  const [showLeaveDisplayDialog, setShowLeaveDisplayDialog] = useState(false)
   const [deviceToken, setDeviceToken] = useState(() => {
     const existing = sessionStorage.getItem("people-says-device-token")
     if (existing) return existing
@@ -892,6 +893,22 @@ export default function App() {
   const leaveInvitation = () => {
     window.close()
     window.setTimeout(() => setScreen("home"), 100)
+  }
+  const leaveDisplaySession = () => {
+    gameSocket.disconnect()
+    if (roomCode) localStorage.removeItem(deviceConfigKey(roomCode))
+    if (localStorage.getItem("people-says-room-code") === roomCode) {
+      localStorage.removeItem("people-says-room-code")
+    }
+    localStorage.removeItem("people-says-host-token")
+    setRoomCode("")
+    setJoinCode("")
+    setHostToken("")
+    setCurrentDeviceRole("pending")
+    setDevices([])
+    setShowLeaveDisplayDialog(false)
+    navigate("/")
+    setScreenState("home")
   }
   const start = () => {
     const roles = [currentDeviceRole, ...devices.map((device) => device.role)]
@@ -2537,6 +2554,14 @@ export default function App() {
     return (
       <div className="public-display relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 px-5 py-10 text-white">
         {stealBanner}
+        <Button
+          ghost
+          ariaLabel="Salir de la partida"
+          className="absolute right-3 top-3 z-20 p-2 text-white/40 hover:bg-white/10 hover:text-white"
+          onClick={() => setShowLeaveDisplayDialog(true)}
+        >
+          <LogOut size={16} aria-hidden="true" />
+        </Button>
         {publicStrikeVisible && (
           <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/50">
             <div
@@ -2750,6 +2775,36 @@ export default function App() {
             </div>
           </div>
         </div>
+        {showLeaveDisplayDialog && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/50 px-5">
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="leave-display-title"
+              className="w-full max-w-md rounded-2xl bg-white p-6 text-left text-stone-900 shadow-xl"
+            >
+              <h2 id="leave-display-title" className="text-xl font-semibold">
+                ¿Salir de esta partida?
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-stone-500">
+                Se desconectará esta pantalla y se borrará toda la configuración guardada de esta
+                sala en el dispositivo. Esta acción no se puede deshacer.
+              </p>
+              <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <Button ghost onClick={() => setShowLeaveDisplayDialog(false)}>
+                  Cancelar
+                </Button>
+                <Button
+                  secondary
+                  className="border-red-200 text-red-700 hover:bg-red-50"
+                  onClick={leaveDisplaySession}
+                >
+                  Salir y borrar configuración
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     )
   if (screen === "buzzer")

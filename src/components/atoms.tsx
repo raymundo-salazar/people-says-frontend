@@ -29,6 +29,7 @@ export function Button({
   secondary = false,
   ghost = false,
   onClick,
+  ariaLabel,
   className = "",
   loading = false,
   disabled = false,
@@ -37,6 +38,7 @@ export function Button({
   secondary?: boolean
   ghost?: boolean
   onClick?: () => void
+  ariaLabel?: string
   className?: string
   loading?: boolean
   disabled?: boolean
@@ -44,6 +46,7 @@ export function Button({
   return (
     <button
       onClick={onClick}
+      aria-label={ariaLabel}
       disabled={loading || disabled}
       aria-busy={loading}
       className={cx(
