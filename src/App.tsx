@@ -1389,7 +1389,7 @@ export default function App() {
     )
   if (screen === "lobby")
     return (
-      <Shell onBack={() => setScreen("questions")} backLabel="Editar">
+      <Shell onBack={() => setScreen("create", `/${roomCode}/edit`)}>
         <WizardProgress step={4} />
         <Heading
           k="04 / Sala de espera"
@@ -1588,8 +1588,8 @@ export default function App() {
           )}
         </section>
         <div className="mt-5 flex items-center justify-between gap-3">
-          <Button ghost onClick={() => setScreen("rounds")}>
-            <ArrowLeft size={16} aria-hidden="true" /> Atrás
+          <Button ghost onClick={() => setScreen("questions")}>
+            <ArrowLeft size={16} aria-hidden="true" /> Editar
           </Button>
           <Button loading={loadingAction === "start"} onClick={start}>
             Iniciar partida <ArrowRight size={16} aria-hidden="true" />
