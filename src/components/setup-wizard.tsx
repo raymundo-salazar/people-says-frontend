@@ -6,7 +6,7 @@ export type SetupMode = "classic" | "auto"
 export type SetupTeam = { name: string; color: "blue" | "red"; players: string[] }
 export type SetupRound = { answerCount: string; multiplier: 1 | 2 | 3 }
 export type SetupModeOption = { id: SetupMode; title: string; detail: string; devices: string }
-export type SetupCategory = { id: number; name: string; description: string }
+export type SetupCategory = { id: number; name: string; description: string; questionCount: number }
 const modeIcons = { classic: MicVocal, auto: Bot }
 
 type GameSetupProps = {
@@ -113,9 +113,11 @@ export function GameSetupStep({
                     key={category.id}
                     type="button"
                     aria-pressed={selected}
+                    disabled={category.questionCount === 0}
                     onClick={() => onCategoryToggle(category.id)}
-                    className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 text-left transition ${selected ? "border-emerald-700 bg-emerald-50" : "border-stone-200 bg-white hover:border-emerald-500"}`}
+                    className={`relative flex cursor-pointer items-start gap-3 overflow-hidden rounded-xl border p-3 text-left transition ${category.questionCount === 0 ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : selected ? "border-emerald-700 bg-emerald-50" : "border-stone-200 bg-white hover:border-emerald-500"}`}
                   >
+                    {category.questionCount === 0 && <span className="pointer-events-none absolute right-[-2.3rem] top-5 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">Próximamente</span>}
                     <span className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-md border ${selected ? "border-emerald-700 bg-emerald-900 text-white" : "border-stone-300 text-transparent"}`}>
                       <Check size={13} strokeWidth={3} aria-hidden="true" />
                     </span>
