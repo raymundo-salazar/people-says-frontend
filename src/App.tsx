@@ -926,6 +926,12 @@ export default function App() {
     state.control
   const strikeTeam = faceoffFirstTeam ?? teamId
   const faceoffMode = ["faceoff", "decision", "tiebreaker"].includes(state.phase)
+  const participantStatusTitle =
+    state.phase === "steal"
+      ? "Robo de Puntos"
+      : state.phase === "turn"
+        ? "Modo Turno / Normal"
+        : "Enfrentamiento"
   const blueFaceoffPlayer =
     (faceoffMode ? state.faceoff?.bluePlayer : undefined) ??
     (state.activePlayer?.team === "blue"
@@ -1830,7 +1836,7 @@ export default function App() {
             </p>
             <section className="rounded-2xl bg-gradient-to-r from-blue-100/80 via-slate-50 to-red-100/80 p-5">
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
-                Enfrentamiento
+                {participantStatusTitle}
               </h2>
               <div className="grid min-h-16 grid-cols-[1fr_auto_1fr] items-center gap-1">
                 <div
@@ -2568,7 +2574,7 @@ export default function App() {
                   )}
                 >
                   <p className="mb-2 text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80">
-                    Enfrentamiento
+                    {participantStatusTitle}
                   </p>
                   <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
                     <div
