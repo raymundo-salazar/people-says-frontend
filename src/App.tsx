@@ -1833,7 +1833,13 @@ export default function App() {
                     return (
                       <button
                         key={`${answer.text}-${index}`}
-                        disabled={state.phase !== "turn"}
+                        disabled={
+                          state.phase !== "turn" &&
+                          !(
+                            ["faceoff", "decision", "tiebreaker"].includes(state.phase) &&
+                            Boolean(faceoffFirstTeam)
+                          )
+                        }
                         onClick={() => reveal(index)}
                         className={cx(
                           "relative flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-70",
