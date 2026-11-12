@@ -1622,14 +1622,14 @@ export default function App() {
           <div className="mt-7 grid grid-cols-2 gap-3">
             <Button
               className={buzzerWinner === "red" ? "opacity-50" : ""}
-              onClick={() => emitAction({ type: "faceoff_answer", team: "blue", index: 0 })}
+              onClick={() => gameSocket.emit("buzzer:press", { code: roomCode, team: "blue" })}
             >
               {teams[0].name}
             </Button>
             <Button
               secondary
               className={buzzerWinner === "blue" ? "opacity-50" : ""}
-              onClick={() => emitAction({ type: "faceoff_answer", team: "red", index: 1 })}
+              onClick={() => gameSocket.emit("buzzer:press", { code: roomCode, team: "red" })}
             >
               {teams[1].name}
             </Button>
@@ -2211,7 +2211,7 @@ export default function App() {
                   }
                   onClick={() => {
                     if (!faceoffFirstTeam)
-                      emitAction({ type: "faceoff_answer", team: "blue", index: 0 })
+                      gameSocket.emit("buzzer:press", { code: roomCode, team: "blue" })
                   }}
                 >
                   <Hand size={32} strokeWidth={2.2} aria-hidden="true" />
@@ -2237,7 +2237,7 @@ export default function App() {
                   }
                   onClick={() => {
                     if (!faceoffFirstTeam)
-                      emitAction({ type: "faceoff_answer", team: "red", index: 1 })
+                      gameSocket.emit("buzzer:press", { code: roomCode, team: "red" })
                   }}
                 >
                   <Hand size={32} strokeWidth={2.2} aria-hidden="true" />
