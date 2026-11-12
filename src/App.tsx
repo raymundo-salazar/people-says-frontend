@@ -316,6 +316,7 @@ export default function App() {
   const [timerRunning, setTimerRunning] = useState(false)
   const [strikeVisible, setStrikeVisible] = useState(false)
   const [publicStrikeVisible, setPublicStrikeVisible] = useState(false)
+  const [publicAnswerFlipIndex, setPublicAnswerFlipIndex] = useState<number | null>(null)
   useEffect(() => {
     if (!timerRunning) return
     const timer = window.setInterval(() => {
@@ -492,6 +493,11 @@ export default function App() {
     }
     const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
     const strike = () => setPublicStrikeVisible(true)
+    const answerRevealed = (payload: { index?: number }) => {
+      if (!Number.isInteger(payload.index)) return
+      setPublicAnswerFlipIndex(payload.index ?? null)
+      window.setTimeout(() => setPublicAnswerFlipIndex(null), 700)
+    }
     const roleReplaced = (payload: { message?: string }) => {
       moveToRoleSelection(
         payload.message ??
@@ -504,6 +510,7 @@ export default function App() {
     gameSocket.on("game:error", failure)
     gameSocket.on("buzzer:winner", buzzer)
     gameSocket.on("game:strike", strike)
+    gameSocket.on("game:answer-revealed", answerRevealed)
     gameSocket.on("device:role-replaced", roleReplaced)
     gameSocket.on("buzzer:reset", () => setBuzzerWinner(null))
     return () => {
@@ -513,6 +520,7 @@ export default function App() {
       gameSocket.off("game:error", failure)
       gameSocket.off("buzzer:winner", buzzer)
       gameSocket.off("game:strike", strike)
+      gameSocket.off("game:answer-revealed", answerRevealed)
       gameSocket.off("device:role-replaced", roleReplaced)
       gameSocket.off("buzzer:reset")
     }
@@ -2474,7 +2482,10 @@ export default function App() {
                     return visible ? (
                       <div
                         key={`${answer.text}-${index}`}
-                        className="public-answer-flip flex min-h-[60px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[72px]"
+                        className={cx(
+                          "flex min-h-[60px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[72px]",
+                          publicAnswerFlipIndex === index && "public-answer-flip"
+                        )}
                       >
                         <div className="grid w-11 shrink-0 place-items-center border-r border-white/15 bg-black/20 font-mono text-base font-black tabular-nums text-amber-200 sm:w-14 sm:text-xl">
                           {String(index + 1).padStart(2, "0")}
