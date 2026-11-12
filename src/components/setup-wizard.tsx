@@ -349,7 +349,7 @@ export function RoundsStep({
             <ArrowLeft size={16} aria-hidden="true" /> Atrás
           </Button>
           <Button loading={loading} onClick={onSave}>
-            Guardar configuración <ArrowRight size={16} aria-hidden="true" />
+            Continuar <ArrowRight size={16} aria-hidden="true" />
           </Button>
         </div>
       </div>
