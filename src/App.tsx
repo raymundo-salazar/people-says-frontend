@@ -1768,7 +1768,7 @@ export default function App() {
                       faceoffFirstTeam === "blue" ? "text-white/70" : "text-blue-700"
                     )}
                   >
-                    Azul
+                    {teams[0].name}
                   </p>
                   <p
                     className={cx(
@@ -1803,7 +1803,7 @@ export default function App() {
                       faceoffFirstTeam === "red" ? "text-white/70" : "text-red-700"
                     )}
                   >
-                    Rojo
+                    {teams[1].name}
                   </p>
                   <p
                     className={cx(
