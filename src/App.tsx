@@ -1859,7 +1859,14 @@ export default function App() {
                           {String(index + 1).padStart(2, "0")}
                         </span>
                         <span className="flex-1 text-sm font-semibold">{answer.text}</span>
-                        <span className="-my-3 -mr-4 grid w-16 shrink-0 self-stretch place-items-center rounded-r-xl border-l border-stone-200 bg-stone-100 px-3 font-bold tabular-nums text-stone-700">
+                        <span
+                          className={cx(
+                            "-my-3 -mr-4 grid w-16 shrink-0 self-stretch place-items-center rounded-r-xl border-l px-3 font-bold tabular-nums",
+                            visible
+                              ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                              : "border-stone-200 bg-stone-100 text-stone-700"
+                          )}
+                        >
                           {visible ? String(answer.points).padStart(2, "0") : "-"}
                         </span>
                       </button>
