@@ -32,6 +32,21 @@ body {
 .public-strike-animation {
   animation: public-strike-animation 3s ease-in-out both;
 }
+
+@keyframes public-strike-overlay {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  15%,
+  84% {
+    opacity: 1;
+  }
+}
+
+.public-strike-overlay {
+  animation: public-strike-overlay 3s ease-in-out both;
+}
 html {
   scrollbar-gutter: stable;
 }

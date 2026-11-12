@@ -1653,7 +1653,7 @@ export default function App() {
     return (
       <Shell wide>
         {strikeVisible && (
-          <div className="pointer-events-none fixed inset-0 z-50 grid place-items-center bg-red-950/10">
+          <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/35">
             <SquareX
               size={180}
               strokeWidth={1.5}
@@ -2362,7 +2362,7 @@ export default function App() {
     return (
       <div className="public-display relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 px-5 py-10 text-white">
         {publicStrikeVisible && (
-          <div className="pointer-events-none fixed inset-0 z-50 grid place-items-center bg-red-950/10">
+          <div className="public-strike-overlay pointer-events-none fixed inset-0 z-50 grid place-items-center bg-black/35">
             <SquareX
               size={180}
               strokeWidth={1.5}
