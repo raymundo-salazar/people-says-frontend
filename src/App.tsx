@@ -1862,14 +1862,6 @@ export default function App() {
                         <span className="font-bold tabular-nums">
                           {visible ? answer.points : "-"}
                         </span>
-                        <span
-                          className={cx(
-                            "w-16 text-right text-[10px] font-semibold",
-                            visible ? "text-emerald-800" : "text-stone-400"
-                          )}
-                        >
-                          {visible ? "VISIBLE" : "OCULTA"}
-                        </span>
                       </button>
                     )
                   })}
