@@ -106,6 +106,8 @@ type State = {
   }
   teams: [{ name: string; players: string[] }, { name: string; players: string[] }]
   roundQuestions?: Array<{ roundIndex: number; questionId: number; prompt: string }>
+  roundWinner?: "blue" | "red" | null
+  roundPoints?: number
 }
 const screens: Screen[] = [
   "home",
@@ -1183,6 +1185,10 @@ export default function App() {
     currentDeviceRole === "host" ||
     devices.some((device) => device.role === "host")
   const roundMultiplier = state.roundConfigs[state.roundIndex]?.multiplier ?? 1
+  const roundWinner = state.roundWinner
+  const roundWinnerName =
+    roundWinner === "blue" ? teams[0].name : roundWinner === "red" ? teams[1].name : "—"
+  const roundPointsWon = state.roundPoints ?? 0
   const baseRoundPoints = revealed.reduce(
     (total, index) => total + (answers[index]?.points ?? 0),
     0
@@ -2290,72 +2296,89 @@ export default function App() {
             </p>
             <section className="rounded-2xl bg-gradient-to-r from-blue-100/80 via-slate-50 to-red-100/80 p-5">
               <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
-                {participantStatusTitle}
+                {state.phase === "round_result" ? "Equipo ganador" : participantStatusTitle}
               </h2>
-              <div className="grid min-h-16 grid-cols-[1fr_auto_1fr] items-center gap-1">
-                <div
-                  className={cx(
-                    "min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm transition duration-300",
-                    faceoffFirstTeam === "blue"
-                      ? "z-10 scale-150 translate-x-1/2 bg-gradient-to-br from-blue-700 to-blue-500 text-white"
-                      : faceoffFirstTeam === "red"
-                        ? "scale-75 opacity-0"
-                        : ""
-                  )}
-                >
-                  <p
+              {state.phase === "round_result" && roundWinner ? (
+                <div className="flex min-h-16 items-center justify-center gap-3 rounded-lg bg-white/85 px-4 py-3 text-center shadow-sm">
+                  <strong
                     className={cx(
-                      "truncate text-[10px] font-bold",
-                      faceoffFirstTeam === "blue" ? "text-white/70" : "text-blue-700"
+                      "text-lg font-black",
+                      roundWinner === "blue" ? "text-blue-900" : "text-red-900"
                     )}
                   >
-                    {teams[0].name}
-                  </p>
-                  <p
-                    className={cx(
-                      "truncate text-sm font-black",
-                      faceoffFirstTeam === "blue" ? "text-white" : "text-blue-950"
-                    )}
-                  >
-                    {blueFaceoffPlayer}
-                  </p>
+                    {roundWinnerName}
+                  </strong>
+                  <span className="text-sm font-bold text-stone-400">·</span>
+                  <span className="text-sm font-semibold text-stone-600">
+                    +<AnimatedNumber value={roundPointsWon} padStart={2} /> puntos
+                  </span>
                 </div>
-                <span
-                  className={cx(
-                    "text-xs font-black text-stone-400 transition duration-300",
-                    faceoffFirstTeam && "opacity-0"
-                  )}
-                >
-                  VS
-                </span>
-                <div
-                  className={cx(
-                    "min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm transition duration-300",
-                    faceoffFirstTeam === "red"
-                      ? "z-10 scale-150 -translate-x-1/2 bg-gradient-to-bl from-red-700 to-red-500 text-white"
-                      : faceoffFirstTeam === "blue"
-                        ? "scale-75 opacity-0"
-                        : ""
-                  )}
-                >
-                  <p
+              ) : (
+                <div className="grid min-h-16 grid-cols-[1fr_auto_1fr] items-center gap-1">
+                  <div
                     className={cx(
-                      "truncate text-[10px] font-bold",
-                      faceoffFirstTeam === "red" ? "text-white/70" : "text-red-700"
+                      "min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm transition duration-300",
+                      faceoffFirstTeam === "blue"
+                        ? "z-10 scale-150 translate-x-1/2 bg-gradient-to-br from-blue-700 to-blue-500 text-white"
+                        : faceoffFirstTeam === "red"
+                          ? "scale-75 opacity-0"
+                          : ""
                     )}
                   >
-                    {teams[1].name}
-                  </p>
-                  <p
+                    <p
+                      className={cx(
+                        "truncate text-[10px] font-bold",
+                        faceoffFirstTeam === "blue" ? "text-white/70" : "text-blue-700"
+                      )}
+                    >
+                      {teams[0].name}
+                    </p>
+                    <p
+                      className={cx(
+                        "truncate text-sm font-black",
+                        faceoffFirstTeam === "blue" ? "text-white" : "text-blue-950"
+                      )}
+                    >
+                      {blueFaceoffPlayer}
+                    </p>
+                  </div>
+                  <span
                     className={cx(
-                      "truncate text-sm font-black",
-                      faceoffFirstTeam === "red" ? "text-white" : "text-red-950"
+                      "text-xs font-black text-stone-400 transition duration-300",
+                      faceoffFirstTeam && "opacity-0"
                     )}
                   >
-                    {redFaceoffPlayer}
-                  </p>
+                    VS
+                  </span>
+                  <div
+                    className={cx(
+                      "min-w-0 rounded-lg bg-white/85 px-2 py-2 text-center shadow-sm transition duration-300",
+                      faceoffFirstTeam === "red"
+                        ? "z-10 scale-150 -translate-x-1/2 bg-gradient-to-bl from-red-700 to-red-500 text-white"
+                        : faceoffFirstTeam === "blue"
+                          ? "scale-75 opacity-0"
+                          : ""
+                    )}
+                  >
+                    <p
+                      className={cx(
+                        "truncate text-[10px] font-bold",
+                        faceoffFirstTeam === "red" ? "text-white/70" : "text-red-700"
+                      )}
+                    >
+                      {teams[1].name}
+                    </p>
+                    <p
+                      className={cx(
+                        "truncate text-sm font-black",
+                        faceoffFirstTeam === "red" ? "text-white" : "text-red-950"
+                      )}
+                    >
+                      {redFaceoffPlayer}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </section>
             <div className="rounded-xl bg-emerald-950 px-4 py-4 text-white">
               <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-emerald-300">
@@ -2953,7 +2976,50 @@ export default function App() {
         <div className="display-floating-accent display-floating-accent-left pointer-events-none absolute -bottom-36 -left-28 size-[360px] rounded-full border-[50px] border-white/5" />
         <div className="relative z-10 mx-auto w-full max-w-7xl">
           <div className="flex justify-end">{pauseControl}</div>
-          <div className="grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]">
+          {state.phase === "round_result" && roundWinner ? (
+            <section className="mx-auto w-full max-w-2xl rounded-2xl border border-white/20 bg-black/20 px-6 py-8 text-center shadow-lg">
+              <p className="text-xs font-black uppercase tracking-[.24em] text-amber-100/80">
+                Ronda {String(state.roundIndex + 1).padStart(2, "0")}
+              </p>
+              <p className="mt-4 text-xs font-bold uppercase tracking-widest text-white/60">
+                Equipo ganador
+              </p>
+              <h1
+                className={cx(
+                  "mt-2 text-4xl font-black sm:text-6xl",
+                  roundWinner === "blue" ? "text-blue-200" : "text-red-200"
+                )}
+              >
+                {roundWinnerName}
+              </h1>
+              <p className="mt-5 text-sm font-semibold uppercase tracking-widest text-white/60">
+                Puntos ganados
+              </p>
+              <strong className="mt-1 block font-mono text-6xl font-black tabular-nums text-amber-300 sm:text-8xl">
+                +<AnimatedNumber value={roundPointsWon} padStart={2} />
+              </strong>
+              <div className="mt-8 grid grid-cols-2 gap-3 text-left">
+                <div className="rounded-xl bg-blue-900/60 p-4">
+                  <p className="text-xs font-bold text-blue-100">{teams[0].name}</p>
+                  <strong className="mt-1 block font-mono text-3xl font-black tabular-nums text-white">
+                    <AnimatedNumber value={blue} padStart={2} />
+                  </strong>
+                </div>
+                <div className="rounded-xl bg-red-900/60 p-4">
+                  <p className="text-xs font-bold text-red-100">{teams[1].name}</p>
+                  <strong className="mt-1 block font-mono text-3xl font-black tabular-nums text-white">
+                    <AnimatedNumber value={red} padStart={2} />
+                  </strong>
+                </div>
+              </div>
+            </section>
+          ) : null}
+          <div
+            className={cx(
+              "grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]",
+              state.phase === "round_result" && "hidden"
+            )}
+          >
             <div
               className={cx(
                 "mb-4 rounded-2xl bg-gradient-to-br from-blue-900/60 via-blue-700/40 to-blue-400/20 px-4 py-4 text-center shadow-[0_10px_34px_rgba(0,0,0,0.38)] backdrop-blur-sm transition duration-300",
