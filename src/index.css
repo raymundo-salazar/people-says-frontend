@@ -55,11 +55,11 @@ body {
   }
   5% {
     opacity: 1;
-    transform: translateX(25vw);
+    transform: translateX(35vw);
   }
   95% {
     opacity: 1;
-    transform: translateX(25vw);
+    transform: translateX(35vw);
   }
   100% {
     opacity: 0;
