@@ -1132,7 +1132,8 @@ export default function App() {
       : state.faceoff?.activeTeam) ??
     state.faceoff?.firstTeam ??
     state.control
-  const strikeTeam = faceoffFirstTeam ?? teamId
+  const strikeTeam =
+    state.phase === "steal" ? (state.stealTeam ?? teamId) : (faceoffFirstTeam ?? teamId)
   const faceoffMode = ["faceoff", "decision", "tiebreaker"].includes(state.phase)
   const participantStatusTitle =
     state.phase === "steal"
@@ -1154,6 +1155,7 @@ export default function App() {
     "—"
   const canRegisterStrike =
     state.phase === "turn" ||
+    state.phase === "steal" ||
     (["faceoff", "decision", "tiebreaker"].includes(state.phase) && Boolean(faceoffFirstTeam))
   const manualActiveTeam = state.phase === "turn" ? teamId : faceoffFirstTeam
   const connectedDeviceCount = devices.length + 1
@@ -2349,6 +2351,7 @@ export default function App() {
                         key={`${answer.text}-${index}`}
                         disabled={
                           state.phase !== "turn" &&
+                          state.phase !== "steal" &&
                           !(
                             ["faceoff", "decision", "tiebreaker"].includes(state.phase) &&
                             Boolean(faceoffFirstTeam)
@@ -2709,7 +2712,7 @@ export default function App() {
                       "translate-y-1 scale-[0.98] border-b-0 shadow-[0_0_30px_rgba(37,99,235,0.75)] disabled:opacity-100"
                   )}
                   disabled={
-                    !["faceoff", "tiebreaker", "decision"].includes(state.phase) ||
+                    !["faceoff", "tiebreaker", "decision", "steal"].includes(state.phase) ||
                     faceoffFirstTeam === "red"
                   }
                   onClick={() => {
