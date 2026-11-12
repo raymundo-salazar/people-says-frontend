@@ -340,6 +340,14 @@ export default function App() {
   const [showConnectedDevices, setShowConnectedDevices] = useState(false)
   const [showLobbyQuestions, setShowLobbyQuestions] = useState(false)
   const [revealedLobbyQuestions, setRevealedLobbyQuestions] = useState<number[]>([])
+  const lobbyQuestionTimers = useRef<Record<number, number>>({})
+  const revealLobbyQuestion = (roundIndex: number) => {
+    setRevealedLobbyQuestions((current) => current.includes(roundIndex) ? current : [...current, roundIndex])
+    window.clearTimeout(lobbyQuestionTimers.current[roundIndex])
+    lobbyQuestionTimers.current[roundIndex] = window.setTimeout(() => {
+      setRevealedLobbyQuestions((current) => current.filter((index) => index !== roundIndex))
+    }, 5000)
+  }
   const [timerSeconds, setTimerSeconds] = useState(30)
   const [timerRunning, setTimerRunning] = useState(false)
   const [strikeVisible, setStrikeVisible] = useState(false)
@@ -1441,21 +1449,14 @@ export default function App() {
                   <button
                     key={`${question.roundIndex}-${question.questionId}`}
                     type="button"
-                    onClick={() => setRevealedLobbyQuestions((current) => current.includes(question.roundIndex) ? current.filter((index) => index !== question.roundIndex) : [...current, question.roundIndex])}
+                    onClick={() => revealLobbyQuestion(question.roundIndex)}
+                    onMouseEnter={() => revealLobbyQuestion(question.roundIndex)}
+                    onFocus={() => revealLobbyQuestion(question.roundIndex)}
                     className="group flex w-full cursor-pointer items-start gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3 text-left transition hover:bg-white focus-within:border-emerald-600"
                     aria-label={`Revelar pregunta de la ronda ${question.roundIndex + 1}`}
                   >
                     <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-xs font-bold text-stone-600">{String(question.roundIndex + 1).padStart(2, "0")}</span>
-                    <span className="relative min-w-0 flex-1">
-                      <p className="pt-1 text-sm font-semibold text-stone-800">{question.prompt}</p>
-                      <span
-                        aria-hidden="true"
-                        className={cx(
-                          "pointer-events-none absolute inset-0 bg-[linear-gradient(45deg,rgba(120,113,108,0.95)_25%,transparent_25%,transparent_75%,rgba(120,113,108,0.95)_75%),linear-gradient(45deg,rgba(168,162,158,0.95)_25%,transparent_25%,transparent_75%,rgba(168,162,158,0.95)_75%)] bg-[length:8px_8px] bg-[position:0_0,4px_4px] transition-opacity duration-200 group-hover:opacity-0 group-focus:opacity-0",
-                          revealedLobbyQuestions.includes(question.roundIndex) ? "opacity-0" : "opacity-100"
-                        )}
-                      />
-                    </span>
+                    <p className={cx("min-w-0 flex-1 pt-1 text-sm font-semibold text-stone-800 transition duration-200", revealedLobbyQuestions.includes(question.roundIndex) ? "blur-0" : "blur-sm")}>{question.prompt}</p>
                   </button>
                 ))}
               </div>
