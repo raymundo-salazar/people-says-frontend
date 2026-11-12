@@ -895,12 +895,13 @@ export default function App() {
     state.faceoff?.firstTeam ??
     state.control
   const strikeTeam = faceoffFirstTeam ?? teamId
+  const faceoffMode = ["faceoff", "decision", "tiebreaker"].includes(state.phase)
   const blueFaceoffPlayer =
-    state.faceoff?.bluePlayer ??
+    (faceoffMode ? state.faceoff?.bluePlayer : undefined) ??
     teams[0].players[state.turnIndex.blue % Math.max(teams[0].players.length, 1)] ??
     "—"
   const redFaceoffPlayer =
-    state.faceoff?.redPlayer ??
+    (faceoffMode ? state.faceoff?.redPlayer : undefined) ??
     teams[1].players[state.turnIndex.red % Math.max(teams[1].players.length, 1)] ??
     "—"
   const canRegisterStrike =
