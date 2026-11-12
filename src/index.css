@@ -53,11 +53,11 @@ body {
     opacity: 0;
     transform: translateX(110vw);
   }
-  5% {
+  10% {
     opacity: 1;
-    transform: translateX(10vw);
+    transform: translateX(8vw);
   }
-  95% {
+  90% {
     opacity: 1;
     transform: translateX(0);
   }
@@ -68,7 +68,7 @@ body {
 }
 
 .team-back-banner-content {
-  animation: team-back-banner 6s linear both;
+  animation: team-back-banner 3s linear both;
 }
 html {
   scrollbar-gutter: stable;
