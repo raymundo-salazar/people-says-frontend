@@ -885,7 +885,10 @@ export default function App() {
   }
   const teamId = state.control ?? "blue"
   const teamName = teamId === "blue" ? teams[0].name : teams[1].name
-  const faceoffFirstTeam = state.faceoff?.activeTeam ?? state.faceoff?.firstTeam
+  const faceoffFirstTeam =
+    (strikeVisible || publicStrikeVisible
+      ? (state.faceoffStrikeTeam ?? state.faceoff?.activeTeam)
+      : state.faceoff?.activeTeam) ?? state.faceoff?.firstTeam
   const strikeTeam = faceoffFirstTeam ?? teamId
   const canRegisterStrike =
     state.phase === "turn" ||
