@@ -54,12 +54,12 @@ body {
     filter: blur(15px);
     transform: translateX(110vw);
   }
-  10% {
+  7.5% {
     opacity: 1;
     filter: blur(0);
     transform: translateX(8vw);
   }
-  90% {
+  92.5% {
     opacity: 1;
     filter: blur(0);
     transform: translateX(0);
@@ -72,7 +72,7 @@ body {
 }
 
 .team-back-banner-content {
-  animation: team-back-banner 3s linear both;
+  animation: team-back-banner 4s linear both;
 }
 html {
   scrollbar-gutter: stable;

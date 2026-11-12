@@ -352,7 +352,7 @@ export default function App() {
   }, [publicStrikeVisible])
   useEffect(() => {
     if (!teamBackVisible) return
-    const timeout = window.setTimeout(() => setTeamBackVisible(false), 3000)
+    const timeout = window.setTimeout(() => setTeamBackVisible(false), 4000)
     return () => window.clearTimeout(timeout)
   }, [teamBackVisible])
   const answers =
