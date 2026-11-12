@@ -78,7 +78,7 @@ export function GameSetupStep({
                 </span>
               )}
               <div className="flex items-center gap-3 pl-8">
-                <span className={`grid size-10 shrink-0 place-items-center rounded-lg ${item.id === "auto" ? "bg-stone-100 text-stone-400" : "bg-emerald-50 text-emerald-900"}`}>
+                <span className={`grid size-10 shrink-0 place-items-center rounded-lg ${item.id === "auto" ? "bg-stone-100 text-stone-400" : mode === item.id ? "bg-emerald-900 text-white" : "bg-emerald-50 text-emerald-900"}`}>
                   {(() => { const Icon = modeIcons[item.id]; return <Icon size={20} strokeWidth={1.8} aria-hidden="true" /> })()}
                 </span>
                 <span>
