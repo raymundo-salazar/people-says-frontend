@@ -2479,33 +2479,36 @@ export default function App() {
                     ))}
                   {answers.map((answer, index) => {
                     const visible = revealed.includes(index)
-                    return visible ? (
+                    return (
                       <div
                         key={`${answer.text}-${index}`}
-                        className={cx(
-                          "flex min-h-[60px] items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md sm:min-h-[72px]",
-                          publicAnswerFlipIndex === index && "public-answer-flip"
-                        )}
+                        className="min-h-[60px] [perspective:900px] sm:min-h-[72px]"
                       >
-                        <div className="grid w-11 shrink-0 place-items-center border-r border-white/15 bg-black/20 font-mono text-base font-black tabular-nums text-amber-200 sm:w-14 sm:text-xl">
-                          {String(index + 1).padStart(2, "0")}
-                        </div>
-                        <div className="flex min-w-0 flex-1 items-center px-3 sm:px-5">
-                          <span className="truncate text-base font-black text-white sm:text-xl">
-                            {answer.text}
-                          </span>
-                        </div>
-                        <div className="grid w-14 shrink-0 place-items-center border-l border-white/15 bg-amber-300 font-mono text-lg font-black tabular-nums text-emerald-950 sm:w-20 sm:text-2xl">
-                          {String(answer.points).padStart(2, "0")}
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        key={`${answer.text}-${index}`}
-                        className="flex min-h-[60px] items-stretch overflow-hidden rounded-xl border border-white/20 bg-black/20 shadow-md sm:min-h-[72px]"
-                      >
-                        <div className="grid w-full shrink-0 place-items-center border-r border-white/15 font-mono text-sm font-black tabular-nums text-amber-200 sm:text-4xl">
-                          {String(index + 1).padStart(2, "0")}
+                        <div
+                          className={cx(
+                            "relative size-full min-h-[60px] [transform-style:preserve-3d] sm:min-h-[72px]",
+                            visible && "[transform:rotateX(180deg)]",
+                            publicAnswerFlipIndex === index && "public-answer-flip"
+                          )}
+                        >
+                          <div className="absolute inset-0 flex items-stretch overflow-hidden rounded-xl border border-white/20 bg-black/20 shadow-md [backface-visibility:hidden]">
+                            <div className="grid w-full place-items-center font-mono text-sm font-black tabular-nums text-amber-200 sm:text-4xl">
+                              {String(index + 1).padStart(2, "0")}
+                            </div>
+                          </div>
+                          <div className="absolute inset-0 flex items-stretch overflow-hidden rounded-xl border border-amber-200/60 bg-white/20 shadow-md [backface-visibility:hidden] [transform:rotateX(180deg)]">
+                            <div className="grid w-11 shrink-0 place-items-center border-r border-white/15 bg-black/20 font-mono text-base font-black tabular-nums text-amber-200 sm:w-14 sm:text-xl">
+                              {String(index + 1).padStart(2, "0")}
+                            </div>
+                            <div className="flex min-w-0 flex-1 items-center px-3 sm:px-5">
+                              <span className="truncate text-base font-black text-white sm:text-xl">
+                                {answer.text}
+                              </span>
+                            </div>
+                            <div className="grid w-14 shrink-0 place-items-center border-l border-white/15 bg-amber-300 font-mono text-lg font-black tabular-nums text-emerald-950 sm:w-20 sm:text-2xl">
+                              {String(answer.points).padStart(2, "0")}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     )
