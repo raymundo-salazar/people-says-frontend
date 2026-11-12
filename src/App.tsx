@@ -339,6 +339,7 @@ export default function App() {
   >(null)
   const [showConnectedDevices, setShowConnectedDevices] = useState(false)
   const [showLobbyQuestions, setShowLobbyQuestions] = useState(false)
+  const [revealedLobbyQuestions, setRevealedLobbyQuestions] = useState<number[]>([])
   const [timerSeconds, setTimerSeconds] = useState(30)
   const [timerRunning, setTimerRunning] = useState(false)
   const [strikeVisible, setStrikeVisible] = useState(false)
@@ -1437,10 +1438,16 @@ export default function App() {
             <div className="border-t border-stone-100 p-4">
               <div className="space-y-2">
                 {(state.roundQuestions ?? []).map((question) => (
-                  <div key={`${question.roundIndex}-${question.questionId}`} className="flex items-start gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3">
+                  <button
+                    key={`${question.roundIndex}-${question.questionId}`}
+                    type="button"
+                    onClick={() => setRevealedLobbyQuestions((current) => current.includes(question.roundIndex) ? current.filter((index) => index !== question.roundIndex) : [...current, question.roundIndex])}
+                    className="group flex w-full cursor-pointer items-start gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3 text-left transition hover:bg-white focus-within:border-emerald-600"
+                    aria-label={`Revelar pregunta de la ronda ${question.roundIndex + 1}`}
+                  >
                     <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-stone-100 text-xs font-bold text-stone-600">{String(question.roundIndex + 1).padStart(2, "0")}</span>
-                    <p className="pt-1 text-sm font-semibold text-stone-800">{question.prompt}</p>
-                  </div>
+                    <p className={cx("pt-1 text-sm font-semibold text-stone-800 transition duration-200 group-hover:blur-0 group-focus:blur-0", revealedLobbyQuestions.includes(question.roundIndex) ? "blur-0" : "blur-sm")}>{question.prompt}</p>
+                  </button>
                 ))}
               </div>
             </div>
