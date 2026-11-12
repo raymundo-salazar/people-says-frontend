@@ -1859,7 +1859,7 @@ export default function App() {
                           {String(index + 1).padStart(2, "0")}
                         </span>
                         <span className="flex-1 text-sm font-semibold">{answer.text}</span>
-                        <span className="font-bold tabular-nums">
+                        <span className="-my-3 -mr-4 grid w-16 shrink-0 place-items-center border-l border-stone-200 bg-stone-100 px-3 font-bold tabular-nums text-stone-700">
                           {visible ? String(answer.points).padStart(2, "0") : "-"}
                         </span>
                       </button>
