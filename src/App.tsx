@@ -75,6 +75,8 @@ type State = {
   faceoffStrikeTeam?: "blue" | "red"
   strikeLimit?: 3 | 5
   displayStrikes?: { blue: number; red: number }
+  activePlayerId?: number | null
+  activePlayer?: { id: number; name: string; team: "blue" | "red" } | null
   pot: number
   scores: { blue: number; red: number }
   turnIndex: { blue: number; red: number }
@@ -898,11 +900,15 @@ export default function App() {
   const faceoffMode = ["faceoff", "decision", "tiebreaker"].includes(state.phase)
   const blueFaceoffPlayer =
     (faceoffMode ? state.faceoff?.bluePlayer : undefined) ??
-    teams[0].players[state.turnIndex.blue % Math.max(teams[0].players.length, 1)] ??
+    (state.activePlayer?.team === "blue"
+      ? state.activePlayer.name
+      : teams[0].players[state.turnIndex.blue % Math.max(teams[0].players.length, 1)]) ??
     "—"
   const redFaceoffPlayer =
     (faceoffMode ? state.faceoff?.redPlayer : undefined) ??
-    teams[1].players[state.turnIndex.red % Math.max(teams[1].players.length, 1)] ??
+    (state.activePlayer?.team === "red"
+      ? state.activePlayer.name
+      : teams[1].players[state.turnIndex.red % Math.max(teams[1].players.length, 1)]) ??
     "—"
   const canRegisterStrike =
     state.phase === "turn" ||
