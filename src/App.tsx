@@ -1504,6 +1504,38 @@ export default function App() {
                 ? "Tu dispositivo ya está vinculado. La partida comenzará en breve."
                 : "Tu dispositivo está conectado, pero aún no está vinculado al dispositivo principal."}
             </p>
+            {!principalDeviceLinked && (
+              <div className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-left text-sm text-red-800">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle size={20} className="mt-0.5 shrink-0" aria-hidden="true" />
+                  <div>
+                    <p className="font-bold">¿Cómo solucionar la desconexión?</p>
+                    <ul className="mt-2 list-disc space-y-1 pl-5 text-xs leading-5">
+                      <li>Actualiza esta página y espera unos segundos.</li>
+                      <li>Pide al dispositivo principal que también actualice su página.</li>
+                      <li>Verifica que ambos dispositivos estén usando el mismo código de sala.</li>
+                      <li>Si el problema continúa, vuelve a configurar este dispositivo.</li>
+                    </ul>
+                    <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                      <Button
+                        secondary
+                        className="border-red-200 bg-white text-red-800 hover:bg-red-100"
+                        onClick={() => window.location.reload()}
+                      >
+                        Actualizar página
+                      </Button>
+                      <Button
+                        ghost
+                        className="text-red-700 hover:bg-red-100 hover:text-red-800"
+                        onClick={changeDeviceConfiguration}
+                      >
+                        Reconfigurar dispositivo
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="mt-7 rounded-xl border border-stone-200 bg-stone-50 p-4 text-left">
               <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
                 <span className="text-stone-500">Partida</span>
