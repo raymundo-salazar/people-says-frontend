@@ -941,6 +941,7 @@ export default function App() {
   const canRegisterStrike =
     state.phase === "turn" ||
     (["faceoff", "decision", "tiebreaker"].includes(state.phase) && Boolean(faceoffFirstTeam))
+  const manualActiveTeam = state.phase === "turn" ? teamId : faceoffFirstTeam
   const connectedDeviceCount = devices.length + 1
   const roundMultiplier = state.roundConfigs[state.roundIndex]?.multiplier ?? 1
   const baseRoundPoints = revealed.reduce(
@@ -2265,10 +2266,10 @@ export default function App() {
                   type="button"
                   className={cx(
                     "flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-8 border-blue-800 bg-blue-600 px-5 py-4 text-left text-white transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50",
-                    !faceoffFirstTeam &&
+                    !manualActiveTeam &&
                       "shadow-lg hover:-translate-y-1 hover:scale-[1.02] hover:brightness-105 hover:shadow-xl active:translate-y-1 active:scale-[0.98] active:border-b-0 active:shadow-md",
-                    faceoffFirstTeam === "blue" &&
-                      "translate-y-1 scale-[0.98] border-b-0 shadow-[0_0_30px_rgba(37,99,235,0.75)]"
+                    manualActiveTeam === "blue" &&
+                      "translate-y-1 scale-[0.98] border-b-0 shadow-[0_0_30px_rgba(37,99,235,0.75)] disabled:opacity-100"
                   )}
                   disabled={
                     !["faceoff", "tiebreaker", "decision"].includes(state.phase) ||
@@ -2291,10 +2292,10 @@ export default function App() {
                   type="button"
                   className={cx(
                     "flex min-h-24 cursor-pointer items-center gap-4 rounded-2xl border-b-8 border-red-800 bg-red-600 px-5 py-4 text-left text-white transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50",
-                    !faceoffFirstTeam &&
+                    !manualActiveTeam &&
                       "shadow-lg hover:-translate-y-1 hover:scale-[1.02] hover:brightness-105 hover:shadow-xl active:translate-y-1 active:scale-[0.98] active:border-b-0 active:shadow-md",
-                    faceoffFirstTeam === "red" &&
-                      "translate-y-1 scale-[0.98] border-b-0 shadow-[0_0_30px_rgba(220,38,38,0.75)]"
+                    manualActiveTeam === "red" &&
+                      "translate-y-1 scale-[0.98] border-b-0 shadow-[0_0_30px_rgba(220,38,38,0.75)] disabled:opacity-100"
                   )}
                   disabled={
                     !["faceoff", "tiebreaker", "decision"].includes(state.phase) ||
