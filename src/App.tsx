@@ -1844,7 +1844,7 @@ export default function App() {
                         className={cx(
                           "relative flex w-full items-center gap-4 rounded-xl border px-4 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-70",
                           visible
-                            ? "border-emerald-300 bg-emerald-50"
+                            ? "border-emerald-800 bg-emerald-50"
                             : "border-stone-200 bg-white hover:border-emerald-500"
                         )}
                       >
