@@ -137,13 +137,13 @@ export function GameSetupStep({
             </div>
           </div>
         )}
-        <div className="flex items-center justify-between gap-3 pt-2">
-          <span aria-hidden="true" />
-          <Button disabled={!valid} loading={loading} onClick={onContinue}>
-            Continuar <ArrowRight size={16} aria-hidden="true" />
-          </Button>
-        </div>
         {error && <p className="text-sm text-red-700">{error}</p>}
+      </div>
+      <div className="mt-5 flex items-center justify-between gap-3">
+        <span aria-hidden="true" />
+        <Button disabled={!valid} loading={loading} onClick={onContinue}>
+          Continuar <ArrowRight size={16} aria-hidden="true" />
+        </Button>
       </div>
     </Shell>
   )
@@ -344,14 +344,14 @@ export function RoundsStep({
             Configura entre 3 y 7 rondas usando 10, 8, 6, 5 o 4 preguntas en orden descendente.
           </p>
         )}
-        <div className="mt-6 flex items-center justify-between gap-3">
-          <Button ghost onClick={onBack}>
-            <ArrowLeft size={16} aria-hidden="true" /> Atrás
-          </Button>
-          <Button loading={loading} onClick={onSave}>
-            Continuar <ArrowRight size={16} aria-hidden="true" />
-          </Button>
-        </div>
+      </div>
+      <div className="mt-5 flex items-center justify-between gap-3">
+        <Button ghost onClick={onBack}>
+          <ArrowLeft size={16} aria-hidden="true" /> Atrás
+        </Button>
+        <Button loading={loading} onClick={onSave}>
+          Continuar <ArrowRight size={16} aria-hidden="true" />
+        </Button>
       </div>
     </Shell>
   )
@@ -388,10 +388,10 @@ export function QuestionsStep({ rounds, questions, initialLoading, loadingRound,
             })}
           </div>
         )}
-        <div className="mt-6 flex items-center justify-between gap-3">
-          <Button ghost disabled={creating} onClick={onBack}> <ArrowLeft size={16} aria-hidden="true" /> Atrás </Button>
-          <Button loading={creating} disabled={initialLoading || creating || questions.length !== rounds.length} onClick={onSave}>Crear partida <ArrowRight size={16} aria-hidden="true" /></Button>
-        </div>
+      </div>
+      <div className="mt-5 flex items-center justify-between gap-3">
+        <Button ghost disabled={creating} onClick={onBack}> <ArrowLeft size={16} aria-hidden="true" /> Atrás </Button>
+        <Button loading={creating} disabled={initialLoading || creating || questions.length !== rounds.length} onClick={onSave}>Crear partida <ArrowRight size={16} aria-hidden="true" /></Button>
       </div>
     </Shell>
   )
