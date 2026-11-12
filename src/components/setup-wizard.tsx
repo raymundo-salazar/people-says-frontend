@@ -62,15 +62,22 @@ export function GameSetupStep({
               type="button"
               disabled={item.id === "auto"}
               onClick={() => item.id !== "auto" && onModeChange(item.id)}
+              aria-pressed={mode === item.id}
               className={`relative min-h-32 overflow-hidden rounded-xl border p-5 text-left transition ${item.id === "auto" ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : mode === item.id ? "cursor-pointer border-emerald-700 bg-emerald-50" : "cursor-pointer border-stone-200 hover:border-emerald-500"}`}
             >
+              <span
+                aria-hidden="true"
+                className={`absolute left-4 top-4 grid size-5 place-items-center rounded-full border ${mode === item.id ? "border-emerald-700" : "border-stone-300"}`}
+              >
+                {mode === item.id && <span className="size-2.5 rounded-full bg-emerald-700" />}
+              </span>
               {item.id === "auto" && (
-                <span className="pointer-events-none absolute right-[-2.5rem] top-3 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">
+                <span className="pointer-events-none absolute right-[-2.5rem] top-5 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">
                   Próximamente
                 </span>
               )}
-              <b className="block text-sm">{item.title}</b>
-              <small className="text-stone-500">{item.detail}</small>
+              <b className="block pl-8 text-sm">{item.title}</b>
+              <small className="pl-8 text-stone-500">{item.detail}</small>
             </button>
           ))}
         </div>
