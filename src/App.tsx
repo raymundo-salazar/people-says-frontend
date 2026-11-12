@@ -26,6 +26,7 @@ import {
 import { gameSocket } from "./socket"
 import {
   Button,
+  AnimatedNumber,
   Brand,
   CountPill,
   DeviceIconAnimation,
@@ -2217,7 +2218,7 @@ export default function App() {
                           {baseRoundPoints}
                         </span>
                       )}
-                      {multipliedRoundPoints}
+                      <AnimatedNumber value={multipliedRoundPoints} />
                     </p>
                     <span className="text-[10px] font-bold uppercase tracking-wide text-stone-400">
                       puntos
@@ -2232,7 +2233,7 @@ export default function App() {
                       {teams[0].name}
                     </p>
                     <strong className="flex self-stretch items-center bg-blue-600 px-3 py-0 text-lg font-black tabular-nums text-white">
-                      {blue}
+                      <AnimatedNumber value={blue} />
                     </strong>
                   </div>
                 </div>
@@ -2242,7 +2243,7 @@ export default function App() {
                       {teams[1].name}
                     </p>
                     <strong className="flex self-stretch items-center bg-red-600 px-3 py-0 text-lg font-black tabular-nums text-white">
-                      {red}
+                      <AnimatedNumber value={red} />
                     </strong>
                   </div>
                 </div>
@@ -2380,7 +2381,7 @@ export default function App() {
                               : "border-stone-200 bg-stone-100 text-stone-700"
                           )}
                         >
-                          {visible ? String(answer.points).padStart(2, "0") : "-"}
+                          {visible ? <AnimatedNumber value={answer.points} padStart={2} /> : "-"}
                         </span>
                       </button>
                     )
@@ -2435,7 +2436,7 @@ export default function App() {
               <div className="w-px bg-stone-200" aria-hidden="true" />
               <div className="flex shrink-0 flex-col items-center justify-center p-4 text-center">
                 <strong className="text-3xl font-black tabular-nums text-emerald-900">
-                  {multipliedRoundPoints}
+                  <AnimatedNumber value={multipliedRoundPoints} />
                 </strong>
                 <span className="text-[10px] font-bold uppercase tracking-wide text-stone-400">
                   puntos
@@ -2444,11 +2445,15 @@ export default function App() {
               <div className="flex w-fit shrink-0 flex-col overflow-hidden rounded-r-2xl">
                 <div className="flex flex-1 items-center gap-2 whitespace-nowrap bg-gradient-to-r from-blue-100 to-white px-3">
                   <span className="text-xs font-bold text-blue-950">{teams[0].name}</span>
-                  <strong className="text-lg font-black tabular-nums text-blue-900">{blue}</strong>
+                  <strong className="text-lg font-black tabular-nums text-blue-900">
+                    <AnimatedNumber value={blue} />
+                  </strong>
                 </div>
                 <div className="flex flex-1 items-center gap-2 whitespace-nowrap bg-gradient-to-r from-red-100 to-white px-3">
                   <span className="text-xs font-bold text-red-950">{teams[1].name}</span>
-                  <strong className="text-lg font-black tabular-nums text-red-900">{red}</strong>
+                  <strong className="text-lg font-black tabular-nums text-red-900">
+                    <AnimatedNumber value={red} />
+                  </strong>
                 </div>
               </div>
             </section>
@@ -2935,7 +2940,7 @@ export default function App() {
                 {teams[0].name}
               </p>
               <strong className="block font-mono text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
-                {blue}
+                <AnimatedNumber value={blue} />
               </strong>
               <p className="text-[10px] font-semibold uppercase tracking-widest text-white/50">
                 Puntos
@@ -2945,7 +2950,7 @@ export default function App() {
               <div className="mb-4 flex justify-center">
                 <div className="w-fit rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
                   <strong className="block font-mono text-6xl font-black leading-none tabular-nums tracking-tight text-amber-300 sm:text-7xl lg:text-8xl">
-                    {multipliedRoundPoints}
+                    <AnimatedNumber value={multipliedRoundPoints} />
                   </strong>
                   <p className="text-[10px] font-black uppercase tracking-[.24em] text-amber-100/80 sm:text-xs">
                     Ronda {String(state.roundIndex + 1).padStart(2, "0")}
@@ -2991,7 +2996,7 @@ export default function App() {
                               </span>
                             </div>
                             <div className="grid w-14 shrink-0 place-items-center border-l border-white/15 bg-amber-300 font-mono text-lg font-black tabular-nums text-emerald-950 sm:w-20 sm:text-2xl">
-                              {String(answer.points).padStart(2, "0")}
+                              <AnimatedNumber value={answer.points} padStart={2} />
                             </div>
                           </div>
                         </div>
@@ -3109,7 +3114,7 @@ export default function App() {
                 {teams[1].name}
               </p>
               <strong className="block font-mono text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
-                {red}
+                <AnimatedNumber value={red} />
               </strong>
               <p className="text-[10px] font-semibold uppercase tracking-widest text-white/50">
                 Puntos

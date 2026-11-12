@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import { useNavigate } from "react-router-dom"
 import {
   ArrowLeft,
@@ -268,17 +268,40 @@ export function Score({ blue = 180, red = 125 }: { blue?: number; red?: number }
       <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
         <p className="text-xs font-medium text-blue-800">Equipo Azul</p>
         <p className="mt-1 text-3xl font-bold tabular-nums text-blue-950">
-          {blue} <span className="text-xs font-normal">pts</span>
+          <AnimatedNumber value={blue} /> <span className="text-xs font-normal">pts</span>
         </p>
       </div>
       <div className="rounded-xl border border-red-200 bg-red-50 p-4">
         <p className="text-xs font-medium text-red-800">Equipo Rojo</p>
         <p className="mt-1 text-3xl font-bold tabular-nums text-red-950">
-          {red} <span className="text-xs font-normal">pts</span>
+          <AnimatedNumber value={red} /> <span className="text-xs font-normal">pts</span>
         </p>
       </div>
     </div>
   )
+}
+export function AnimatedNumber({ value, padStart = 0 }: { value: number; padStart?: number }) {
+  const previous = useRef(value)
+  const [displayValue, setDisplayValue] = useState(value)
+
+  useEffect(() => {
+    const from = previous.current
+    previous.current = value
+    if (from === value) return
+    const startedAt = performance.now()
+    const duration = 650
+    let frame = 0
+    const animate = (now: number) => {
+      const progress = Math.min((now - startedAt) / duration, 1)
+      const eased = 1 - (1 - progress) ** 3
+      setDisplayValue(Math.round(from + (value - from) * eased))
+      if (progress < 1) frame = requestAnimationFrame(animate)
+    }
+    frame = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(frame)
+  }, [value])
+
+  return <>{String(displayValue).padStart(padStart, "0")}</>
 }
 export function Strikes({ count = 0, light = false }: { count?: number; light?: boolean }) {
   return (
