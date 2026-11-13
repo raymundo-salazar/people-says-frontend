@@ -6,6 +6,15 @@ body {
   @apply min-w-[320px] bg-stone-50 text-stone-900 antialiased;
 }
 
+.buzzer-screen {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.buzzer-screen::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes category-extra-enter {
   from {
     opacity: 0;
