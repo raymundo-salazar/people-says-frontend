@@ -3362,22 +3362,6 @@ export default function App() {
               </h1>
             </section>
 
-            <div className="text-center">
-              <p
-                className={cx(
-                  "text-xs font-black uppercase tracking-[.18em]",
-                  socketConnected ? "text-emerald-300" : "text-white/50"
-                )}
-              >
-                {socketConnected ? "● Pulsador activo" : "● Pulsador desconectado"}
-              </p>
-              <p className="mt-2 text-sm text-white/70">
-                {socketConnected
-                  ? "¡Pulsa antes que el equipo contrario!"
-                  : "Reconectando con la sala…"}
-              </p>
-            </div>
-
             {faceoffActive ? (
               <button
                 type="button"
@@ -3414,6 +3398,25 @@ export default function App() {
                 </p>
               </div>
             )}
+            <div className="text-center">
+              <p
+                className={cx(
+                  "text-xs font-black uppercase tracking-[.18em]",
+                  socketConnected ? "text-emerald-300" : "text-white/50"
+                )}
+              >
+                {socketConnected ? "● Pulsador activo" : "● Pulsador desconectado"}
+              </p>
+              <p className="mt-2 text-sm text-white/70">
+                {socketConnected
+                  ? "¡Pulsa antes que el equipo contrario!"
+                  : "Reconectando con la sala…"}
+              </p>
+            </div>
+            <p className="text-center text-sm font-medium text-white/75">
+              Puntos de la ronda
+              <strong className="ml-1 text-xl font-black text-white">{state.pot ?? 0} pts</strong>
+            </p>
             <p className="text-center text-sm font-medium text-white/75">
               Puntuación acumulada
               <strong className="ml-1 text-xl font-black text-white">{buzzerTeamScore} pts</strong>
