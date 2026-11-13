@@ -766,6 +766,9 @@ export default function App() {
           ...data.state,
           activeTeam: data.activeTeam ?? data.state.activeTeam,
         }))
+        if (screen === "lobby" && hostToken && data.state?.phase !== "lobby") {
+          setScreen("host")
+        }
         setDevices(
           (data.devices ?? []).filter((device: { id?: string }) => device.id !== deviceToken)
         )
