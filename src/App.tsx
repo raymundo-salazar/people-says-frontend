@@ -3305,12 +3305,7 @@ export default function App() {
       const buzzerTeamName =
         state.teams?.[buzzerTeamIndex]?.name ?? (buzzerTeam === "blue" ? "Azul" : "Rojo")
       const buzzerTeamScore = state.scores?.[buzzerTeam] ?? 0
-      const buzzerPlayer = state.activePlayer?.team === buzzerTeam ? state.activePlayer.name : null
       const faceoffActive = state.phase === "faceoff"
-      const teamClasses =
-        buzzerTeam === "blue"
-          ? "from-blue-950 via-blue-800 to-blue-600"
-          : "from-red-950 via-red-800 to-red-600"
       const buttonClasses =
         buzzerTeam === "blue"
           ? "border-blue-950 bg-blue-800 shadow-[0_18px_0_#172554,0_25px_40px_rgba(0,0,0,.45)]"
@@ -3342,38 +3337,20 @@ export default function App() {
             </div>
           )}
           <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-xl flex-col justify-center gap-4">
-            <div className="rounded-3xl border border-white/20 bg-black/15 p-5 text-center shadow-sm">
-              <p className="text-[10px] font-black uppercase tracking-[.24em] text-white/60">
-                Ronda {String(state.roundIndex + 1).padStart(2, "0")}
+            <section className="text-center">
+              <p className="text-xs font-bold uppercase tracking-[.22em] text-white/65">
+                Tu equipo
               </p>
-              <p className="mt-1 text-3xl font-black tabular-nums text-white">
-                {String(state.pot ?? 0).padStart(2, "0")}
-                <span className="ml-2 text-xs font-bold uppercase tracking-widest text-white/60">
-                  puntos de la ronda
-                </span>
+              <h1 className="mt-1 text-4xl font-black tracking-tight sm:text-5xl">
+                {buzzerTeamName}
+              </h1>
+              <p className="mt-2 text-sm font-medium text-white/75">
+                Puntuación acumulada
+                <strong className="ml-1 text-xl font-black text-white">
+                  {buzzerTeamScore} pts
+                </strong>
               </p>
-            </div>
-
-            <div
-              className={cx(
-                "rounded-3xl border border-white/20 bg-black/15 p-5 text-center text-white shadow-lg",
-                teamClasses
-              )}
-            >
-              <p className="text-xs font-black uppercase tracking-[.2em] text-white/65">
-                {buzzerTeam === "blue" ? "Equipo azul" : "Equipo rojo"}
-              </p>
-              <h1 className="mt-1 text-3xl font-black sm:text-4xl">{buzzerTeamName}</h1>
-              <p className="mt-1 text-sm font-semibold text-white/75">
-                {buzzerPlayer ?? "Participante en turno"}
-              </p>
-              <p className="mt-4 text-xs font-bold uppercase tracking-widest text-white/60">
-                Puntos actuales
-              </p>
-              <p className="text-4xl font-black tabular-nums sm:text-5xl">
-                {String(buzzerTeamScore).padStart(2, "0")}
-              </p>
-            </div>
+            </section>
 
             {faceoffActive ? (
               <button
@@ -3411,14 +3388,6 @@ export default function App() {
                 </p>
               </div>
             )}
-
-            <p className="text-center text-xs font-semibold text-stone-500">
-              {faceoffActive
-                ? buzzerWinner
-                  ? `Ganó ${buzzerWinner === buzzerTeam ? "tu equipo" : "el equipo contrario"}`
-                  : "Presiona cuando tu equipo quiera responder primero"
-                : "Sigue el desarrollo de la ronda desde este dispositivo"}
-            </p>
           </div>
         </main>
       )
