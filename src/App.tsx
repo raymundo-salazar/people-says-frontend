@@ -3378,6 +3378,7 @@ export default function App() {
       const faceoffActive = state.phase === "faceoff"
       const buzzerSelected = faceoffActive && activeTeam === buzzerTeam
       const buzzerTurnMode = ["turn", "steal"].includes(state.phase)
+      const buzzerStrikeLimit = faceoffActive ? 5 : state.phase === "steal" ? 1 : 3
       const buzzerHighlighted =
         ["faceoff", "turn", "steal"].includes(state.phase) && activeTeam === buzzerTeam
       const buzzerBlocked = faceoffActive && Boolean(activeTeam) && activeTeam !== buzzerTeam
@@ -3460,18 +3461,26 @@ export default function App() {
                     <Clock3 className="mx-auto mb-3 size-12 text-white/60" strokeWidth={2.5} />
                   )}
                   <p className="text-4xl font-black tracking-tight text-white drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] sm:text-5xl">
-                    {buzzerTurnMode
+                    {state.phase === "steal"
                       ? activeTeam === buzzerTeam
-                        ? "Es tu turno"
-                        : "No es tu turno"
-                      : "El pulsador no está disponible"}
+                        ? "Roba los puntos"
+                        : "Te pueden robar los puntos"
+                      : buzzerTurnMode
+                        ? activeTeam === buzzerTeam
+                          ? "Es tu turno"
+                          : "No es tu turno"
+                        : "El pulsador no está disponible"}
                   </p>
                   <p className="mt-1 text-sm text-white/65">
-                    {buzzerTurnMode
+                    {state.phase === "steal"
                       ? activeTeam === buzzerTeam
-                        ? "Tu equipo está jugando ahora."
-                        : "El otro equipo está jugando. Espera tu turno."
-                      : "Tu equipo podrá volver a usarlo cuando comience un nuevo enfrentamiento."}
+                        ? "Responde correctamente para ganar los puntos acumulados."
+                        : "El equipo contrario está intentando robar los puntos."
+                      : buzzerTurnMode
+                        ? activeTeam === buzzerTeam
+                          ? "Tu equipo está jugando ahora."
+                          : "El otro equipo está jugando. Espera tu turno."
+                        : "Tu equipo podrá volver a usarlo cuando comience un nuevo enfrentamiento."}
                   </p>
                 </div>
               )}
@@ -3551,7 +3560,7 @@ export default function App() {
               className="-mt-4 flex w-fit justify-center gap-3 self-center"
               aria-label="Errores del equipo"
             >
-              {Array.from({ length: faceoffActive ? 5 : 3 }, (_, index) => {
+              {Array.from({ length: buzzerStrikeLimit }, (_, index) => {
                 const active =
                   index <
                   (faceoffActive
