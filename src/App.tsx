@@ -3410,54 +3410,56 @@ export default function App() {
               ¡Pulsa antes que el equipo contrario!
             </p>
 
-            {!faceoffActive && (
-              <div className="relative z-10 rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm backdrop-blur-md">
-                <p className="text-xs font-black uppercase tracking-[.2em] text-white/60">
-                  {state.phase === "turn"
-                    ? "Modo turno"
-                    : state.phase === "steal"
-                      ? "Robo de puntos"
-                      : "Partida en curso"}
-                </p>
-                <p className="mt-3 text-lg font-bold text-white">
-                  {state.phase === "turn"
-                    ? activeTeam === buzzerTeam
-                      ? "Es tu turno"
-                      : "No es tu turno"
-                    : "El pulsador no está disponible"}
-                </p>
-                <p className="mt-1 text-sm text-white/65">
-                  {state.phase === "turn"
-                    ? activeTeam === buzzerTeam
-                      ? "Tu equipo está jugando ahora."
-                      : "El otro equipo está jugando. Espera tu turno."
-                    : "Tu equipo podrá volver a usarlo cuando comience un nuevo enfrentamiento."}
-                </p>
-              </div>
-            )}
-            <button
-              type="button"
-              disabled={!faceoffActive || Boolean(buzzerWinner) || buzzerBlocked}
-              aria-label={`Pulsador del equipo ${buzzerTeamName}`}
-              className={cx(
-                "group relative mx-auto flex aspect-square w-[min(76vw,340px)] max-w-full flex-col items-center justify-center rounded-full border-[12px] px-6 text-center text-white transition-transform before:pointer-events-none before:absolute before:inset-3 before:rounded-full before:border before:border-white/25 before:bg-gradient-to-br before:from-white/35 before:via-white/5 before:to-black/25 before:content-[''] hover:-translate-y-1 active:translate-y-3 active:shadow-none disabled:cursor-not-allowed disabled:opacity-55 sm:w-[min(56vw,360px)]",
-                buttonClasses,
-                buzzerSelected &&
-                  "translate-y-3 shadow-none hover:translate-y-3 disabled:opacity-100"
+            <div className="relative mx-auto w-full">
+              {!faceoffActive && (
+                <div className="pointer-events-none absolute left-1/2 top-1/2 z-20 w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm backdrop-blur-md">
+                  <p className="text-xs font-black uppercase tracking-[.2em] text-white/60">
+                    {state.phase === "turn"
+                      ? "Modo turno"
+                      : state.phase === "steal"
+                        ? "Robo de puntos"
+                        : "Partida en curso"}
+                  </p>
+                  <p className="mt-3 text-lg font-bold text-white">
+                    {state.phase === "turn"
+                      ? activeTeam === buzzerTeam
+                        ? "Es tu turno"
+                        : "No es tu turno"
+                      : "El pulsador no está disponible"}
+                  </p>
+                  <p className="mt-1 text-sm text-white/65">
+                    {state.phase === "turn"
+                      ? activeTeam === buzzerTeam
+                        ? "Tu equipo está jugando ahora."
+                        : "El otro equipo está jugando. Espera tu turno."
+                      : "Tu equipo podrá volver a usarlo cuando comience un nuevo enfrentamiento."}
+                  </p>
+                </div>
               )}
-            >
-              {buzzerBlocked ? (
-                <Lock className="mb-5 size-20 drop-shadow-lg sm:size-24" strokeWidth={2.5} />
-              ) : buzzerSelected ? (
-                <Check className="mb-5 size-20 drop-shadow-lg sm:size-24" strokeWidth={3} />
-              ) : (
-                <Hand className="mb-5 size-20 drop-shadow-lg transition-transform group-active:scale-90 sm:size-24" />
-              )}
-              <span className="text-3xl font-black uppercase tracking-wide drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] sm:text-5xl">
-                {buzzerBlocked ? "¡Oops!" : buzzerSelected ? "Pulsado" : "Pulsar"}
-              </span>
-              <span className="mt-2 text-sm font-bold text-white/75">{buzzerTeamName}</span>
-            </button>
+              <button
+                type="button"
+                disabled={!faceoffActive || Boolean(buzzerWinner) || buzzerBlocked}
+                aria-label={`Pulsador del equipo ${buzzerTeamName}`}
+                className={cx(
+                  "group relative mx-auto flex aspect-square w-[min(76vw,340px)] max-w-full flex-col items-center justify-center rounded-full border-[12px] px-6 text-center text-white transition-transform before:pointer-events-none before:absolute before:inset-3 before:rounded-full before:border before:border-white/25 before:bg-gradient-to-br before:from-white/35 before:via-white/5 before:to-black/25 before:content-[''] hover:-translate-y-1 active:translate-y-3 active:shadow-none disabled:cursor-not-allowed disabled:opacity-55 sm:w-[min(56vw,360px)]",
+                  buttonClasses,
+                  buzzerSelected &&
+                    "translate-y-3 shadow-none hover:translate-y-3 disabled:opacity-100"
+                )}
+              >
+                {buzzerBlocked ? (
+                  <Lock className="mb-5 size-20 drop-shadow-lg sm:size-24" strokeWidth={2.5} />
+                ) : buzzerSelected ? (
+                  <Check className="mb-5 size-20 drop-shadow-lg sm:size-24" strokeWidth={3} />
+                ) : (
+                  <Hand className="mb-5 size-20 drop-shadow-lg transition-transform group-active:scale-90 sm:size-24" />
+                )}
+                <span className="text-3xl font-black uppercase tracking-wide drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] sm:text-5xl">
+                  {buzzerBlocked ? "¡Oops!" : buzzerSelected ? "Pulsado" : "Pulsar"}
+                </span>
+                <span className="mt-2 text-sm font-bold text-white/75">{buzzerTeamName}</span>
+              </button>
+            </div>
             <div className="mt-6 text-center">
               <p
                 className={cx(
