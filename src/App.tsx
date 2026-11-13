@@ -3317,8 +3317,8 @@ export default function App() {
           : "border-red-950 bg-red-600 shadow-red-950/40 hover:bg-red-500 active:bg-red-700"
       const screenClasses =
         buzzerTeam === "blue"
-          ? "bg-gradient-to-br from-blue-950 via-blue-800 to-blue-600"
-          : "bg-gradient-to-br from-red-950 via-red-800 to-red-600"
+          ? "bg-gradient-to-b from-blue-950 via-blue-900 to-slate-950"
+          : "bg-gradient-to-b from-red-950 via-red-900 to-slate-950"
 
       return (
         <main
