@@ -3334,7 +3334,7 @@ export default function App() {
       return (
         <main
           className={cx(
-            "buzzer-screen relative min-h-screen overflow-hidden px-5 py-6 text-white sm:px-8",
+            "buzzer-screen fixed inset-0 overflow-y-auto px-5 py-6 text-white sm:px-8",
             screenClasses
           )}
         >
