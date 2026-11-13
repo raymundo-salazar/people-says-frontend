@@ -11,12 +11,20 @@ import {
   ExternalLink,
   Hand,
   Info,
+  KeyRound,
   Lock,
   LoaderCircle,
   LogIn,
   LogOut,
+  Laptop,
   Maximize2,
+  Monitor,
+  MonitorSmartphone,
+  QrCode,
+  Smartphone,
+  Trophy,
   Unlink,
+  Users,
   Pause,
   Pointer,
   SquareDashed,
@@ -207,6 +215,174 @@ const getDeviceType = (): DeviceType => {
   if (/iPad|Tablet|Android(?!.*Mobile)/i.test(userAgent)) return "tablet"
   if (/iPhone|iPod|Android.*Mobile/i.test(userAgent)) return "mobile"
   return "desktop"
+}
+
+function RulesPage({ onBack }: { onBack: () => void }) {
+  const steps = [
+    ["01", "Configura la partida", "Elige nombre, categoría, equipos y rondas."],
+    ["02", "Vincula dispositivos", "Comparte el código, enlace o código QR."],
+    ["03", "Juega el enfrentamiento", "Dos participantes compiten por ganar el turno."],
+    ["04", "Revela y suma", "Descubre respuestas, administra strikes y puntos."],
+  ]
+  const devices = [
+    [Laptop, "Presentador", "Controla preguntas, respuestas, strikes y puntos."],
+    [Monitor, "Pantalla pública", "Muestra el tablero para todos los jugadores."],
+    [Smartphone, "Pulsadores", "El equipo que presiona primero obtiene la oportunidad."],
+  ] as const
+  return (
+    <Shell>
+      <div className="mx-auto max-w-5xl pb-12">
+        <Heading
+          k="Cómo se juega"
+          title="Todo lo que necesitas para jugar"
+          detail="La gente dice combina respuestas populares, estrategia y velocidad para descubrir qué piensa la mayoría."
+        />
+        <div className="mt-7 flex flex-wrap gap-3">
+          <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-900">
+            Juego de encuesta
+          </span>
+          <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-bold text-stone-600">
+            2 equipos
+          </span>
+          <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-bold text-stone-600">
+            Hasta 4 dispositivos
+          </span>
+        </div>
+
+        <section className="mt-8 rounded-2xl bg-emerald-950 p-6 text-white sm:p-8">
+          <div className="flex items-start gap-4">
+            <div className="grid size-12 shrink-0 place-items-center rounded-xl bg-emerald-800 text-emerald-200">
+              <Trophy size={25} aria-hidden="true" />
+            </div>
+            <div>
+              <p className="text-xs font-black uppercase tracking-[.2em] text-emerald-300">
+                Objetivo
+              </p>
+              <h2 className="mt-2 text-2xl font-black">Adivina lo que respondió la mayoría</h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-emerald-100/75">
+                Forma dos equipos, responde las preguntas de la encuesta y acumula los puntos de las
+                respuestas más populares. El equipo con más puntos al terminar las rondas gana.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-8">
+          <h2 className="text-[11px] font-black uppercase tracking-[.18em] text-stone-500">
+            Antes de empezar
+          </h2>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {steps.map(([number, title, detail]) => (
+              <div key={number} className="rounded-2xl border border-stone-200 bg-white p-4">
+                <span className="font-mono text-xs font-black text-emerald-700">{number}</span>
+                <h3 className="mt-4 text-sm font-bold text-stone-900">{title}</h3>
+                <p className="mt-2 text-xs leading-5 text-stone-500">{detail}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-10">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <h2 className="text-[11px] font-black uppercase tracking-[.18em] text-stone-500">
+                Dispositivos y roles
+              </h2>
+              <p className="mt-2 text-sm text-stone-500">
+                Puedes jugar solo con el presentador, sumar una pantalla o usar los dos pulsadores.
+              </p>
+            </div>
+            <MonitorSmartphone className="hidden text-emerald-700 sm:block" aria-hidden="true" />
+          </div>
+          <div className="mt-4 grid gap-4 lg:grid-cols-3">
+            {devices.map(([Icon, title, detail]) => (
+              <div
+                key={title}
+                className="overflow-hidden rounded-2xl border border-stone-200 bg-white"
+              >
+                <div className="flex min-h-48 items-center justify-center bg-stone-100 p-5">
+                  <div className="rounded-xl border-4 border-stone-700 bg-stone-900 p-2 shadow-xl">
+                    <div className="grid h-28 w-44 place-items-center rounded-lg bg-emerald-950 text-emerald-300">
+                      <Icon size={42} strokeWidth={1.5} aria-hidden="true" />
+                    </div>
+                  </div>
+                </div>
+                <div className="p-5">
+                  <h3 className="font-bold text-stone-900">{title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-stone-500">{detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-10 grid gap-4 lg:grid-cols-2">
+          <div className="rounded-2xl border border-stone-200 bg-white p-6">
+            <p className="text-[11px] font-black uppercase tracking-[.18em] text-stone-500">
+              Flujo de unión
+            </p>
+            <h2 className="mt-2 text-xl font-black text-stone-900">
+              Conecta una pantalla o pulsador
+            </h2>
+            <div className="mt-5 space-y-3">
+              <div className="flex items-center gap-3 rounded-xl bg-stone-50 p-3">
+                <div className="grid size-10 place-items-center rounded-lg bg-emerald-100 text-emerald-900">
+                  <KeyRound size={19} aria-hidden="true" />
+                </div>
+                <p className="text-sm text-stone-600">Captura el código de 8 caracteres.</p>
+              </div>
+              <div className="flex items-center gap-3 rounded-xl bg-stone-50 p-3">
+                <div className="grid size-10 place-items-center rounded-lg bg-emerald-100 text-emerald-900">
+                  <QrCode size={19} aria-hidden="true" />
+                </div>
+                <p className="text-sm text-stone-600">
+                  También puedes abrir el enlace o escanear el QR.
+                </p>
+              </div>
+              <div className="flex items-center gap-3 rounded-xl bg-stone-50 p-3">
+                <div className="grid size-10 place-items-center rounded-lg bg-emerald-100 text-emerald-900">
+                  <Users size={19} aria-hidden="true" />
+                </div>
+                <p className="text-sm text-stone-600">
+                  Escribe el nombre del dispositivo y selecciona un rol.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-stone-200 bg-white p-6">
+            <p className="text-[11px] font-black uppercase tracking-[.18em] text-stone-500">
+              Mecánica
+            </p>
+            <h2 className="mt-2 text-xl font-black text-stone-900">Enfrentamiento, turno y robo</h2>
+            <ul className="mt-5 space-y-4 text-sm leading-6 text-stone-600">
+              <li>
+                <strong className="text-stone-900">Enfrentamiento:</strong> cada equipo intenta
+                encontrar la respuesta con más puntos.
+              </li>
+              <li>
+                <strong className="text-stone-900">Turno:</strong> el equipo ganador revela
+                respuestas hasta acumular tres strikes.
+              </li>
+              <li>
+                <strong className="text-stone-900">Robo:</strong> el equipo contrario tiene una
+                oportunidad para ganar el pozo.
+              </li>
+              <li>
+                <strong className="text-stone-900">Rondas especiales:</strong> los multiplicadores
+                duplican o triplican los puntos.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <div className="mt-10 flex justify-start">
+          <Button ghost onClick={onBack}>
+            <ArrowLeft size={16} aria-hidden="true" /> Volver
+          </Button>
+        </div>
+      </div>
+    </Shell>
+  )
 }
 const deviceTypeLabels: Record<DeviceType, string> = {
   desktop: "Escritorio",
@@ -1597,26 +1773,7 @@ export default function App() {
         )}
       </Shell>
     )
-  if (screen === "rules")
-    return (
-      <Shell>
-        <Heading
-          k="Cómo se juega"
-          title="Las respuestas más populares"
-          detail="Descubre lo que respondió la mayoría."
-        />
-        <div className="space-y-4 rounded-2xl border border-stone-200 bg-white p-6 text-sm leading-6 text-stone-600">
-          <p>
-            Dos representantes se enfrentan, el ganador decide si juega o pasa y tres errores
-            habilitan el robo.
-          </p>
-          <p>El equipo con más puntos al final gana. En empate se juega una ronda adicional.</p>
-          <Button ghost onClick={() => setScreen("home")}>
-            Volver
-          </Button>
-        </div>
-      </Shell>
-    )
+  if (screen === "rules") return <RulesPage onBack={() => setScreen("home")} />
   if (screen === "create")
     return (
       <GameSetupStep
