@@ -481,6 +481,7 @@ export default function App() {
   }, [specialRoundVisible])
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
+  const answerColumnRows = answers.length >= 7 ? 5 : Math.max(1, Math.ceil(answers.length / 2))
   const revealed = state.revealed ?? []
   const blue = state.scores?.blue ?? 0
   const red = state.scores?.red ?? 0
@@ -2549,7 +2550,10 @@ export default function App() {
                 Respuestas
               </h2>
               <div>
-                <div className="grid gap-1 md:grid-flow-col md:grid-cols-2 md:grid-rows-5">
+                <div
+                  className="grid gap-1 md:grid-flow-col md:grid-cols-2"
+                  style={{ gridTemplateRows: `repeat(${answerColumnRows}, minmax(0, 1fr))` }}
+                >
                   {answers.map((answer, index) => {
                     const visible = revealed.includes(index)
                     return (
@@ -3189,7 +3193,10 @@ export default function App() {
                 <p className="text-xl font-black text-white sm:text-2xl">{state.questionPrompt}</p>
               </div>
               <div className="mb-4 rounded-2xl border border-white/20 bg-black/20 px-4 py-4 text-center shadow-lg">
-                <div className="grid gap-2 sm:grid-flow-col sm:grid-cols-2 sm:grid-rows-5">
+                <div
+                  className="grid gap-2 sm:grid-flow-col sm:grid-cols-2"
+                  style={{ gridTemplateRows: `repeat(${answerColumnRows}, minmax(0, 1fr))` }}
+                >
                   {answers.length === 0 &&
                     [0, 1, 2, 3, 4].map((index) => (
                       <Skeleton key={`answer-skeleton-${index}`} className="h-16 bg-white/10" />
