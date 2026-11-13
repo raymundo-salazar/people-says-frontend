@@ -3412,7 +3412,7 @@ export default function App() {
                 <p className="mt-2 text-sm text-white/70">Reconectando con la sala…</p>
               )}
             </div>
-            <div className="mt-2 grid grid-cols-2 overflow-hidden rounded-2xl border border-white/20 bg-black/15 text-center">
+            <div className="-mt-4 grid grid-cols-2 overflow-hidden rounded-2xl border border-white/20 bg-black/15 text-center">
               <div className="p-4">
                 <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/60">
                   Ronda
