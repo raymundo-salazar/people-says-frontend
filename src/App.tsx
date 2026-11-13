@@ -3383,7 +3383,7 @@ export default function App() {
             <section
               className={cx(
                 "text-center transition-all duration-300",
-                buzzerSelected && "translate-y-5 scale-[2]"
+                buzzerSelected && "translate-y-5 scale-[1.8]"
               )}
             >
               <p className="text-xs font-bold uppercase tracking-[.22em] text-white/65">
@@ -3397,14 +3397,6 @@ export default function App() {
               >
                 {buzzerPlayer}
               </h1>
-              <p
-                className={cx(
-                  "mt-2 text-sm text-white/70 transition-all duration-300",
-                  buzzerSelected ? "opacity-0" : "opacity-100"
-                )}
-              >
-                ¡Pulsa antes que el equipo contrario!
-              </p>
             </section>
 
             {faceoffActive ? (
