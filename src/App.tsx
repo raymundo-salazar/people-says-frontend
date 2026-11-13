@@ -3315,17 +3315,40 @@ export default function App() {
         buzzerTeam === "blue"
           ? "border-blue-950 bg-blue-600 shadow-blue-950/40 hover:bg-blue-500 active:bg-blue-700"
           : "border-red-950 bg-red-600 shadow-red-950/40 hover:bg-red-500 active:bg-red-700"
+      const screenClasses =
+        buzzerTeam === "blue"
+          ? "bg-gradient-to-br from-blue-950 via-blue-800 to-blue-600"
+          : "bg-gradient-to-br from-red-950 via-red-800 to-red-600"
 
       return (
-        <Shell>
+        <main
+          className={cx(
+            "relative min-h-screen overflow-hidden px-5 py-6 text-white sm:px-8",
+            screenClasses
+          )}
+        >
+          {stealBanner}
+          {roundResultBanner}
+          {strikeVisible && (
+            <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/60">
+              <div
+                className="public-strike-animation flex items-center justify-center gap-3 text-red-500 drop-shadow-2xl"
+                aria-label="Strike registrado"
+              >
+                {Array.from({ length: strikeOverlayCount }, (_, index) => (
+                  <SquareX key={index} size={140} strokeWidth={1.5} />
+                ))}
+              </div>
+            </div>
+          )}
           <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-xl flex-col justify-center gap-4">
-            <div className="rounded-3xl bg-white p-5 text-center shadow-sm ring-1 ring-stone-200">
-              <p className="text-[10px] font-black uppercase tracking-[.24em] text-stone-500">
+            <div className="rounded-3xl border border-white/20 bg-black/15 p-5 text-center shadow-sm">
+              <p className="text-[10px] font-black uppercase tracking-[.24em] text-white/60">
                 Ronda {String(state.roundIndex + 1).padStart(2, "0")}
               </p>
-              <p className="mt-1 text-3xl font-black tabular-nums text-emerald-900">
+              <p className="mt-1 text-3xl font-black tabular-nums text-white">
                 {String(state.pot ?? 0).padStart(2, "0")}
-                <span className="ml-2 text-xs font-bold uppercase tracking-widest text-stone-400">
+                <span className="ml-2 text-xs font-bold uppercase tracking-widest text-white/60">
                   puntos de la ronda
                 </span>
               </p>
@@ -3333,7 +3356,7 @@ export default function App() {
 
             <div
               className={cx(
-                "rounded-3xl bg-gradient-to-br p-5 text-center text-white shadow-lg",
+                "rounded-3xl border border-white/20 bg-black/15 p-5 text-center text-white shadow-lg",
                 teamClasses
               )}
             >
@@ -3358,7 +3381,7 @@ export default function App() {
                 disabled={Boolean(buzzerWinner)}
                 aria-label={`Pulsador del equipo ${buzzerTeamName}`}
                 className={cx(
-                  "group flex min-h-[min(52vh,28rem)] w-full flex-col items-center justify-center rounded-[2rem] border-b-[14px] px-6 text-white shadow-2xl transition duration-150 hover:-translate-y-1 active:translate-y-2 active:border-b-2 active:shadow-lg disabled:cursor-not-allowed disabled:opacity-60",
+                  "group mx-auto aspect-square w-[min(78vw,28rem)] flex-col items-center justify-center rounded-full border-[10px] border-b-[24px] px-6 text-white shadow-2xl transition duration-150 hover:-translate-y-1 active:translate-y-2 active:border-b-[10px] active:shadow-lg disabled:cursor-not-allowed disabled:opacity-60",
                   buttonClasses
                 )}
                 onClick={() =>
@@ -3397,7 +3420,7 @@ export default function App() {
                 : "Sigue el desarrollo de la ronda desde este dispositivo"}
             </p>
           </div>
-        </Shell>
+        </main>
       )
     })()
   return (
