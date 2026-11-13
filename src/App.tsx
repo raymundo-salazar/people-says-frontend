@@ -545,13 +545,19 @@ export default function App() {
     setScreenState("join")
   }
   useEffect(() => {
-    if (!roomCode || !["host", "display", "buzzer", "lobby", "joinLobby"].includes(screen)) return
+    if (
+      !roomCode ||
+      !["host", "display", "buzzer", "lobby", "joinLobby", "roundResult"].includes(screen)
+    )
+      return
     gameSocket.connect()
     const role = ["lobby", "joinLobby"].includes(screen)
       ? currentDeviceRole
       : screen === "buzzer"
         ? buttonRole
-        : screen
+        : screen === "roundResult"
+          ? "host"
+          : screen
     gameSocket.emit("room:join", {
       code: roomCode,
       role,
@@ -699,7 +705,7 @@ export default function App() {
     }
   }, [roomCode, screen, hostToken, deviceToken, buttonRole, currentDeviceRole, deviceName])
   useEffect(() => {
-    if (["host", "display", "buzzer", "lobby", "joinLobby"].includes(screen)) return
+    if (["host", "display", "buzzer", "lobby", "joinLobby", "roundResult"].includes(screen)) return
     gameSocket.disconnect()
   }, [screen])
   useEffect(() => {
