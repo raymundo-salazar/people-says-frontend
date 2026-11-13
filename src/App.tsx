@@ -3415,21 +3415,25 @@ export default function App() {
             <div className="mt-4 grid grid-cols-2 overflow-hidden rounded-2xl border border-white/20 bg-black/15 text-center">
               <div className="p-4">
                 <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/60">
-                  Puntos de la ronda
+                  Ronda
                 </p>
-                <p className="mt-1 text-2xl font-black tabular-nums text-white">
+                <p className="mt-1 font-mono text-2xl font-black tabular-nums text-white">
                   {state.pot ?? 0}
-                  <span className="ml-1 text-xs font-bold text-white/60">pts</span>
                 </p>
+                <span className="block text-[10px] font-bold uppercase tracking-widest text-white/60">
+                  puntos
+                </span>
               </div>
               <div className="border-l border-white/20 p-4">
                 <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/60">
-                  Puntos del equipo
+                  {buzzerTeamName}
                 </p>
-                <p className="mt-1 text-2xl font-black tabular-nums text-white">
+                <p className="mt-1 font-mono text-2xl font-black tabular-nums text-white">
                   {buzzerTeamScore}
-                  <span className="ml-1 text-xs font-bold text-white/60">pts</span>
                 </p>
+                <span className="block text-[10px] font-bold uppercase tracking-widest text-white/60">
+                  puntos
+                </span>
               </div>
             </div>
           </div>
