@@ -3405,7 +3405,10 @@ export default function App() {
             gameSocket.emit("buzzer:press", { code: roomCode, team: buzzerTeam })
           }}
         >
-          {stealBanner}
+          {(currentDeviceRole !== "blue_button" && currentDeviceRole !== "red_button") ||
+          teamBackTeam === (currentDeviceRole === "blue_button" ? "blue" : "red")
+            ? stealBanner
+            : null}
           {roundResultBanner}
           {strikeVisible && (
             <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/60">
