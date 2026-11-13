@@ -3357,7 +3357,7 @@ export default function App() {
               <p className="text-xs font-bold uppercase tracking-[.22em] text-white/65">
                 {buzzerTeamName}
               </p>
-              <h1 className="mt-1 text-4xl font-black tracking-tight sm:text-5xl">
+              <h1 className="mt-1 text-5xl font-black tracking-tight sm:text-6xl">
                 {buzzerPlayer}
               </h1>
               <p className="mt-2 text-sm text-white/70">¡Pulsa antes que el equipo contrario!</p>
