@@ -3380,14 +3380,23 @@ export default function App() {
             </div>
           )}
           <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-xl flex-col justify-center gap-6">
-            <section className="text-center">
+            <section
+              className={cx("text-center transition-transform", buzzerSelected && "scale-[1.2]")}
+            >
               <p className="text-xs font-bold uppercase tracking-[.22em] text-white/65">
                 {buzzerTeamName}
               </p>
               <h1 className="mt-1 text-5xl font-black tracking-tight sm:text-6xl">
                 {buzzerPlayer}
               </h1>
-              <p className="mt-2 text-sm text-white/70">¡Pulsa antes que el equipo contrario!</p>
+              <p
+                className={cx(
+                  "mt-2 text-sm text-white/70 transition-opacity",
+                  buzzerSelected ? "opacity-0" : "opacity-100"
+                )}
+              >
+                ¡Pulsa antes que el equipo contrario!
+              </p>
             </section>
 
             {faceoffActive ? (
