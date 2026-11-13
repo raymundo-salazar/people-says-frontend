@@ -3381,7 +3381,7 @@ export default function App() {
                 disabled={Boolean(buzzerWinner)}
                 aria-label={`Pulsador del equipo ${buzzerTeamName}`}
                 className={cx(
-                  "group relative flex aspect-square w-[min(76vw,340px)] max-w-full flex-col items-center justify-center rounded-full border-[12px] px-6 text-center text-white transition-transform hover:-translate-y-1 active:translate-y-3 active:shadow-none disabled:cursor-not-allowed disabled:opacity-55 sm:w-[min(56vw,360px)]",
+                  "group relative mx-auto flex aspect-square w-[min(76vw,340px)] max-w-full flex-col items-center justify-center rounded-full border-[12px] px-6 text-center text-white transition-transform hover:-translate-y-1 active:translate-y-3 active:shadow-none disabled:cursor-not-allowed disabled:opacity-55 sm:w-[min(56vw,360px)]",
                   buttonClasses
                 )}
                 onClick={() =>
