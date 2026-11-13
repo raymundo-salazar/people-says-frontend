@@ -1253,7 +1253,7 @@ export default function App() {
     if (!revealed.includes(index)) emitAction({ type: "reveal_answer", index })
   }
   const teamId = state.activeTeam ?? state.control ?? "blue"
-  const teamName = teamId === "blue" ? teams[0].name : teams[1].name
+  const teamName = teamId === "blue" ? state.teams[0].name : state.teams[1].name
   const faceoffFirstTeam =
     state.phase === "steal"
       ? state.activeTeam
@@ -1296,7 +1296,7 @@ export default function App() {
   const roundMultiplier = state.roundConfigs[state.roundIndex]?.multiplier ?? 1
   const roundWinner = state.roundWinner
   const roundWinnerName =
-    roundWinner === "blue" ? teams[0].name : roundWinner === "red" ? teams[1].name : "—"
+    roundWinner === "blue" ? state.teams[0].name : roundWinner === "red" ? state.teams[1].name : "—"
   const roundPointsWon = state.roundPoints ?? 0
   const baseRoundPoints = revealed.reduce(
     (total, index) => total + (answers[index]?.points ?? 0),
@@ -1307,7 +1307,7 @@ export default function App() {
     teamBackVisible || stealPromptVisible
       ? teamBackTeam
       : (state.stealTeam ?? (state.control === "blue" ? "red" : "blue"))
-  const stealTeamName = stealTeamId === "blue" ? teams[0].name : teams[1].name
+  const stealTeamName = stealTeamId === "blue" ? state.teams[0].name : state.teams[1].name
   const stealBanner =
     teamBackVisible || stealPromptVisible ? (
       <>
