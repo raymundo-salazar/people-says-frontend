@@ -3381,15 +3381,15 @@ export default function App() {
                 disabled={Boolean(buzzerWinner)}
                 aria-label={`Pulsador del equipo ${buzzerTeamName}`}
                 className={cx(
-                  "group mx-auto aspect-square w-[min(78vw,28rem)] flex-col items-center justify-center rounded-full border-[10px] border-b-[24px] px-6 text-white shadow-2xl transition duration-150 hover:-translate-y-1 active:translate-y-2 active:border-b-[10px] active:shadow-lg disabled:cursor-not-allowed disabled:opacity-60",
+                  "group mx-auto flex aspect-square w-[min(78vw,28rem)] flex-col items-center justify-center rounded-full border-[10px] border-b-[24px] px-6 text-white shadow-2xl transition duration-150 hover:-translate-y-1 active:translate-y-2 active:border-b-[10px] active:shadow-lg disabled:cursor-not-allowed disabled:opacity-60",
                   buttonClasses
                 )}
                 onClick={() =>
                   gameSocket.emit("buzzer:press", { code: roomCode, team: buzzerTeam })
                 }
               >
-                <Hand className="mb-5 size-16 transition-transform group-active:scale-90 sm:size-20" />
-                <span className="text-3xl font-black uppercase tracking-wide sm:text-5xl">
+                <Hand className="mb-5 size-20 drop-shadow-lg transition-transform group-active:scale-90 sm:size-24" />
+                <span className="text-3xl font-black uppercase tracking-wide drop-shadow-lg sm:text-5xl">
                   Pulsar
                 </span>
                 <span className="mt-2 text-sm font-bold text-white/75">{buzzerTeamName}</span>
