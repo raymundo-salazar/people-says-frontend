@@ -1437,14 +1437,17 @@ export default function App() {
           <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
             {finalWinner ? "¡Tenemos ganador!" : "¡Partida empatada!"}
           </p>
-          <div className="mt-4">
-            <strong className="block font-mono text-6xl font-black tabular-nums text-amber-300 drop-shadow-[3px_4px_0_rgba(120,53,15,0.65)] sm:text-8xl">
-              <AnimatedNumber value={finalWinnerScore} padStart={2} />
-            </strong>
-            <span className="text-xs font-black uppercase tracking-[.24em] text-amber-100/80">
-              puntos
-            </span>
-          </div>
+        </div>
+        <div
+          className="team-back-banner-content mx-auto mt-4 w-fit px-8"
+          style={{ animationDelay: "1.5s", animationDuration: "3.5s" }}
+        >
+          <strong className="block font-mono text-6xl font-black tabular-nums text-amber-300 drop-shadow-[3px_4px_0_rgba(120,53,15,0.65)] sm:text-8xl">
+            <AnimatedNumber value={finalWinnerScore} padStart={2} />
+          </strong>
+          <span className="text-xs font-black uppercase tracking-[.24em] text-amber-100/80">
+            puntos ganados
+          </span>
         </div>
       </div>
     </>
