@@ -3415,14 +3415,7 @@ export default function App() {
             <div className="relative mx-auto w-full">
               {!faceoffActive && (
                 <div className="pointer-events-none absolute left-1/2 top-1/2 z-20 w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm backdrop-blur-md">
-                  <p className="text-xs font-black uppercase tracking-[.2em] text-white/60">
-                    {state.phase === "turn"
-                      ? "Modo turno"
-                      : state.phase === "steal"
-                        ? "Robo de puntos"
-                        : "Partida en curso"}
-                  </p>
-                  <p className="mt-3 text-lg font-bold text-white">
+                  <p className="text-4xl font-black tracking-tight text-white drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] sm:text-5xl">
                     {state.phase === "turn"
                       ? activeTeam === buzzerTeam
                         ? "Es tu turno"
