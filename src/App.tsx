@@ -2364,7 +2364,6 @@ export default function App() {
       <Shell wide>
         {stealBanner}
         {specialRoundBanner}
-        {roundResultBanner}
         {strikeVisible && (
           <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/50 backdrop-blur-md">
             <div
