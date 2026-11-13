@@ -25,6 +25,7 @@ import {
   Settings2,
   Timer,
   Target,
+  Trash2,
   X,
 } from "lucide-react"
 import { gameSocket } from "./socket"
@@ -372,6 +373,7 @@ export default function App() {
     "create" | "teams" | "rounds" | "start" | "join" | null
   >(null)
   const [showConnectedDevices, setShowConnectedDevices] = useState(false)
+  const [showFinalizeDialog, setShowFinalizeDialog] = useState(false)
   const [showLobbyQuestions, setShowLobbyQuestions] = useState(false)
   const [revealedLobbyQuestions, setRevealedLobbyQuestions] = useState<number[]>([])
   const lobbyQuestionTimers = useRef<Record<number, number>>({})
@@ -541,6 +543,24 @@ export default function App() {
   const emitAction = (action: Record<string, unknown>) =>
     gameSocket.emit("game:action", { code: roomCode, hostToken, action })
   const pauseGame = () => emitAction({ type: "pause" })
+  const finalizeHostSession = () => {
+    emitAction({ type: "end" })
+    window.setTimeout(() => {
+      gameSocket.disconnect()
+      if (roomCode) localStorage.removeItem(deviceConfigKey(roomCode))
+      if (localStorage.getItem("people-says-room-code") === roomCode) {
+        localStorage.removeItem("people-says-room-code")
+      }
+      localStorage.removeItem("people-says-host-token")
+      setRoomCode("")
+      setJoinCode("")
+      setHostToken("")
+      setCurrentDeviceRole("pending")
+      setShowFinalizeDialog(false)
+      navigate("/")
+      setScreenState("home")
+    }, 150)
+  }
   const canPauseGame = Boolean(hostToken) || currentDeviceRole === "host"
   const pauseControl = canPauseGame ? (
     <Button secondary onClick={pauseGame}>
@@ -1416,6 +1436,16 @@ export default function App() {
     ) : null
   useEffect(() => {
     if (state.phase !== "lobby") setLoadingAction(null)
+    if (
+      screen === "joinLobby" &&
+      (!roomCode ||
+        localStorage.getItem("people-says-room-code") !== roomCode ||
+        !getSavedDeviceConfigForCode(roomCode))
+    ) {
+      navigate("/join")
+      setScreenState("join")
+      return
+    }
     if (screen === "joinLobby" && state.phase !== "lobby") {
       if (currentDeviceRole === "host") setScreen("host")
       if (currentDeviceRole === "display") setScreen("display")
@@ -1851,7 +1881,43 @@ export default function App() {
             Iniciar partida <ArrowRight size={16} aria-hidden="true" />
           </Button>
         </div>
+        <Button
+          ghost
+          className="mt-5 w-full text-red-700 hover:bg-red-50 hover:text-red-800"
+          onClick={() => setShowFinalizeDialog(true)}
+        >
+          <Trash2 size={16} aria-hidden="true" /> Finalizar partida y borrar datos
+        </Button>
         {error && <p className="mt-4 text-right text-sm text-red-700">{error}</p>}
+        {showFinalizeDialog && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/50 px-5 backdrop-blur-md"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="finalize-game-title"
+          >
+            <div className="w-full max-w-md rounded-2xl bg-white p-6 text-left shadow-xl">
+              <h2 id="finalize-game-title" className="text-xl font-semibold">
+                ¿Finalizar esta partida?
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-stone-500">
+                Se cerrará la sesión y se borrará la configuración guardada en este dispositivo.
+                Esta acción no se puede deshacer.
+              </p>
+              <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <Button ghost onClick={() => setShowFinalizeDialog(false)}>
+                  Cancelar
+                </Button>
+                <Button
+                  className="bg-red-600 text-white hover:bg-red-700"
+                  onClick={finalizeHostSession}
+                >
+                  <Trash2 size={16} aria-hidden="true" /> Finalizar y borrar
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
         {showQrModal && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/75 p-5 backdrop-blur-md"
