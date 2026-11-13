@@ -3398,7 +3398,12 @@ export default function App() {
                 {buzzerPlayer}
               </h1>
             </section>
-            <p className="-mt-5 text-center text-sm text-white/70">
+            <p
+              className={cx(
+                "-mt-5 text-center text-sm text-white/70 transition-opacity duration-300",
+                buzzerSelected ? "opacity-0" : "opacity-100"
+              )}
+            >
               ¡Pulsa antes que el equipo contrario!
             </p>
 
