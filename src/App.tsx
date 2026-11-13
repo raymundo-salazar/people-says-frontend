@@ -563,7 +563,10 @@ export default function App() {
       activePlayer?: { id: number; name: string; team: "blue" | "red" } | null
       devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
     }) => {
-      if (payload.activeTeam !== undefined) setActiveTeam(payload.activeTeam)
+      if (payload.activeTeam !== undefined) {
+        setActiveTeam(payload.activeTeam)
+        if (payload.activeTeam === null) setBuzzerWinner(null)
+      }
       if (payload.state)
         setState({
           ...payload.state,
