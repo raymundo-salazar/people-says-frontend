@@ -3313,8 +3313,8 @@ export default function App() {
           : "from-red-950 via-red-800 to-red-600"
       const buttonClasses =
         buzzerTeam === "blue"
-          ? "border-blue-950 bg-blue-600 shadow-blue-950/40 hover:bg-blue-500 active:bg-blue-700"
-          : "border-red-950 bg-red-600 shadow-red-950/40 hover:bg-red-500 active:bg-red-700"
+          ? "border-blue-950 bg-blue-600 shadow-blue-950/40 after:bg-blue-950 hover:bg-blue-500 active:bg-blue-700"
+          : "border-red-950 bg-red-600 shadow-red-950/40 after:bg-red-950 hover:bg-red-500 active:bg-red-700"
       const screenClasses =
         buzzerTeam === "blue"
           ? "bg-gradient-to-b from-blue-950 via-blue-900 to-slate-950"
@@ -3381,7 +3381,7 @@ export default function App() {
                 disabled={Boolean(buzzerWinner)}
                 aria-label={`Pulsador del equipo ${buzzerTeamName}`}
                 className={cx(
-                  "group mx-auto flex aspect-square w-[min(78vw,28rem)] flex-col items-center justify-center rounded-full border-[10px] border-b-[46px] px-6 text-white shadow-2xl transition duration-150 hover:-translate-y-1 active:translate-y-2 active:border-b-[14px] active:shadow-lg disabled:cursor-not-allowed disabled:opacity-60",
+                  "group relative isolate mx-auto flex aspect-square w-[min(78vw,28rem)] flex-col items-center justify-center rounded-full border-[10px] px-6 text-white shadow-2xl transition duration-150 after:pointer-events-none after:absolute after:inset-x-4 after:-bottom-7 after:-z-10 after:h-12 after:rounded-[50%] after:opacity-80 after:blur-sm after:content-[''] hover:-translate-y-1 active:translate-y-2 active:after:translate-y-2 active:shadow-lg disabled:cursor-not-allowed disabled:opacity-60",
                   buttonClasses
                 )}
                 onClick={() =>
