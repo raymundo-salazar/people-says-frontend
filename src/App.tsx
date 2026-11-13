@@ -411,10 +411,7 @@ export default function App() {
       .then((response) => (response.ok ? response.json() : []))
       .then((data: SetupCategory[]) => {
         setCategories(data)
-        if (!savedCreateDraft.selectedCategoryIds?.length)
-          setSelectedCategoryIds(
-            data.filter((category) => category.questionCount > 0).map((category) => category.id)
-          )
+        if (!savedCreateDraft.selectedCategoryIds) setSelectedCategoryIds([])
       })
       .catch(() => setCategories([]))
   }, [])

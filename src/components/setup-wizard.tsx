@@ -3,13 +3,15 @@ import {
   ArrowRight,
   Bot,
   Check,
+  ChevronLeft,
+  ChevronRight,
   MicVocal,
   MonitorSmartphone,
   Plus,
   RefreshCw,
   Trash2,
 } from "lucide-react"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Button, Heading, Shell, Skeleton, WizardProgress } from "./atoms"
 import { ParticipantRow, ParticipantsSubtitle, TeamNameField } from "./participants"
 
@@ -65,6 +67,8 @@ export function GameSetupStep({
   onCategoryToggle,
 }: GameSetupProps) {
   const [categoryTypeFilter, setCategoryTypeFilter] = useState("all")
+  const [showAllCategories, setShowAllCategories] = useState(false)
+  const categoryFiltersRef = useRef<HTMLDivElement>(null)
   const categoryTypes = Array.from(
     new Map(
       categories.flatMap((category) => category.types ?? []).map((type) => [type.slug, type])
@@ -76,6 +80,13 @@ export function GameSetupStep({
       : categories.filter((category) =>
           category.types?.some((type) => type.slug === categoryTypeFilter)
         )
+  const displayedCategories = showAllCategories ? visibleCategories : visibleCategories.slice(0, 10)
+  const scrollCategoryFilters = (direction: "left" | "right") => {
+    categoryFiltersRef.current?.scrollBy({
+      left: direction === "left" ? -180 : 180,
+      behavior: "smooth",
+    })
+  }
   return (
     <Shell showBack={false}>
       <WizardProgress step={1} />
@@ -156,28 +167,49 @@ export function GameSetupStep({
               Categorías de preguntas <span className="text-red-600">*</span>
             </p>
             {categoryTypes.length > 0 && (
-              <div className="mb-3 flex flex-wrap gap-2" aria-label="Filtrar categorías">
+              <div className="mb-3 flex items-center gap-1" aria-label="Filtrar categorías">
                 <button
                   type="button"
-                  className={`cursor-pointer rounded-full px-3 py-1.5 text-xs font-semibold ${categoryTypeFilter === "all" ? "bg-emerald-900 text-white" : "bg-stone-100 text-stone-600"}`}
-                  onClick={() => setCategoryTypeFilter("all")}
+                  className="grid size-7 shrink-0 cursor-pointer place-items-center rounded-full bg-stone-100 text-stone-600 hover:bg-stone-200"
+                  onClick={() => scrollCategoryFilters("left")}
+                  aria-label="Ver filtros anteriores"
                 >
-                  Todas
+                  <ChevronLeft size={15} />
                 </button>
-                {categoryTypes.map((type) => (
+                <div
+                  ref={categoryFiltersRef}
+                  className="flex min-w-0 flex-1 gap-1.5 overflow-x-auto px-1 [scrollbar-width:none]"
+                >
                   <button
-                    key={type.slug}
                     type="button"
-                    className={`cursor-pointer rounded-full px-3 py-1.5 text-xs font-semibold ${categoryTypeFilter === type.slug ? "bg-emerald-900 text-white" : "bg-stone-100 text-stone-600"}`}
-                    onClick={() => setCategoryTypeFilter(type.slug)}
+                    className={`shrink-0 cursor-pointer rounded-full px-2.5 py-1 text-[11px] font-semibold ${categoryTypeFilter === "all" ? "bg-emerald-900 text-white" : "bg-stone-100 text-stone-600"}`}
+                    onClick={() => setCategoryTypeFilter("all")}
                   >
-                    {type.name}
+                    Todos
                   </button>
-                ))}
+                  {categoryTypes.map((type) => (
+                    <button
+                      key={type.slug}
+                      type="button"
+                      className={`shrink-0 cursor-pointer rounded-full px-2.5 py-1 text-[11px] font-semibold ${categoryTypeFilter === type.slug ? "bg-emerald-900 text-white" : "bg-stone-100 text-stone-600"}`}
+                      onClick={() => setCategoryTypeFilter(type.slug)}
+                    >
+                      {type.name}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  className="grid size-7 shrink-0 cursor-pointer place-items-center rounded-full bg-stone-100 text-stone-600 hover:bg-stone-200"
+                  onClick={() => scrollCategoryFilters("right")}
+                  aria-label="Ver más filtros"
+                >
+                  <ChevronRight size={15} />
+                </button>
               </div>
             )}
             <div className="grid gap-2 sm:grid-cols-2">
-              {visibleCategories.map((category) => {
+              {displayedCategories.map((category) => {
                 const selected = selectedCategoryIds.includes(category.id)
                 return (
                   <button
@@ -208,6 +240,15 @@ export function GameSetupStep({
                 )
               })}
             </div>
+            {!showAllCategories && visibleCategories.length > 10 && (
+              <button
+                type="button"
+                className="mt-3 w-full cursor-pointer text-xs font-semibold text-emerald-800 hover:text-emerald-950"
+                onClick={() => setShowAllCategories(true)}
+              >
+                Ver más categorías
+              </button>
+            )}
           </div>
         )}
         {error && <p className="text-sm text-red-700">{error}</p>}
