@@ -2466,11 +2466,9 @@ export default function App() {
               Panel del presentador
             </p>
             <section className="rounded-2xl bg-gradient-to-r from-blue-100/80 via-slate-50 to-red-100/80 p-5">
-              {state.phase !== "round_result" && (
-                <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
-                  {participantStatusTitle}
-                </h2>
-              )}
+              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
+                {state.phase === "round_result" ? "Equipo ganador" : participantStatusTitle}
+              </h2>
               {state.phase === "round_result" ? (
                 <div
                   className={cx(
