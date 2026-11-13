@@ -266,6 +266,18 @@ function RulesPage({ onBack }: { onBack: () => void }) {
             </div>
           </div>
         </section>
+        <figure className="mt-6 overflow-hidden rounded-2xl border border-stone-200 bg-stone-100">
+          <img
+            src="/rules/game-preview.webp"
+            alt="Vista ilustrativa del tablero de La gente dice"
+            width="1200"
+            height="750"
+            className="block h-auto w-full"
+          />
+          <figcaption className="px-4 py-3 text-xs text-stone-500">
+            Vista ilustrativa de la experiencia de juego.
+          </figcaption>
+        </figure>
 
         <section className="mt-8">
           <h2 className="text-[11px] font-black uppercase tracking-[.18em] text-stone-500">
