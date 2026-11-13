@@ -3342,6 +3342,8 @@ export default function App() {
             "Participante en turno")
       const faceoffActive = state.phase === "faceoff"
       const buzzerSelected = faceoffActive && activeTeam === buzzerTeam
+      const buzzerHighlighted =
+        ["faceoff", "turn"].includes(state.phase) && activeTeam === buzzerTeam
       const buzzerBlocked = faceoffActive && Boolean(activeTeam) && activeTeam !== buzzerTeam
       const buttonClasses = buzzerSelected
         ? "border-emerald-950 bg-emerald-700 shadow-[0_18px_0_#064e3b,0_25px_40px_rgba(0,0,0,.45)]"
@@ -3386,7 +3388,7 @@ export default function App() {
             <section
               className={cx(
                 "text-center transition-all duration-300",
-                buzzerSelected && "translate-y-3 scale-[1.5]"
+                buzzerHighlighted && "translate-y-3 scale-[1.5]"
               )}
             >
               <p className="text-xs font-bold uppercase tracking-[.22em] text-white/65">
