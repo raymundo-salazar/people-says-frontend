@@ -3528,7 +3528,7 @@ export default function App() {
             <div className="-mt-4 grid grid-cols-2 overflow-hidden rounded-2xl border border-white/20 bg-black/15 text-center">
               <div className="p-4">
                 <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/60">
-                  Ronda
+                  Ronda {String(state.roundIndex + 1).padStart(2, "0")}
                 </p>
                 <p className="mt-1 font-mono text-2xl font-black tabular-nums text-white">
                   <AnimatedNumber value={state.pot ?? 0} padStart={2} />
