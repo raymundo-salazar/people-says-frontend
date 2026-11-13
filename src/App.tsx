@@ -395,6 +395,7 @@ export default function App() {
   const [stealPromptVisible, setStealPromptVisible] = useState(false)
   const [teamBackTeam, setTeamBackTeam] = useState<"blue" | "red">("red")
   const [specialRoundVisible, setSpecialRoundVisible] = useState(false)
+  const [finalWinnerVisible, setFinalWinnerVisible] = useState(false)
   const previousRoundIndex = useRef<number | null>(null)
   const [publicAnswerFlipIndex, setPublicAnswerFlipIndex] = useState<number | null>(null)
   useEffect(() => {
@@ -479,6 +480,12 @@ export default function App() {
     const timeout = window.setTimeout(() => setSpecialRoundVisible(false), 5200)
     return () => window.clearTimeout(timeout)
   }, [specialRoundVisible])
+  useEffect(() => {
+    if (state.phase !== "final") return
+    setFinalWinnerVisible(true)
+    const timeout = window.setTimeout(() => setFinalWinnerVisible(false), 5200)
+    return () => window.clearTimeout(timeout)
+  }, [state.phase])
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const answerColumnRows = answers.length >= 7 ? 5 : Math.max(1, Math.ceil(answers.length / 2))
@@ -1408,35 +1415,40 @@ export default function App() {
       : finalWinner === "red"
         ? state.teams[1].name
         : "Empate"
-  const finalWinnerBanner =
-    state.phase === "final" ? (
-      <>
-        <div className="pointer-events-auto fixed inset-0 z-50 bg-black/60 backdrop-blur-md" />
-        <div
-          className={cx(
-            "pointer-events-none fixed inset-x-0 top-1/2 z-50 -translate-y-1/2 bg-gradient-to-r py-12 text-center text-white shadow-2xl",
-            finalWinner === "blue"
-              ? "from-blue-950 via-blue-900 to-blue-950"
-              : finalWinner === "red"
-                ? "from-red-950 via-red-900 to-red-950"
-                : "from-emerald-950 via-emerald-900 to-emerald-950"
-          )}
-        >
-          <div className="mx-auto w-fit px-8">
-            <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
-              Partida finalizada
-            </p>
-            <h2 className="mt-1 text-4xl font-black sm:text-6xl">{finalWinnerName}</h2>
-            <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
-              {finalWinner ? "¡Tenemos ganador!" : "¡Partida empatada!"}
-            </p>
-            <p className="mt-2 text-sm font-black text-white/80">
-              {blue} - {red} puntos
-            </p>
+  const finalWinnerScore = finalWinner === "blue" ? blue : finalWinner === "red" ? red : 0
+  const finalWinnerBanner = finalWinnerVisible ? (
+    <>
+      <div className="pointer-events-auto fixed inset-0 z-50 bg-black/60 backdrop-blur-md" />
+      <div
+        className={cx(
+          "pointer-events-none fixed inset-x-0 top-1/2 z-50 -translate-y-1/2 bg-gradient-to-r py-12 text-center text-white shadow-2xl",
+          finalWinner === "blue"
+            ? "from-blue-950 via-blue-900 to-blue-950"
+            : finalWinner === "red"
+              ? "from-red-950 via-red-900 to-red-950"
+              : "from-emerald-950 via-emerald-900 to-emerald-950"
+        )}
+      >
+        <div className="mx-auto w-fit px-8">
+          <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
+            Partida finalizada
+          </p>
+          <h2 className="mt-1 text-5xl font-black sm:text-7xl">{finalWinnerName}</h2>
+          <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
+            {finalWinner ? "¡Tenemos ganador!" : "¡Partida empatada!"}
+          </p>
+          <div className="mt-4">
+            <strong className="block font-mono text-6xl font-black tabular-nums text-amber-300 sm:text-8xl">
+              <AnimatedNumber value={finalWinnerScore} padStart={2} />
+            </strong>
+            <span className="text-xs font-black uppercase tracking-[.24em] text-amber-100/80">
+              puntos
+            </span>
           </div>
         </div>
-      </>
-    ) : null
+      </div>
+    </>
+  ) : null
   useEffect(() => {
     if (state.phase !== "lobby") setLoadingAction(null)
     if (
