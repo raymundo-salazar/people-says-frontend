@@ -3435,7 +3435,7 @@ export default function App() {
                 <span className="mt-2 text-sm font-bold text-white/75">{buzzerTeamName}</span>
               </button>
             ) : (
-              <div className="rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm">
+              <div className="relative z-10 rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm backdrop-blur-md">
                 <p className="text-xs font-black uppercase tracking-[.2em] text-white/60">
                   {state.phase === "turn"
                     ? "Modo turno"
