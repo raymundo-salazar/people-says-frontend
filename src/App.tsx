@@ -660,6 +660,17 @@ export default function App() {
     gameSocket.disconnect()
   }, [screen])
   useEffect(() => {
+    if (screen !== "buzzer") return
+    const previousDocumentOverflow = document.documentElement.style.overflow
+    const previousBodyOverflow = document.body.style.overflow
+    document.documentElement.style.overflow = "hidden"
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.documentElement.style.overflow = previousDocumentOverflow
+      document.body.style.overflow = previousBodyOverflow
+    }
+  }, [screen])
+  useEffect(() => {
     if (screen !== "lobby" && !["joinInvite", "join", "joinLobby"].includes(screen)) return
     const code = roomCode || joinCode.trim().toUpperCase()
     if (code.length < 5) return
