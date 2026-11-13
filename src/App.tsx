@@ -3353,33 +3353,6 @@ export default function App() {
             </div>
           )}
           <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-xl flex-col justify-center gap-6">
-            <div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-white/20 bg-black/15 text-center">
-              <div className="p-4">
-                <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/60">
-                  Ronda
-                </p>
-                <p className="mt-1 font-mono text-2xl font-black tabular-nums text-white">
-                  {state.pot ?? 0}
-                </p>
-                <span className="block text-xs font-normal leading-none text-white/50">puntos</span>
-              </div>
-              <div
-                className={cx(
-                  "border-l border-white/20 bg-gradient-to-b p-4",
-                  buzzerTeam === "blue"
-                    ? "from-blue-900/45 to-blue-500/10"
-                    : "from-red-900/45 to-red-500/10"
-                )}
-              >
-                <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/60">
-                  {buzzerTeamName}
-                </p>
-                <p className="mt-1 font-mono text-2xl font-black tabular-nums text-white">
-                  {buzzerTeamScore}
-                </p>
-                <span className="block text-xs font-normal leading-none text-white/50">puntos</span>
-              </div>
-            </div>
             <section className="text-center">
               <p className="text-xs font-bold uppercase tracking-[.22em] text-white/65">
                 {buzzerTeamName}
@@ -3438,6 +3411,53 @@ export default function App() {
               {!socketConnected && (
                 <p className="mt-2 text-sm text-white/70">Reconectando con la sala…</p>
               )}
+            </div>
+            <div className="mt-2 grid grid-cols-2 overflow-hidden rounded-2xl border border-white/20 bg-black/15 text-center">
+              <div className="p-4">
+                <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/60">
+                  Ronda
+                </p>
+                <p className="mt-1 font-mono text-2xl font-black tabular-nums text-white">
+                  {state.pot ?? 0}
+                </p>
+                <span className="block text-xs font-normal leading-none text-white/50">puntos</span>
+              </div>
+              <div
+                className={cx(
+                  "border-l border-white/20 bg-gradient-to-b p-4",
+                  buzzerTeam === "blue"
+                    ? "from-blue-900/45 to-blue-500/10"
+                    : "from-red-900/45 to-red-500/10"
+                )}
+              >
+                <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/60">
+                  {buzzerTeamName}
+                </p>
+                <p className="mt-1 font-mono text-2xl font-black tabular-nums text-white">
+                  {buzzerTeamScore}
+                </p>
+                <span className="block text-xs font-normal leading-none text-white/50">puntos</span>
+              </div>
+            </div>
+            <div
+              className="mt-1 flex w-fit justify-center gap-3 self-center"
+              aria-label="Errores del equipo"
+            >
+              {Array.from({ length: faceoffActive ? 5 : 3 }, (_, index) => {
+                const active =
+                  index <
+                  (faceoffActive
+                    ? (state.faceoffStrikes?.[buzzerTeam] ?? 0)
+                    : (state.strikes?.[buzzerTeam] ?? 0))
+                return active ? (
+                  <SquareX key={index} size={64} strokeWidth={1.8} className="text-red-600" />
+                ) : (
+                  <span key={index} className="relative block size-16 text-white/25">
+                    <SquareDashed size={64} strokeWidth={1.8} />
+                    <X className="absolute inset-0 m-auto" size={28} strokeWidth={2} />
+                  </span>
+                )
+              })}
             </div>
           </div>
         </main>
