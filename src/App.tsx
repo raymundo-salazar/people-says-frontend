@@ -3334,7 +3334,7 @@ export default function App() {
             ] ??
             "Participante en turno")
       const faceoffActive = state.phase === "faceoff"
-      const buzzerSelected = buzzerWinner === buzzerTeam
+      const buzzerSelected = state.activeTeam === buzzerTeam
       const buttonClasses = buzzerSelected
         ? "border-emerald-950 bg-emerald-700 shadow-[0_18px_0_#064e3b,0_25px_40px_rgba(0,0,0,.45)]"
         : buzzerTeam === "blue"
