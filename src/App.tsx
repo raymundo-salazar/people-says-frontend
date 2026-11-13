@@ -3440,7 +3440,7 @@ export default function App() {
               </div>
             </div>
             <div
-              className="mt-1 flex w-fit justify-center gap-3 self-center"
+              className="-mt-4 flex w-fit justify-center gap-3 self-center"
               aria-label="Errores del equipo"
             >
               {Array.from({ length: faceoffActive ? 5 : 3 }, (_, index) => {
