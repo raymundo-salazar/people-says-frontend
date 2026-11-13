@@ -3444,10 +3444,18 @@ export default function App() {
                       : "Partida en curso"}
                 </p>
                 <p className="mt-3 text-lg font-bold text-stone-800">
-                  El pulsador no está disponible
+                  {state.phase === "turn"
+                    ? activeTeam === buzzerTeam
+                      ? "Es tu turno"
+                      : "No es tu turno"
+                    : "El pulsador no está disponible"}
                 </p>
                 <p className="mt-1 text-sm text-stone-500">
-                  Tu equipo podrá volver a usarlo cuando comience un nuevo enfrentamiento.
+                  {state.phase === "turn"
+                    ? activeTeam === buzzerTeam
+                      ? "Tu equipo está jugando ahora."
+                      : "El otro equipo está jugando. Espera tu turno."
+                    : "Tu equipo podrá volver a usarlo cuando comience un nuevo enfrentamiento."}
                 </p>
               </div>
             )}
