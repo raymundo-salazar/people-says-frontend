@@ -3415,7 +3415,7 @@ export default function App() {
 
             <div className="relative mx-auto w-full">
               {!faceoffActive && (
-                <div className="buzzer-turn-card-enter absolute inset-0 z-20 m-auto h-fit w-[calc(100%-2rem)] rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm backdrop-blur-md transition-all duration-300">
+                <div className="buzzer-turn-card-enter pointer-events-auto absolute inset-0 z-20 m-auto h-fit w-[calc(100%-2rem)] rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm backdrop-blur-md transition-all duration-300">
                   {state.phase === "turn" && activeTeam === buzzerTeam ? (
                     <Hand className="mx-auto mb-3 size-12 text-emerald-300" strokeWidth={2.5} />
                   ) : (
