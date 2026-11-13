@@ -1343,7 +1343,7 @@ export default function App() {
           <p className="text-xs font-black uppercase tracking-[.28em] text-emerald-300">
             Ronda {String(state.roundIndex + 1).padStart(2, "0")} - Ronda especial
           </p>
-          <h2 className="mt-1 text-3xl font-black text-amber-300 sm:text-5xl">
+          <h2 className="mt-1 text-4xl font-black text-amber-300 sm:text-6xl">
             Puntos al {roundMultiplier === 3 ? "triple" : "doble"}
           </h2>
           <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
