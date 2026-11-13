@@ -354,6 +354,7 @@ export default function App() {
   const [stealIndex, setStealIndex] = useState(0)
   const [stealText, setStealText] = useState("")
   const [buzzerWinner, setBuzzerWinner] = useState<"blue" | "red" | null>(null)
+  const [socketConnected, setSocketConnected] = useState(() => gameSocket.connected)
   const [buttonRole, setButtonRole] = useState<"blue_button" | "red_button">("blue_button")
   const [currentDeviceRole, setCurrentDeviceRole] = useState<DeviceRole>(
     () => savedDeviceConfig?.role ?? "host"
@@ -603,6 +604,8 @@ export default function App() {
       setError(errorCode)
     }
     const buzzer = (payload: { winner?: "blue" | "red" }) => setBuzzerWinner(payload.winner ?? null)
+    const socketConnected = () => setSocketConnected(true)
+    const socketDisconnected = () => setSocketConnected(false)
     const strike = (payload: { count?: number; team?: "blue" | "red" }) => {
       setStrikeOverlayCount(Math.max(1, payload.count ?? 1))
       setPublicStrikeVisible(true)
@@ -632,6 +635,8 @@ export default function App() {
     gameSocket.on("room:presence", presence)
     gameSocket.on("game:error", failure)
     gameSocket.on("buzzer:winner", buzzer)
+    gameSocket.on("connect", socketConnected)
+    gameSocket.on("disconnect", socketDisconnected)
     gameSocket.on("game:strike", strike)
     gameSocket.on("game:answer-revealed", answerRevealed)
     gameSocket.on("device:role-replaced", roleReplaced)
@@ -642,6 +647,8 @@ export default function App() {
       gameSocket.off("room:presence", presence)
       gameSocket.off("game:error", failure)
       gameSocket.off("buzzer:winner", buzzer)
+      gameSocket.off("connect", socketConnected)
+      gameSocket.off("disconnect", socketDisconnected)
       gameSocket.off("game:strike", strike)
       gameSocket.off("game:answer-revealed", answerRevealed)
       gameSocket.off("device:role-replaced", roleReplaced)
@@ -3351,6 +3358,22 @@ export default function App() {
                 </strong>
               </p>
             </section>
+
+            <div className="text-center">
+              <p
+                className={cx(
+                  "text-xs font-black uppercase tracking-[.18em]",
+                  socketConnected ? "text-emerald-300" : "text-white/50"
+                )}
+              >
+                {socketConnected ? "● Pulsador activo" : "● Pulsador desconectado"}
+              </p>
+              <p className="mt-2 text-sm text-white/70">
+                {socketConnected
+                  ? "¡Pulsa antes que el equipo contrario!"
+                  : "Reconectando con la sala…"}
+              </p>
+            </div>
 
             {faceoffActive ? (
               <button
