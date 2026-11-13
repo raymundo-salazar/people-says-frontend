@@ -1341,13 +1341,15 @@ export default function App() {
       <div className="team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r from-emerald-950 via-emerald-800 to-emerald-950 py-12 text-center text-white shadow-2xl">
         <div className="team-back-banner-content mx-auto w-fit px-8">
           <p className="text-xs font-black uppercase tracking-[.28em] text-emerald-300">
-            Ronda especial
+            Ronda {String(state.roundIndex + 1).padStart(2, "0")} - Ronda especial
           </p>
           <h2 className="mt-1 text-3xl font-black sm:text-5xl">
             Puntos al {roundMultiplier === 3 ? "triple" : "doble"}
           </h2>
           <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
-            Esta ronda tiene un multiplicador especial.
+            {roundMultiplier === 3
+              ? "¡La victoria está en juego!"
+              : "¡Todo puede cambiar en esta ronda!"}
           </p>
         </div>
       </div>
