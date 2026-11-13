@@ -6,6 +6,27 @@ body {
   @apply min-w-[320px] bg-stone-50 text-stone-900 antialiased;
 }
 
+@keyframes category-extra-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.category-extra-enter {
+  animation: category-extra-enter 280ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-extra-enter {
+    animation: none;
+  }
+}
+
 @keyframes public-strike-animation {
   0% {
     opacity: 0;
