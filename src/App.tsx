@@ -3299,34 +3299,107 @@ export default function App() {
       </div>
     )
   if (screen === "buzzer")
-    return (
-      <Shell>
-        <div className="mx-auto max-w-md rounded-3xl border border-stone-200 bg-white p-6 text-center">
-          <h1 className="text-3xl font-black">Pulsador</h1>
-          <div className="mt-8 grid grid-cols-2 gap-3">
-            <button
-              disabled={Boolean(buzzerWinner) || buttonRole !== "blue_button"}
-              className="min-h-40 rounded-2xl bg-blue-600 text-xl font-black text-white disabled:cursor-not-allowed disabled:opacity-40"
-              onClick={() => gameSocket.emit("buzzer:press", { code: roomCode, team: "blue" })}
+    return (() => {
+      const buzzerTeam = buttonRole === "blue_button" ? "blue" : "red"
+      const buzzerTeamIndex = buzzerTeam === "blue" ? 0 : 1
+      const buzzerTeamName =
+        state.teams?.[buzzerTeamIndex]?.name ?? (buzzerTeam === "blue" ? "Azul" : "Rojo")
+      const buzzerTeamScore = state.scores?.[buzzerTeam] ?? 0
+      const buzzerPlayer = state.activePlayer?.team === buzzerTeam ? state.activePlayer.name : null
+      const faceoffActive = state.phase === "faceoff"
+      const teamClasses =
+        buzzerTeam === "blue"
+          ? "from-blue-950 via-blue-800 to-blue-600"
+          : "from-red-950 via-red-800 to-red-600"
+      const buttonClasses =
+        buzzerTeam === "blue"
+          ? "border-blue-950 bg-blue-600 shadow-blue-950/40 hover:bg-blue-500 active:bg-blue-700"
+          : "border-red-950 bg-red-600 shadow-red-950/40 hover:bg-red-500 active:bg-red-700"
+
+      return (
+        <Shell>
+          <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-xl flex-col justify-center gap-4">
+            <div className="rounded-3xl bg-white p-5 text-center shadow-sm ring-1 ring-stone-200">
+              <p className="text-[10px] font-black uppercase tracking-[.24em] text-stone-500">
+                Ronda {String(state.roundIndex + 1).padStart(2, "0")}
+              </p>
+              <p className="mt-1 text-3xl font-black tabular-nums text-emerald-900">
+                {String(state.pot ?? 0).padStart(2, "0")}
+                <span className="ml-2 text-xs font-bold uppercase tracking-widest text-stone-400">
+                  puntos de la ronda
+                </span>
+              </p>
+            </div>
+
+            <div
+              className={cx(
+                "rounded-3xl bg-gradient-to-br p-5 text-center text-white shadow-lg",
+                teamClasses
+              )}
             >
-              AZUL
-            </button>
-            <button
-              disabled={Boolean(buzzerWinner) || buttonRole !== "red_button"}
-              className="min-h-40 rounded-2xl bg-red-600 text-xl font-black text-white disabled:cursor-not-allowed disabled:opacity-40"
-              onClick={() => gameSocket.emit("buzzer:press", { code: roomCode, team: "red" })}
-            >
-              ROJO
-            </button>
+              <p className="text-xs font-black uppercase tracking-[.2em] text-white/65">
+                {buzzerTeam === "blue" ? "Equipo azul" : "Equipo rojo"}
+              </p>
+              <h1 className="mt-1 text-3xl font-black sm:text-4xl">{buzzerTeamName}</h1>
+              <p className="mt-1 text-sm font-semibold text-white/75">
+                {buzzerPlayer ?? "Participante en turno"}
+              </p>
+              <p className="mt-4 text-xs font-bold uppercase tracking-widest text-white/60">
+                Puntos actuales
+              </p>
+              <p className="text-4xl font-black tabular-nums sm:text-5xl">
+                {String(buzzerTeamScore).padStart(2, "0")}
+              </p>
+            </div>
+
+            {faceoffActive ? (
+              <button
+                type="button"
+                disabled={Boolean(buzzerWinner)}
+                aria-label={`Pulsador del equipo ${buzzerTeamName}`}
+                className={cx(
+                  "group flex min-h-[min(52vh,28rem)] w-full flex-col items-center justify-center rounded-[2rem] border-b-[14px] px-6 text-white shadow-2xl transition duration-150 hover:-translate-y-1 active:translate-y-2 active:border-b-2 active:shadow-lg disabled:cursor-not-allowed disabled:opacity-60",
+                  buttonClasses
+                )}
+                onClick={() =>
+                  gameSocket.emit("buzzer:press", { code: roomCode, team: buzzerTeam })
+                }
+              >
+                <Hand className="mb-5 size-16 transition-transform group-active:scale-90 sm:size-20" />
+                <span className="text-3xl font-black uppercase tracking-wide sm:text-5xl">
+                  Pulsar
+                </span>
+                <span className="mt-2 text-sm font-bold text-white/75">{buzzerTeamName}</span>
+              </button>
+            ) : (
+              <div className="rounded-3xl border border-stone-200 bg-white p-8 text-center shadow-sm">
+                <p className="text-xs font-black uppercase tracking-[.2em] text-stone-400">
+                  {state.phase === "turn"
+                    ? "Modo turno"
+                    : state.phase === "steal"
+                      ? "Robo de puntos"
+                      : "Partida en curso"}
+                </p>
+                <p className="mt-3 text-lg font-bold text-stone-800">
+                  El pulsador no está disponible
+                </p>
+                <p className="mt-1 text-sm text-stone-500">
+                  Tu equipo podrá volver a usarlo cuando comience un nuevo enfrentamiento.
+                </p>
+              </div>
+            )}
+
+            <p className="text-center text-xs font-semibold text-stone-500">
+              {faceoffActive
+                ? buzzerWinner
+                  ? `Ganó ${buzzerWinner === buzzerTeam ? "tu equipo" : "el equipo contrario"}`
+                  : "Presiona cuando tu equipo quiera responder primero"
+                : "Sigue el desarrollo de la ronda desde este dispositivo"}
+            </p>
           </div>
-          <p className="mt-6 text-sm font-semibold text-emerald-800">
-            {buzzerWinner
-              ? `Ganó el Equipo ${buzzerWinner === "blue" ? "Azul" : "Rojo"}`
-              : "Esperando el primer pulsador…"}
-          </p>
-        </div>
-      </Shell>
-    )
+        </Shell>
+      )
+    })()
   return (
     <Shell>
       <div className="rounded-2xl border border-stone-200 bg-white p-6">
