@@ -2422,6 +2422,12 @@ export default function App() {
                 <div className="flex flex-1 items-stretch bg-gradient-to-r from-blue-100 to-white text-left text-blue-950 first:rounded-tr-2xl">
                   <div className="flex flex-1 items-center justify-between gap-2">
                     <p className="min-w-0 flex-1 truncate pl-3 text-xs font-bold">
+                      {blue > red && (
+                        <span
+                          className="mr-1 inline-block size-2 rounded-full bg-emerald-600 align-middle"
+                          aria-label="Equipo líder"
+                        />
+                      )}
                       {teams[0].name}
                     </p>
                     <strong className="flex self-stretch items-center bg-blue-600 px-3 py-0 text-lg font-black tabular-nums text-white">
@@ -2432,6 +2438,12 @@ export default function App() {
                 <div className="flex flex-1 items-stretch bg-gradient-to-r from-red-100 to-white text-left text-red-950 last:rounded-br-2xl">
                   <div className="flex flex-1 items-center justify-between gap-2">
                     <p className="min-w-0 flex-1 truncate pl-3 text-xs font-bold">
+                      {red > blue && (
+                        <span
+                          className="mr-1 inline-block size-2 rounded-full bg-emerald-600 align-middle"
+                          aria-label="Equipo líder"
+                        />
+                      )}
                       {teams[1].name}
                     </p>
                     <strong className="flex self-stretch items-center bg-red-600 px-3 py-0 text-lg font-black tabular-nums text-white">
