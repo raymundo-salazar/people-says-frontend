@@ -3519,7 +3519,7 @@ export default function App() {
                   Ronda
                 </p>
                 <p className="mt-1 font-mono text-2xl font-black tabular-nums text-white">
-                  {state.pot ?? 0}
+                  <AnimatedNumber value={state.pot ?? 0} padStart={2} />
                 </p>
                 <span className="block text-xs font-normal leading-none text-white/50">puntos</span>
               </div>
@@ -3535,7 +3535,7 @@ export default function App() {
                   {buzzerTeamName}
                 </p>
                 <p className="mt-1 font-mono text-2xl font-black tabular-nums text-white">
-                  {buzzerTeamScore}
+                  <AnimatedNumber value={buzzerTeamScore} padStart={2} />
                 </p>
                 <span className="block text-xs font-normal leading-none text-white/50">puntos</span>
               </div>
