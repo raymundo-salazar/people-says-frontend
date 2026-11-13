@@ -2676,7 +2676,7 @@ export default function App() {
                         aria-label="Equipo líder"
                       />
                     )}
-                    {teams[0].name}
+                    {state.teams[0].name}
                   </span>
                   <strong className="text-lg font-black tabular-nums text-blue-900">
                     <AnimatedNumber value={blue} padStart={2} />
@@ -2690,7 +2690,7 @@ export default function App() {
                         aria-label="Equipo líder"
                       />
                     )}
-                    {teams[1].name}
+                    {state.teams[1].name}
                   </span>
                   <strong className="text-lg font-black tabular-nums text-red-900">
                     <AnimatedNumber value={red} padStart={2} />
