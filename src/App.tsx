@@ -3392,7 +3392,7 @@ export default function App() {
               <h1
                 className={cx(
                   "mt-1 text-5xl font-black tracking-tight drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] transition-colors duration-300 sm:text-6xl",
-                  buzzerSelected ? "text-emerald-600" : "text-white"
+                  "text-white"
                 )}
               >
                 {buzzerPlayer}
