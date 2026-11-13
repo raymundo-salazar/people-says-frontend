@@ -144,6 +144,9 @@ html {
 html:has(.public-display) {
   scrollbar-gutter: auto;
 }
+html:has(.buzzer-screen) {
+  scrollbar-gutter: auto;
+}
 button,
 input,
 select {
