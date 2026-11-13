@@ -3360,6 +3360,7 @@ export default function App() {
               <h1 className="mt-1 text-4xl font-black tracking-tight sm:text-5xl">
                 {buzzerPlayer}
               </h1>
+              <p className="mt-2 text-sm text-white/70">¡Pulsa antes que el equipo contrario!</p>
             </section>
 
             {faceoffActive ? (
@@ -3407,11 +3408,9 @@ export default function App() {
               >
                 {socketConnected ? "● Pulsador activo" : "● Pulsador desconectado"}
               </p>
-              <p className="mt-2 text-sm text-white/70">
-                {socketConnected
-                  ? "¡Pulsa antes que el equipo contrario!"
-                  : "Reconectando con la sala…"}
-              </p>
+              {!socketConnected && (
+                <p className="mt-2 text-sm text-white/70">Reconectando con la sala…</p>
+              )}
             </div>
             <p className="text-center text-sm font-medium text-white/75">
               Puntos de la ronda
