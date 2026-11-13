@@ -1685,6 +1685,12 @@ export default function App() {
           title="Todo listo para jugar"
           detail="Comparte el código con los demás dispositivos."
         />
+        {error && (
+          <div className="mb-5 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            <AlertTriangle size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
+            <p>{error}</p>
+          </div>
+        )}
         <section className="mb-5 rounded-2xl border border-stone-200 bg-white p-4">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -1919,7 +1925,6 @@ export default function App() {
         >
           <Trash2 size={16} aria-hidden="true" /> Finalizar partida y borrar datos
         </Button>
-        {error && <p className="mt-4 text-right text-sm text-red-700">{error}</p>}
         {showFinalizeDialog && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/50 px-5 backdrop-blur-md"
