@@ -2831,12 +2831,12 @@ export default function App() {
               </p>
               <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-1">
                 <div className="min-w-0 rounded-lg bg-blue-50 px-2 py-2 text-center">
-                  <p className="truncate text-[10px] font-bold text-blue-700">Azul</p>
+                  <p className="truncate text-[10px] font-bold text-blue-700">{teams[0].name}</p>
                   <p className="truncate text-sm font-black text-blue-950">{blueFaceoffPlayer}</p>
                 </div>
                 <span className="text-xs font-black text-stone-400">VS</span>
                 <div className="min-w-0 rounded-lg bg-red-50 px-2 py-2 text-center">
-                  <p className="truncate text-[10px] font-bold text-red-700">Rojo</p>
+                  <p className="truncate text-[10px] font-bold text-red-700">{teams[1].name}</p>
                   <p className="truncate text-sm font-black text-red-950">{redFaceoffPlayer}</p>
                 </div>
               </div>
