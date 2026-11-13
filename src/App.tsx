@@ -3196,7 +3196,7 @@ export default function App() {
               )}
             >
               <p className="text-sm font-black uppercase tracking-wide text-blue-100">
-                {teams[0].name}
+                {state.teams[0].name}
               </p>
               <strong className="block font-mono text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
                 <AnimatedNumber value={blue} padStart={2} />
@@ -3294,7 +3294,7 @@ export default function App() {
                           faceoffFirstTeam === "blue" ? "text-white/70" : "text-blue-700"
                         )}
                       >
-                        {teams[0].name}
+                        {state.teams[0].name}
                       </p>
                       <p
                         className={cx(
@@ -3329,7 +3329,7 @@ export default function App() {
                           faceoffFirstTeam === "red" ? "text-white/70" : "text-red-700"
                         )}
                       >
-                        {teams[1].name}
+                        {state.teams[1].name}
                       </p>
                       <p
                         className={cx(
@@ -3373,7 +3373,7 @@ export default function App() {
               )}
             >
               <p className="text-sm font-black uppercase tracking-wide text-red-100">
-                {teams[1].name}
+                {state.teams[1].name}
               </p>
               <strong className="block font-mono text-3xl font-black leading-none tabular-nums text-white sm:text-5xl lg:text-6xl">
                 <AnimatedNumber value={red} padStart={2} />
