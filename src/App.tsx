@@ -673,7 +673,34 @@ export default function App() {
           (data.devices ?? []).filter((device: { id?: string }) => device.id !== deviceToken)
         )
       })
-      .catch(() => setDevices([]))
+      .catch((error: unknown) => {
+        setDevices([])
+        const roomUnavailable = error instanceof Error && error.message === "room_not_found"
+        if (!roomUnavailable) return
+        setError("La partida guardada ya no existe. Inicia una nueva partida o únete a otra sala.")
+        localStorage.removeItem("people-says-room-code")
+        localStorage.removeItem("people-says-host-token")
+        if (roomCode) localStorage.removeItem(deviceConfigKey(roomCode))
+        setRoomCode("")
+        setHostToken("")
+        setCurrentDeviceRole("pending")
+        if (
+          [
+            "lobby",
+            "joinLobby",
+            "host",
+            "display",
+            "buzzer",
+            "faceoff",
+            "decision",
+            "steal",
+            "roundResult",
+          ].includes(screen)
+        ) {
+          navigate("/")
+          setScreenState("home")
+        }
+      })
   }, [screen, joinStage, joinCode, roomCode])
   useEffect(() => {
     if (
@@ -1326,6 +1353,11 @@ export default function App() {
           <p className="mx-auto mt-7 max-w-md text-base leading-7 text-stone-500">
             ¿Qué respondería la mayoría? Forma tus equipos y descubre las respuestas.
           </p>
+          {error && (
+            <p className="mx-auto mt-5 max-w-md rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+              {error}
+            </p>
+          )}
           <div className="mx-auto mt-10 flex max-w-xs flex-col gap-3">
             <Button onClick={startNewGame}>
               Crear una partida <ExternalLink size={16} aria-hidden="true" />
