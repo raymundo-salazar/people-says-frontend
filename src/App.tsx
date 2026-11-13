@@ -1310,7 +1310,7 @@ export default function App() {
   const stealBanner =
     teamBackVisible || stealPromptVisible ? (
       <>
-        <div className="team-back-overlay pointer-events-auto fixed inset-0 z-30 bg-black/50" />
+        <div className="team-back-overlay pointer-events-auto fixed inset-0 z-30 bg-black/50 backdrop-blur-md" />
         <div
           className={cx(
             "team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r py-12 text-center text-white shadow-2xl",
@@ -1337,7 +1337,7 @@ export default function App() {
     ) : null
   const specialRoundBanner = specialRoundVisible ? (
     <>
-      <div className="team-back-overlay pointer-events-auto fixed inset-0 z-30 bg-black/50" />
+      <div className="team-back-overlay pointer-events-auto fixed inset-0 z-30 bg-black/50 backdrop-blur-md" />
       <div className="team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r from-emerald-950 via-emerald-800 to-emerald-950 py-12 text-center text-white shadow-2xl">
         <div className="team-back-banner-content mx-auto w-fit px-8">
           <p className="text-xs font-black uppercase tracking-[.28em] text-emerald-300">
@@ -1358,7 +1358,7 @@ export default function App() {
   const roundResultBanner =
     state.phase === "round_result" && roundWinner ? (
       <>
-        <div className="pointer-events-auto fixed inset-0 z-30 bg-black/50" />
+        <div className="pointer-events-auto fixed inset-0 z-30 bg-black/50 backdrop-blur-md" />
         <div
           className={cx(
             "pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 bg-gradient-to-r py-12 text-center text-white shadow-2xl",
@@ -1475,7 +1475,7 @@ export default function App() {
           </button>
         </div>
         {showResumeDialog && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/40 px-5">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/40 px-5 backdrop-blur-md">
             <div
               role="dialog"
               aria-modal="true"
@@ -1820,7 +1820,7 @@ export default function App() {
         {error && <p className="mt-4 text-right text-sm text-red-700">{error}</p>}
         {showQrModal && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/75 p-5"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/75 p-5 backdrop-blur-md"
             role="dialog"
             aria-modal="true"
             aria-label="Código QR ampliado"
@@ -2364,7 +2364,7 @@ export default function App() {
         {stealBanner}
         {specialRoundBanner}
         {strikeVisible && (
-          <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/50">
+          <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/50 backdrop-blur-md">
             <div
               className="public-strike-animation flex items-center justify-center gap-3 text-red-600 drop-shadow-2xl"
               aria-label="Strike registrado"
@@ -3099,7 +3099,7 @@ export default function App() {
           <LogOut size={16} aria-hidden="true" />
         </Button>
         {publicStrikeVisible && (
-          <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/50">
+          <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/50 backdrop-blur-md">
             <div
               className="public-strike-animation flex items-center justify-center gap-3 text-red-600"
               aria-label="Strike registrado"
@@ -3350,7 +3350,7 @@ export default function App() {
           </div>
         </div>
         {showLeaveDisplayDialog && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/50 px-5">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-950/50 px-5 backdrop-blur-md">
             <div
               role="dialog"
               aria-modal="true"
@@ -3447,7 +3447,7 @@ export default function App() {
           {specialRoundBanner}
           {roundResultBanner}
           {strikeVisible && (
-            <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/60">
+            <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/60 backdrop-blur-md">
               <div
                 className="public-strike-animation flex items-center justify-center gap-3 text-red-500 drop-shadow-2xl"
                 aria-label="Strike registrado"
