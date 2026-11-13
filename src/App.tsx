@@ -3398,6 +3398,9 @@ export default function App() {
                 {buzzerPlayer}
               </h1>
             </section>
+            <p className="-mt-5 text-center text-sm text-white/70">
+              ¡Pulsa antes que el equipo contrario!
+            </p>
 
             {faceoffActive ? (
               <button
