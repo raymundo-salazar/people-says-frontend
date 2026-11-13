@@ -627,10 +627,20 @@ export default function App() {
             ...currentStrikes,
             [strikeTeam]: payload.count ?? currentStrikes[strikeTeam] + 1,
           }
+          const nextFaceoffStrikes = {
+            ...(current.faceoffStrikes ?? { blue: 0, red: 0 }),
+            [strikeTeam]: payload.count ?? current.faceoffStrikes?.[strikeTeam] ?? 1,
+          }
+          const nextRegularStrikes = {
+            ...current.strikes,
+            [strikeTeam]: payload.count ?? current.strikes[strikeTeam] + 1,
+          }
           return {
             ...current,
             [strikeKey]: nextStrikes,
-            ...(faceoffMode ? { displayStrikes: nextStrikes } : {}),
+            faceoffStrikes: nextFaceoffStrikes,
+            strikes: nextRegularStrikes,
+            displayStrikes: faceoffMode ? nextStrikes : nextRegularStrikes,
           }
         })
       }
