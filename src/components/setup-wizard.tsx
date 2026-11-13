@@ -208,45 +208,58 @@ export function GameSetupStep({
                 </button>
               </div>
             )}
-            <div className="grid gap-2 sm:grid-cols-2">
-              {displayedCategories.map((category) => {
-                const selected = selectedCategoryIds.includes(category.id)
-                return (
-                  <button
-                    key={category.id}
-                    type="button"
-                    aria-pressed={selected}
-                    disabled={category.questionCount === 0}
-                    onClick={() => onCategoryToggle(category.id)}
-                    className={`relative flex cursor-pointer items-start gap-3 overflow-hidden rounded-xl border p-3 text-left transition ${category.questionCount === 0 ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : selected ? "border-emerald-700 bg-emerald-50" : "border-stone-200 bg-white hover:border-emerald-500"}`}
-                  >
-                    {category.questionCount === 0 && (
-                      <span className="pointer-events-none absolute right-[-2.3rem] top-5 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">
-                        Próx.
-                      </span>
-                    )}
-                    <span
-                      className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-md border ${selected ? "border-emerald-700 bg-emerald-900 text-white" : "border-stone-300 text-transparent"}`}
+            <div className="relative">
+              <div className="grid gap-2 sm:grid-cols-2">
+                {displayedCategories.map((category) => {
+                  const selected = selectedCategoryIds.includes(category.id)
+                  return (
+                    <button
+                      key={category.id}
+                      type="button"
+                      aria-pressed={selected}
+                      disabled={category.questionCount === 0}
+                      onClick={() => onCategoryToggle(category.id)}
+                      className={`relative flex cursor-pointer items-start gap-3 overflow-hidden rounded-xl border p-3 text-left transition ${category.questionCount === 0 ? "cursor-not-allowed border-stone-200 bg-stone-50 text-stone-400" : selected ? "border-emerald-700 bg-emerald-50" : "border-stone-200 bg-white hover:border-emerald-500"}`}
                     >
-                      <Check size={13} strokeWidth={3} aria-hidden="true" />
-                    </span>
-                    <span>
-                      <b className="block text-sm">{category.name}</b>
-                      <small className="mt-1 block text-xs leading-5 text-stone-500">
-                        {category.description}
-                      </small>
-                    </span>
+                      {category.questionCount === 0 && (
+                        <span className="pointer-events-none absolute right-[-2.3rem] top-5 w-36 rotate-45 bg-amber-300 py-1 text-center text-[9px] font-black uppercase tracking-wider text-amber-950 shadow-sm">
+                          Próx.
+                        </span>
+                      )}
+                      <span
+                        className={`mt-0.5 grid size-5 shrink-0 place-items-center rounded-md border ${selected ? "border-emerald-700 bg-emerald-900 text-white" : "border-stone-300 text-transparent"}`}
+                      >
+                        <Check size={13} strokeWidth={3} aria-hidden="true" />
+                      </span>
+                      <span>
+                        <b className="block text-sm">{category.name}</b>
+                        <small className="mt-1 block text-xs leading-5 text-stone-500">
+                          {category.description}
+                        </small>
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+              {!showAllCategories && visibleCategories.length > 10 && (
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 flex h-20 items-end justify-center bg-gradient-to-b from-white/0 via-white/80 to-white pb-1">
+                  <button
+                    type="button"
+                    className="pointer-events-auto cursor-pointer rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-emerald-800 shadow-sm ring-1 ring-stone-200 hover:text-emerald-950"
+                    onClick={() => setShowAllCategories(true)}
+                  >
+                    Ver más categorías
                   </button>
-                )
-              })}
+                </div>
+              )}
             </div>
-            {!showAllCategories && visibleCategories.length > 10 && (
+            {showAllCategories && visibleCategories.length > 10 && (
               <button
                 type="button"
-                className="mt-3 w-full cursor-pointer text-xs font-semibold text-emerald-800 hover:text-emerald-950"
-                onClick={() => setShowAllCategories(true)}
+                className="mt-3 w-full cursor-pointer text-xs font-semibold text-stone-500 hover:text-emerald-800"
+                onClick={() => setShowAllCategories(false)}
               >
-                Ver más categorías
+                Ver menos categorías
               </button>
             )}
           </div>
