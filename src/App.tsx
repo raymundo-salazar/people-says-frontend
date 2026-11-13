@@ -7,6 +7,7 @@ import {
   Check,
   ClipboardPaste,
   ChevronDown,
+  Clock3,
   ExternalLink,
   Hand,
   Info,
@@ -3416,9 +3417,9 @@ export default function App() {
               {!faceoffActive && (
                 <div className="pointer-events-none absolute left-1/2 top-1/2 z-20 w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm backdrop-blur-md">
                   {state.phase === "turn" && activeTeam === buzzerTeam ? (
-                    <Check className="mx-auto mb-3 size-12 text-emerald-300" strokeWidth={3} />
+                    <Hand className="mx-auto mb-3 size-12 text-emerald-300" strokeWidth={2.5} />
                   ) : (
-                    <Lock className="mx-auto mb-3 size-12 text-white/60" strokeWidth={2.5} />
+                    <Clock3 className="mx-auto mb-3 size-12 text-white/60" strokeWidth={2.5} />
                   )}
                   <p className="text-4xl font-black tracking-tight text-white drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] sm:text-5xl">
                     {state.phase === "turn"
