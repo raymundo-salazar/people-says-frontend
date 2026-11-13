@@ -64,7 +64,6 @@ type Screen =
   | "display"
   | "buzzer"
   | "steal"
-  | "final"
 type Mode = "classic" | "auto"
 type DeviceRole = "host" | "display" | "blue_button" | "red_button" | "pending"
 type Team = { name: string; color: "blue" | "red"; players: string[] }
@@ -129,7 +128,6 @@ const screens: Screen[] = [
   "display",
   "buzzer",
   "steal",
-  "final",
 ]
 const screenFromLocation = () => {
   const segments = window.location.pathname.split("/").filter(Boolean)
@@ -1380,6 +1378,42 @@ export default function App() {
         </div>
       </>
     ) : null
+  const finalWinner = blue > red ? "blue" : red > blue ? "red" : null
+  const finalWinnerName =
+    finalWinner === "blue"
+      ? state.teams[0].name
+      : finalWinner === "red"
+        ? state.teams[1].name
+        : "Empate"
+  const finalWinnerBanner =
+    state.phase === "final" ? (
+      <>
+        <div className="pointer-events-auto fixed inset-0 z-50 bg-black/60 backdrop-blur-md" />
+        <div
+          className={cx(
+            "pointer-events-none fixed inset-x-0 top-1/2 z-50 -translate-y-1/2 bg-gradient-to-r py-12 text-center text-white shadow-2xl",
+            finalWinner === "blue"
+              ? "from-blue-950 via-blue-900 to-blue-950"
+              : finalWinner === "red"
+                ? "from-red-950 via-red-900 to-red-950"
+                : "from-emerald-950 via-emerald-900 to-emerald-950"
+          )}
+        >
+          <div className="mx-auto w-fit px-8">
+            <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
+              Partida finalizada
+            </p>
+            <h2 className="mt-1 text-4xl font-black sm:text-6xl">{finalWinnerName}</h2>
+            <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
+              {finalWinner ? "¡Tenemos ganador!" : "¡Partida empatada!"}
+            </p>
+            <p className="mt-2 text-sm font-black text-white/80">
+              {blue} - {red} puntos
+            </p>
+          </div>
+        </div>
+      </>
+    ) : null
   useEffect(() => {
     if (state.phase !== "lobby") setLoadingAction(null)
     if (screen === "joinLobby" && state.phase !== "lobby") {
@@ -1408,7 +1442,6 @@ export default function App() {
       setScreenState("joinLobby")
       return
     }
-    if (state.phase === "final") setScreen("final")
     if (
       ["faceoff", "decision", "turn", "steal", "round_result", "tiebreaker"].includes(
         state.phase
@@ -2364,6 +2397,7 @@ export default function App() {
       <Shell wide>
         {stealBanner}
         {specialRoundBanner}
+        {finalWinnerBanner}
         {strikeVisible && (
           <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/50 backdrop-blur-md">
             <div
@@ -3107,27 +3141,12 @@ export default function App() {
         </div>
       </Shell>
     )
-  if (screen === "final")
-    return (
-      <Shell>
-        <div className="mx-auto max-w-lg pt-10 text-center">
-          <p className="text-xs uppercase tracking-widest text-emerald-800">Partida finalizada</p>
-          <h1 className="mt-5 text-4xl font-semibold">Tenemos ganador</h1>
-          <p className="my-8 text-3xl font-black">
-            {blue > red ? teams[0].name : red > blue ? teams[1].name : "Empate"}
-          </p>
-          <Score blue={blue} red={red} />
-          <Button className="mt-8" onClick={() => setScreen("home")}>
-            Nueva partida
-          </Button>
-        </div>
-      </Shell>
-    )
   if (screen === "display")
     return (
       <div className="public-display relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 px-5 py-10 text-white">
         {stealBanner}
         {specialRoundBanner}
+        {finalWinnerBanner}
         {roundResultBanner}
         <Button
           ghost
@@ -3487,6 +3506,7 @@ export default function App() {
             ? stealBanner
             : null}
           {specialRoundBanner}
+          {finalWinnerBanner}
           {roundResultBanner}
           {strikeVisible && (
             <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/60 backdrop-blur-md">
