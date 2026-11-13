@@ -68,11 +68,22 @@ export function ParticipantRow({
       </span>
       <input
         aria-label={`Participante ${index + 1} del equipo ${teamLabel}`}
+        data-participant-input=""
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={`Nombre del participante ${index + 1}`}
         className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-stone-400"
         autoComplete="off"
+        onKeyDown={(event) => {
+          if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return
+          event.preventDefault()
+          const inputs = Array.from(
+            document.querySelectorAll<HTMLInputElement>("[data-participant-input]")
+          )
+          const currentIndex = inputs.indexOf(event.currentTarget)
+          const nextIndex = currentIndex + (event.key === "ArrowUp" ? -1 : 1)
+          inputs[nextIndex]?.focus()
+        }}
       />
       {canRemove && (
         <button
