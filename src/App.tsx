@@ -1418,10 +1418,10 @@ export default function App() {
   const finalWinnerScore = finalWinner === "blue" ? blue : finalWinner === "red" ? red : 0
   const finalWinnerBanner = finalWinnerVisible ? (
     <>
-      <div className="pointer-events-auto fixed inset-0 z-50 bg-black/60 backdrop-blur-md" />
+      <div className="team-back-overlay pointer-events-auto fixed inset-0 z-50 bg-black/60 backdrop-blur-md" />
       <div
         className={cx(
-          "pointer-events-none fixed inset-x-0 top-1/2 z-50 -translate-y-1/2 bg-gradient-to-r py-12 text-center text-white shadow-2xl",
+          "team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-50 -translate-y-1/2 bg-gradient-to-r py-12 text-center text-white shadow-2xl",
           finalWinner === "blue"
             ? "from-blue-950 via-blue-900 to-blue-950"
             : finalWinner === "red"
@@ -1429,7 +1429,7 @@ export default function App() {
               : "from-emerald-950 via-emerald-900 to-emerald-950"
         )}
       >
-        <div className="mx-auto w-fit px-8">
+        <div className="team-back-banner-content mx-auto w-fit px-8">
           <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
             Partida finalizada
           </p>
@@ -1438,7 +1438,7 @@ export default function App() {
             {finalWinner ? "¡Tenemos ganador!" : "¡Partida empatada!"}
           </p>
           <div className="mt-4">
-            <strong className="block font-mono text-6xl font-black tabular-nums text-amber-300 sm:text-8xl">
+            <strong className="block font-mono text-6xl font-black tabular-nums text-amber-300 drop-shadow-[3px_4px_0_rgba(120,53,15,0.65)] sm:text-8xl">
               <AnimatedNumber value={finalWinnerScore} padStart={2} />
             </strong>
             <span className="text-xs font-black uppercase tracking-[.24em] text-amber-100/80">
