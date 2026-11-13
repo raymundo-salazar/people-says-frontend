@@ -3312,6 +3312,15 @@ export default function App() {
       const buzzerTeamName =
         state.teams?.[buzzerTeamIndex]?.name ?? (buzzerTeam === "blue" ? "Azul" : "Rojo")
       const buzzerTeamScore = state.scores?.[buzzerTeam] ?? 0
+      const buzzerPlayer =
+        state.activePlayer?.team === buzzerTeam
+          ? state.activePlayer.name
+          : (state.faceoff?.[buzzerTeam === "blue" ? "bluePlayer" : "redPlayer"] ??
+            state.teams?.[buzzerTeamIndex]?.players?.[
+              (state.turnIndex?.[buzzerTeam] ?? 0) %
+                Math.max(state.teams?.[buzzerTeamIndex]?.players?.length ?? 1, 1)
+            ] ??
+            "Participante en turno")
       const faceoffActive = state.phase === "faceoff"
       const buttonClasses =
         buzzerTeam === "blue"
@@ -3346,17 +3355,11 @@ export default function App() {
           <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-xl flex-col justify-center gap-6">
             <section className="text-center">
               <p className="text-xs font-bold uppercase tracking-[.22em] text-white/65">
-                Tu equipo
+                {buzzerTeamName}
               </p>
               <h1 className="mt-1 text-4xl font-black tracking-tight sm:text-5xl">
-                {buzzerTeamName}
+                {buzzerPlayer}
               </h1>
-              <p className="mt-2 text-sm font-medium text-white/75">
-                Puntuación acumulada
-                <strong className="ml-1 text-xl font-black text-white">
-                  {buzzerTeamScore} pts
-                </strong>
-              </p>
             </section>
 
             <div className="text-center">
@@ -3411,6 +3414,10 @@ export default function App() {
                 </p>
               </div>
             )}
+            <p className="text-center text-sm font-medium text-white/75">
+              Puntuación acumulada
+              <strong className="ml-1 text-xl font-black text-white">{buzzerTeamScore} pts</strong>
+            </p>
           </div>
         </main>
       )
