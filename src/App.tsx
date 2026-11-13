@@ -64,7 +64,6 @@ type Screen =
   | "display"
   | "buzzer"
   | "steal"
-  | "roundResult"
   | "final"
 type Mode = "classic" | "auto"
 type DeviceRole = "host" | "display" | "blue_button" | "red_button" | "pending"
@@ -130,7 +129,6 @@ const screens: Screen[] = [
   "display",
   "buzzer",
   "steal",
-  "roundResult",
   "final",
 ]
 const screenFromLocation = () => {
@@ -545,19 +543,13 @@ export default function App() {
     setScreenState("join")
   }
   useEffect(() => {
-    if (
-      !roomCode ||
-      !["host", "display", "buzzer", "lobby", "joinLobby", "roundResult"].includes(screen)
-    )
-      return
+    if (!roomCode || !["host", "display", "buzzer", "lobby", "joinLobby"].includes(screen)) return
     gameSocket.connect()
     const role = ["lobby", "joinLobby"].includes(screen)
       ? currentDeviceRole
       : screen === "buzzer"
         ? buttonRole
-        : screen === "roundResult"
-          ? "host"
-          : screen
+        : screen
     gameSocket.emit("room:join", {
       code: roomCode,
       role,
@@ -705,7 +697,7 @@ export default function App() {
     }
   }, [roomCode, screen, hostToken, deviceToken, buttonRole, currentDeviceRole, deviceName])
   useEffect(() => {
-    if (["host", "display", "buzzer", "lobby", "joinLobby", "roundResult"].includes(screen)) return
+    if (["host", "display", "buzzer", "lobby", "joinLobby"].includes(screen)) return
     gameSocket.disconnect()
   }, [screen])
   useEffect(() => {
@@ -762,7 +754,6 @@ export default function App() {
             "faceoff",
             "decision",
             "steal",
-            "roundResult",
           ].includes(screen)
         ) {
           navigate("/")
@@ -1360,7 +1351,7 @@ export default function App() {
     }
     if (
       state.phase === "lobby" &&
-      ["host", "faceoff", "decision", "steal", "roundResult", "display", "buzzer"].includes(screen)
+      ["host", "faceoff", "decision", "steal", "display", "buzzer"].includes(screen)
     ) {
       if (hostToken) {
         setScreen("lobby")
@@ -3017,7 +3008,7 @@ export default function App() {
             <Button
               onClick={() => {
                 emitAction({ type: "steal_answer", answerIndex: stealIndex, answerText: stealText })
-                setScreen("roundResult")
+                setScreen("host")
               }}
             >
               Correcta
@@ -3026,33 +3017,12 @@ export default function App() {
               secondary
               onClick={() => {
                 emitAction({ type: "finish_round", winner: teamId })
-                setScreen("roundResult")
+                setScreen("host")
               }}
             >
               Incorrecta
             </Button>
           </div>
-        </div>
-      </Shell>
-    )
-  if (screen === "roundResult")
-    return (
-      <Shell>
-        <div className="flex justify-end">{pauseControl}</div>
-        <div className="mx-auto max-w-lg pt-10 text-center">
-          <p className="text-xs uppercase tracking-widest text-emerald-800">Ronda terminada</p>
-          <h1 className="mt-5 text-4xl font-semibold">Marcador actualizado</h1>
-          <div className="my-8">
-            <Score blue={blue} red={red} />
-          </div>
-          <Button
-            onClick={() => {
-              emitAction({ type: "next_round" })
-              setScreen("host")
-            }}
-          >
-            Siguiente ronda <ArrowRight size={16} aria-hidden="true" />
-          </Button>
         </div>
       </Shell>
     )
