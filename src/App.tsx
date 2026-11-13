@@ -3377,8 +3377,9 @@ export default function App() {
             "Participante en turno")
       const faceoffActive = state.phase === "faceoff"
       const buzzerSelected = faceoffActive && activeTeam === buzzerTeam
+      const buzzerTurnMode = ["turn", "steal"].includes(state.phase)
       const buzzerHighlighted =
-        ["faceoff", "turn"].includes(state.phase) && activeTeam === buzzerTeam
+        ["faceoff", "turn", "steal"].includes(state.phase) && activeTeam === buzzerTeam
       const buzzerBlocked = faceoffActive && Boolean(activeTeam) && activeTeam !== buzzerTeam
       const buttonClasses = buzzerSelected
         ? "border-emerald-950 bg-emerald-700 shadow-[0_18px_0_#064e3b,0_25px_40px_rgba(0,0,0,.45)]"
@@ -3453,20 +3454,20 @@ export default function App() {
             <div className="relative mx-auto w-full">
               {!faceoffActive && (
                 <div className="buzzer-turn-card-enter pointer-events-auto absolute inset-0 z-20 m-auto h-fit w-[calc(100%-2rem)] rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm backdrop-blur-md transition-all duration-300">
-                  {state.phase === "turn" && activeTeam === buzzerTeam ? (
+                  {buzzerTurnMode && activeTeam === buzzerTeam ? (
                     <Hand className="mx-auto mb-3 size-12 text-emerald-300" strokeWidth={2.5} />
                   ) : (
                     <Clock3 className="mx-auto mb-3 size-12 text-white/60" strokeWidth={2.5} />
                   )}
                   <p className="text-4xl font-black tracking-tight text-white drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] sm:text-5xl">
-                    {state.phase === "turn"
+                    {buzzerTurnMode
                       ? activeTeam === buzzerTeam
                         ? "Es tu turno"
                         : "No es tu turno"
                       : "El pulsador no está disponible"}
                   </p>
                   <p className="mt-1 text-sm text-white/65">
-                    {state.phase === "turn"
+                    {buzzerTurnMode
                       ? activeTeam === buzzerTeam
                         ? "Tu equipo está jugando ahora."
                         : "El otro equipo está jugando. Espera tu turno."
