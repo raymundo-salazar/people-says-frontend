@@ -317,6 +317,93 @@ function RulesPage({ onBack }: { onBack: () => void }) {
         </section>
 
         <section className="mt-10 grid gap-4 lg:grid-cols-2">
+          <div className="rounded-2xl border border-stone-200 bg-white p-6 lg:col-span-2">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="text-[11px] font-black uppercase tracking-[.18em] text-stone-500">
+                  Vistas del flujo
+                </p>
+                <h2 className="mt-2 text-xl font-black text-stone-900">
+                  Del primer clic al inicio de la partida
+                </h2>
+                <p className="mt-2 text-sm text-stone-500">
+                  Estas vistas muestran qué encontrará cada persona durante la configuración y la
+                  vinculación.
+                </p>
+              </div>
+              <ArrowRight className="hidden text-emerald-700 sm:block" aria-hidden="true" />
+            </div>
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              <div className="overflow-hidden rounded-xl border border-stone-200 bg-stone-50">
+                <div className="border-b border-stone-200 bg-white px-4 py-3">
+                  <p className="text-[10px] font-black uppercase tracking-wider text-emerald-800">
+                    Crear partida
+                  </p>
+                  <p className="mt-1 text-xs font-semibold text-stone-500">01 / Nombre y modo</p>
+                </div>
+                <div className="space-y-3 p-4">
+                  <div className="h-3 w-24 rounded bg-stone-200" />
+                  <div className="h-10 rounded-xl border border-stone-200 bg-white px-3 py-3 text-xs text-stone-400">
+                    Nombre de la partida
+                  </div>
+                  <div className="h-14 rounded-xl border-2 border-emerald-600 bg-emerald-50 p-3 text-xs font-bold text-emerald-900">
+                    Juego clásico
+                  </div>
+                  <div className="h-9 rounded-xl bg-emerald-800 text-center text-xs font-bold leading-9 text-white">
+                    Continuar
+                  </div>
+                </div>
+              </div>
+              <div className="overflow-hidden rounded-xl border border-stone-200 bg-stone-50">
+                <div className="border-b border-stone-200 bg-white px-4 py-3">
+                  <p className="text-[10px] font-black uppercase tracking-wider text-emerald-800">
+                    Sala de espera
+                  </p>
+                  <p className="mt-1 text-xs font-semibold text-stone-500">Comparte el código</p>
+                </div>
+                <div className="p-4 text-center">
+                  <p className="text-[10px] font-medium text-stone-500">Código de sala</p>
+                  <p className="mt-1 font-mono text-3xl font-black tracking-widest text-emerald-900">
+                    BAB15E15
+                  </p>
+                  <div className="mx-auto mt-4 size-24 rounded-lg border-4 border-stone-200 bg-white p-2">
+                    <QrCode
+                      className="size-full text-stone-700"
+                      strokeWidth={1.2}
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <p className="mt-3 text-[10px] text-stone-500">Escanea para unirte a la sala</p>
+                </div>
+              </div>
+              <div className="overflow-hidden rounded-xl border border-stone-200 bg-stone-50">
+                <div className="border-b border-stone-200 bg-white px-4 py-3">
+                  <p className="text-[10px] font-black uppercase tracking-wider text-emerald-800">
+                    Unirse a una sala
+                  </p>
+                  <p className="mt-1 text-xs font-semibold text-stone-500">Elige cómo participar</p>
+                </div>
+                <div className="space-y-3 p-4">
+                  <div className="flex justify-center gap-1">
+                    {"BAB15E15".split("").map((character, index) => (
+                      <span
+                        key={`${character}-${index}`}
+                        className="grid size-7 place-items-center rounded-md border border-stone-200 bg-white font-mono text-xs font-black text-emerald-900"
+                      >
+                        {character}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="h-10 rounded-xl bg-emerald-800 text-center text-xs font-bold leading-10 text-white">
+                    Unirme a la sala
+                  </div>
+                  <div className="flex items-center justify-center gap-2 text-[10px] text-stone-500">
+                    <Smartphone size={14} aria-hidden="true" /> Nombre y rol del dispositivo
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="rounded-2xl border border-stone-200 bg-white p-6">
             <p className="text-[11px] font-black uppercase tracking-[.18em] text-stone-500">
               Flujo de unión
