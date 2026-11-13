@@ -3399,7 +3399,7 @@ export default function App() {
                 </p>
               </div>
             )}
-            <div className="text-center">
+            <div className="mt-6 text-center">
               <p
                 className={cx(
                   "text-xs font-black uppercase tracking-[.18em]",
@@ -3412,14 +3412,26 @@ export default function App() {
                 <p className="mt-2 text-sm text-white/70">Reconectando con la sala…</p>
               )}
             </div>
-            <p className="text-center text-sm font-medium text-white/75">
-              Puntos de la ronda
-              <strong className="ml-1 text-xl font-black text-white">{state.pot ?? 0} pts</strong>
-            </p>
-            <p className="text-center text-sm font-medium text-white/75">
-              Puntuación acumulada
-              <strong className="ml-1 text-xl font-black text-white">{buzzerTeamScore} pts</strong>
-            </p>
+            <div className="mt-4 grid grid-cols-2 overflow-hidden rounded-2xl border border-white/20 bg-black/15 text-center">
+              <div className="p-4">
+                <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/60">
+                  Puntos de la ronda
+                </p>
+                <p className="mt-1 text-2xl font-black tabular-nums text-white">
+                  {state.pot ?? 0}
+                  <span className="ml-1 text-xs font-bold text-white/60">pts</span>
+                </p>
+              </div>
+              <div className="border-l border-white/20 p-4">
+                <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/60">
+                  Puntos del equipo
+                </p>
+                <p className="mt-1 text-2xl font-black tabular-nums text-white">
+                  {buzzerTeamScore}
+                  <span className="ml-1 text-xs font-bold text-white/60">pts</span>
+                </p>
+              </div>
+            </div>
           </div>
         </main>
       )
