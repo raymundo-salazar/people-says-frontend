@@ -3435,22 +3435,22 @@ export default function App() {
                 <span className="mt-2 text-sm font-bold text-white/75">{buzzerTeamName}</span>
               </button>
             ) : (
-              <div className="rounded-3xl border border-stone-200 bg-white p-8 text-center shadow-sm">
-                <p className="text-xs font-black uppercase tracking-[.2em] text-stone-400">
+              <div className="rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm">
+                <p className="text-xs font-black uppercase tracking-[.2em] text-white/60">
                   {state.phase === "turn"
                     ? "Modo turno"
                     : state.phase === "steal"
                       ? "Robo de puntos"
                       : "Partida en curso"}
                 </p>
-                <p className="mt-3 text-lg font-bold text-stone-800">
+                <p className="mt-3 text-lg font-bold text-white">
                   {state.phase === "turn"
                     ? activeTeam === buzzerTeam
                       ? "Es tu turno"
                       : "No es tu turno"
                     : "El pulsador no está disponible"}
                 </p>
-                <p className="mt-1 text-sm text-stone-500">
+                <p className="mt-1 text-sm text-white/65">
                   {state.phase === "turn"
                     ? activeTeam === buzzerTeam
                       ? "Tu equipo está jugando ahora."
