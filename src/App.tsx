@@ -3378,7 +3378,11 @@ export default function App() {
       const faceoffActive = state.phase === "faceoff"
       const buzzerSelected = faceoffActive && activeTeam === buzzerTeam
       const buzzerTurnMode = ["turn", "steal"].includes(state.phase)
-      const buzzerStrikeLimit = faceoffActive ? 5 : state.phase === "steal" ? 1 : 3
+      const buzzerStrikeLimit = faceoffActive
+        ? 5
+        : state.phase === "steal" && activeTeam === buzzerTeam
+          ? 1
+          : 3
       const buzzerHighlighted =
         ["faceoff", "turn", "steal"].includes(state.phase) && activeTeam === buzzerTeam
       const buzzerBlocked = faceoffActive && Boolean(activeTeam) && activeTeam !== buzzerTeam
