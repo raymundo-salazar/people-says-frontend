@@ -355,6 +355,7 @@ export default function App() {
   const [stealIndex, setStealIndex] = useState(0)
   const [stealText, setStealText] = useState("")
   const [buzzerWinner, setBuzzerWinner] = useState<"blue" | "red" | null>(null)
+  const [activeTeam, setActiveTeam] = useState<"blue" | "red" | null>(null)
   const [socketConnected, setSocketConnected] = useState(() => gameSocket.connected)
   const [buttonRole, setButtonRole] = useState<"blue_button" | "red_button">("blue_button")
   const [currentDeviceRole, setCurrentDeviceRole] = useState<DeviceRole>(
@@ -562,6 +563,7 @@ export default function App() {
       activePlayer?: { id: number; name: string; team: "blue" | "red" } | null
       devices?: Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
     }) => {
+      if (payload.activeTeam !== undefined) setActiveTeam(payload.activeTeam)
       if (payload.state)
         setState({
           ...payload.state,
@@ -680,6 +682,7 @@ export default function App() {
         const data = await response.json()
         if (!response.ok) throw new Error(data.error)
         setGameName(data.name ?? "La gente dice")
+        setActiveTeam(data.activeTeam ?? null)
         setState((old) => ({
           ...old,
           ...data.state,
@@ -754,6 +757,7 @@ export default function App() {
         if (!response.ok) throw new Error(data.error)
         setGameName(data.name ?? "")
         setMode(data.mode)
+        setActiveTeam(data.activeTeam ?? null)
         setState((old) => ({ ...old, ...data.state }))
         if (data.state?.teams) {
           setTeams(
@@ -3334,7 +3338,7 @@ export default function App() {
             ] ??
             "Participante en turno")
       const faceoffActive = state.phase === "faceoff"
-      const buzzerSelected = state.activeTeam === buzzerTeam
+      const buzzerSelected = activeTeam === buzzerTeam
       const buttonClasses = buzzerSelected
         ? "border-emerald-950 bg-emerald-700 shadow-[0_18px_0_#064e3b,0_25px_40px_rgba(0,0,0,.45)]"
         : buzzerTeam === "blue"
