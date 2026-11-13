@@ -3346,8 +3346,14 @@ export default function App() {
         <main
           className={cx(
             "buzzer-screen fixed inset-0 overflow-y-auto px-5 py-6 text-white sm:px-8",
-            screenClasses
+            screenClasses,
+            faceoffActive && socketConnected && !buzzerWinner && "cursor-pointer"
           )}
+          onClick={(event) => {
+            if (!faceoffActive || !socketConnected || buzzerWinner) return
+            if ((event.target as HTMLElement).closest(".pointer-events-auto")) return
+            gameSocket.emit("buzzer:press", { code: roomCode, team: buzzerTeam })
+          }}
         >
           {stealBanner}
           {roundResultBanner}
@@ -3383,9 +3389,6 @@ export default function App() {
                   "group relative mx-auto flex aspect-square w-[min(76vw,340px)] max-w-full flex-col items-center justify-center rounded-full border-[12px] px-6 text-center text-white transition-transform hover:-translate-y-1 active:translate-y-3 active:shadow-none disabled:cursor-not-allowed disabled:opacity-55 sm:w-[min(56vw,360px)]",
                   buttonClasses
                 )}
-                onClick={() =>
-                  gameSocket.emit("buzzer:press", { code: roomCode, team: buzzerTeam })
-                }
               >
                 <Hand className="mb-5 size-20 drop-shadow-lg transition-transform group-active:scale-90 sm:size-24" />
                 <span className="text-3xl font-black uppercase tracking-wide drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] sm:text-5xl">
