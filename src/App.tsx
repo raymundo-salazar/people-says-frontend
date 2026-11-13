@@ -3389,6 +3389,14 @@ export default function App() {
             gameSocket.emit("buzzer:press", { code: roomCode, team: buzzerTeam })
           }}
         >
+          <Button
+            ghost
+            ariaLabel="Salir de la partida"
+            className="fixed right-3 top-3 z-20 p-2 text-white/40 hover:bg-white/10 hover:text-white"
+            onClick={() => setShowLeaveDisplayDialog(true)}
+          >
+            <LogOut size={16} aria-hidden="true" />
+          </Button>
           {(currentDeviceRole !== "blue_button" && currentDeviceRole !== "red_button") ||
           teamBackTeam === (currentDeviceRole === "blue_button" ? "blue" : "red")
             ? stealBanner
