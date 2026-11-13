@@ -3383,7 +3383,7 @@ export default function App() {
             <section
               className={cx(
                 "text-center transition-all duration-300",
-                buzzerSelected && "translate-y-6 scale-[1.5]"
+                buzzerSelected && "translate-y-6 scale-[2]"
               )}
             >
               <p className="text-xs font-bold uppercase tracking-[.22em] text-white/65">
