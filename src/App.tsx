@@ -3416,7 +3416,7 @@ export default function App() {
                   "group relative mx-auto flex aspect-square w-[min(76vw,340px)] max-w-full flex-col items-center justify-center rounded-full border-[12px] px-6 text-center text-white transition-transform hover:-translate-y-1 active:translate-y-3 active:shadow-none disabled:cursor-not-allowed disabled:opacity-55 sm:w-[min(56vw,360px)]",
                   buttonClasses,
                   buzzerSelected &&
-                    "translate-y-3 shadow-none hover:translate-y-3 disabled:opacity-100"
+                    "translate-y-3 shadow-[0_0_45px_15px_rgba(16,185,129,0.7)] ring-4 ring-emerald-300/70 hover:translate-y-3 disabled:opacity-100"
                 )}
               >
                 {buzzerBlocked ? (
