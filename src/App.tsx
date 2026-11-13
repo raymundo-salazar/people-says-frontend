@@ -617,6 +617,23 @@ export default function App() {
       setStrikeOverlayCount(Math.max(1, payload.count ?? 1))
       setPublicStrikeVisible(true)
       setStrikeVisible(true)
+      if (payload.team) {
+        const strikeTeam = payload.team
+        setState((current) => {
+          const faceoffMode = ["faceoff", "decision", "tiebreaker"].includes(current.phase)
+          const strikeKey = faceoffMode ? "faceoffStrikes" : "strikes"
+          const currentStrikes = current[strikeKey] ?? { blue: 0, red: 0 }
+          const nextStrikes = {
+            ...currentStrikes,
+            [strikeTeam]: payload.count ?? currentStrikes[strikeTeam] + 1,
+          }
+          return {
+            ...current,
+            [strikeKey]: nextStrikes,
+            ...(faceoffMode ? { displayStrikes: nextStrikes } : {}),
+          }
+        })
+      }
       if (payload.count === 2) {
         setTeamBackTeam(payload.team === "blue" ? "red" : "blue")
         window.setTimeout(() => setTeamBackVisible(true), 3000)
