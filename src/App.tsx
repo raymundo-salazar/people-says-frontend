@@ -3420,9 +3420,7 @@ export default function App() {
                 <p className="mt-1 font-mono text-2xl font-black tabular-nums text-white">
                   {state.pot ?? 0}
                 </p>
-                <span className="block text-[10px] font-bold uppercase tracking-widest text-white/60">
-                  puntos
-                </span>
+                <span className="block text-xs font-normal leading-none text-white/50">puntos</span>
               </div>
               <div className="border-l border-white/20 p-4">
                 <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/60">
@@ -3431,9 +3429,7 @@ export default function App() {
                 <p className="mt-1 font-mono text-2xl font-black tabular-nums text-white">
                   {buzzerTeamScore}
                 </p>
-                <span className="block text-[10px] font-bold uppercase tracking-widest text-white/60">
-                  puntos
-                </span>
+                <span className="block text-xs font-normal leading-none text-white/50">puntos</span>
               </div>
             </div>
           </div>
