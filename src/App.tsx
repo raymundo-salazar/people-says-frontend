@@ -483,7 +483,7 @@ export default function App() {
   useEffect(() => {
     if (state.phase !== "final") return
     setFinalWinnerVisible(true)
-    const timeout = window.setTimeout(() => setFinalWinnerVisible(false), 5200)
+    const timeout = window.setTimeout(() => setFinalWinnerVisible(false), 5700)
     return () => window.clearTimeout(timeout)
   }, [state.phase])
   const answers =
@@ -1418,7 +1418,10 @@ export default function App() {
   const finalWinnerScore = finalWinner === "blue" ? blue : finalWinner === "red" ? red : 0
   const finalWinnerBanner = finalWinnerVisible ? (
     <>
-      <div className="team-back-overlay pointer-events-auto fixed inset-0 z-50 bg-black/60 backdrop-blur-md" />
+      <div
+        className="team-back-overlay pointer-events-auto fixed inset-0 z-50 bg-black/60 backdrop-blur-md"
+        style={{ animationDuration: "5.5s" }}
+      />
       <div
         className={cx(
           "team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-50 -translate-y-1/2 bg-gradient-to-r py-12 text-center text-white shadow-2xl",
@@ -1428,11 +1431,12 @@ export default function App() {
               ? "from-red-950 via-red-900 to-red-950"
               : "from-emerald-950 via-emerald-900 to-emerald-950"
         )}
+        style={{ animationDuration: "5.5s" }}
       >
         <div className="relative mx-auto h-32 w-full max-w-3xl">
           <div
             className="team-back-banner-content absolute inset-0 grid place-items-center px-8"
-            style={{ animationDuration: "2.5s" }}
+            style={{ animationDuration: "2.75s" }}
           >
             <div className="text-center">
               <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
@@ -1446,7 +1450,7 @@ export default function App() {
           </div>
           <div
             className="team-back-banner-content absolute inset-0 grid place-items-center px-8"
-            style={{ animationDelay: "2.5s", animationDuration: "2.5s" }}
+            style={{ animationDelay: "2.75s", animationDuration: "2.75s" }}
           >
             <div className="text-center">
               <strong className="block font-mono text-6xl font-black tabular-nums text-amber-300 drop-shadow-[3px_4px_0_rgba(120,53,15,0.65)] sm:text-8xl">
