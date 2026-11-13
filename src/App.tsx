@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   ArrowRight,
   AlertTriangle,
+  Check,
   ClipboardPaste,
   ChevronDown,
   ExternalLink,
@@ -3333,8 +3334,10 @@ export default function App() {
             ] ??
             "Participante en turno")
       const faceoffActive = state.phase === "faceoff"
-      const buttonClasses =
-        buzzerTeam === "blue"
+      const buzzerSelected = buzzerWinner === buzzerTeam
+      const buttonClasses = buzzerSelected
+        ? "border-emerald-950 bg-emerald-700 shadow-[0_18px_0_#064e3b,0_25px_40px_rgba(0,0,0,.45)]"
+        : buzzerTeam === "blue"
           ? "border-blue-950 bg-blue-800 shadow-[0_18px_0_#172554,0_25px_40px_rgba(0,0,0,.45)]"
           : "border-red-950 bg-red-800 shadow-[0_18px_0_#450a0a,0_25px_40px_rgba(0,0,0,.45)]"
       const screenClasses =
@@ -3390,9 +3393,13 @@ export default function App() {
                   buttonClasses
                 )}
               >
-                <Hand className="mb-5 size-20 drop-shadow-lg transition-transform group-active:scale-90 sm:size-24" />
+                {buzzerSelected ? (
+                  <Check className="mb-5 size-20 drop-shadow-lg sm:size-24" strokeWidth={3} />
+                ) : (
+                  <Hand className="mb-5 size-20 drop-shadow-lg transition-transform group-active:scale-90 sm:size-24" />
+                )}
                 <span className="text-3xl font-black uppercase tracking-wide drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] sm:text-5xl">
-                  Pulsar
+                  {buzzerSelected ? "Seleccionado" : "Pulsar"}
                 </span>
                 <span className="mt-2 text-sm font-bold text-white/75">{buzzerTeamName}</span>
               </button>
