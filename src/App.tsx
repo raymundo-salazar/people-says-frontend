@@ -3411,7 +3411,7 @@ export default function App() {
             </p>
 
             {!faceoffActive && (
-              <div className="relative z-10 order-1 rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm backdrop-blur-md">
+              <div className="relative z-10 rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm backdrop-blur-md">
                 <p className="text-xs font-black uppercase tracking-[.2em] text-white/60">
                   {state.phase === "turn"
                     ? "Modo turno"
@@ -3440,7 +3440,7 @@ export default function App() {
               disabled={!faceoffActive || Boolean(buzzerWinner) || buzzerBlocked}
               aria-label={`Pulsador del equipo ${buzzerTeamName}`}
               className={cx(
-                "group relative z-0 order-2 mx-auto flex aspect-square w-[min(76vw,340px)] max-w-full flex-col items-center justify-center rounded-full border-[12px] px-6 text-center text-white transition-transform before:pointer-events-none before:absolute before:inset-3 before:rounded-full before:border before:border-white/25 before:bg-gradient-to-br before:from-white/35 before:via-white/5 before:to-black/25 before:content-[''] hover:-translate-y-1 active:translate-y-3 active:shadow-none disabled:cursor-not-allowed disabled:opacity-55 sm:w-[min(56vw,360px)]",
+                "group relative mx-auto flex aspect-square w-[min(76vw,340px)] max-w-full flex-col items-center justify-center rounded-full border-[12px] px-6 text-center text-white transition-transform before:pointer-events-none before:absolute before:inset-3 before:rounded-full before:border before:border-white/25 before:bg-gradient-to-br before:from-white/35 before:via-white/5 before:to-black/25 before:content-[''] hover:-translate-y-1 active:translate-y-3 active:shadow-none disabled:cursor-not-allowed disabled:opacity-55 sm:w-[min(56vw,360px)]",
                 buttonClasses,
                 buzzerSelected &&
                   "translate-y-3 shadow-none hover:translate-y-3 disabled:opacity-100"
