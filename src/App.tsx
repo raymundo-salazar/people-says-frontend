@@ -3391,7 +3391,7 @@ export default function App() {
               </p>
               <h1
                 className={cx(
-                  "mt-1 text-5xl font-black tracking-tight transition-colors duration-300 sm:text-6xl",
+                  "mt-1 text-5xl font-black tracking-tight drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] transition-colors duration-300 sm:text-6xl",
                   buzzerSelected ? "text-emerald-700" : "text-white"
                 )}
               >
