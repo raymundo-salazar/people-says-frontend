@@ -3343,7 +3343,7 @@ export default function App() {
               </div>
             </div>
           )}
-          <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-xl flex-col justify-center gap-4">
+          <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-xl flex-col justify-center gap-6">
             <section className="text-center">
               <p className="text-xs font-bold uppercase tracking-[.22em] text-white/65">
                 Tu equipo
