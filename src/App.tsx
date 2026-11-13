@@ -394,6 +394,8 @@ export default function App() {
   const [teamBackVisible, setTeamBackVisible] = useState(false)
   const [stealPromptVisible, setStealPromptVisible] = useState(false)
   const [teamBackTeam, setTeamBackTeam] = useState<"blue" | "red">("red")
+  const [specialRoundVisible, setSpecialRoundVisible] = useState(false)
+  const previousRoundIndex = useRef<number | null>(null)
   const [publicAnswerFlipIndex, setPublicAnswerFlipIndex] = useState<number | null>(null)
   useEffect(() => {
     if (roomCode || !["create", "teams", "rounds", "questions"].includes(screen)) return
@@ -458,6 +460,25 @@ export default function App() {
     const timeout = window.setTimeout(() => setStealPromptVisible(false), 5200)
     return () => window.clearTimeout(timeout)
   }, [stealPromptVisible])
+  useEffect(() => {
+    const currentRoundIndex = state.roundIndex
+    if (previousRoundIndex.current === null) {
+      previousRoundIndex.current = currentRoundIndex
+      return
+    }
+    if (
+      currentRoundIndex !== previousRoundIndex.current &&
+      (state.roundConfigs[currentRoundIndex]?.multiplier ?? 1) > 1
+    ) {
+      setSpecialRoundVisible(true)
+    }
+    previousRoundIndex.current = currentRoundIndex
+  }, [state.roundConfigs, state.roundIndex])
+  useEffect(() => {
+    if (!specialRoundVisible) return
+    const timeout = window.setTimeout(() => setSpecialRoundVisible(false), 5200)
+    return () => window.clearTimeout(timeout)
+  }, [specialRoundVisible])
   const answers =
     state.answers ?? Array.from({ length: state.answerCount ?? 0 }, () => ({ text: "", points: 0 }))
   const revealed = state.revealed ?? []
@@ -1314,6 +1335,24 @@ export default function App() {
         </div>
       </>
     ) : null
+  const specialRoundBanner = specialRoundVisible ? (
+    <>
+      <div className="team-back-overlay pointer-events-auto fixed inset-0 z-30 bg-black/50" />
+      <div className="team-back-banner pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 overflow-hidden bg-gradient-to-r from-emerald-950 via-emerald-800 to-emerald-950 py-12 text-center text-white shadow-2xl">
+        <div className="team-back-banner-content mx-auto w-fit px-8">
+          <p className="text-xs font-black uppercase tracking-[.28em] text-emerald-300">
+            Ronda especial
+          </p>
+          <h2 className="mt-1 text-3xl font-black sm:text-5xl">
+            Puntos al {roundMultiplier === 3 ? "triple" : "doble"}
+          </h2>
+          <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
+            Esta ronda tiene un multiplicador especial.
+          </p>
+        </div>
+      </div>
+    </>
+  ) : null
   const roundResultBanner =
     state.phase === "round_result" && roundWinner ? (
       <>
@@ -2321,6 +2360,7 @@ export default function App() {
     return (
       <Shell wide>
         {stealBanner}
+        {specialRoundBanner}
         {strikeVisible && (
           <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/50">
             <div
@@ -3046,6 +3086,7 @@ export default function App() {
     return (
       <div className="public-display relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 px-5 py-10 text-white">
         {stealBanner}
+        {specialRoundBanner}
         {roundResultBanner}
         <Button
           ghost
@@ -3401,6 +3442,7 @@ export default function App() {
           teamBackTeam === (currentDeviceRole === "blue_button" ? "blue" : "red")
             ? stealBanner
             : null}
+          {specialRoundBanner}
           {roundResultBanner}
           {strikeVisible && (
             <div className="public-strike-overlay pointer-events-auto fixed inset-0 z-50 grid place-items-center bg-black/60">
