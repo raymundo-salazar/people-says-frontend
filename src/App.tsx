@@ -2466,9 +2466,11 @@ export default function App() {
               Panel del presentador
             </p>
             <section className="rounded-2xl bg-gradient-to-r from-blue-100/80 via-slate-50 to-red-100/80 p-5">
-              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
-                {state.phase === "round_result" ? "Equipo ganador" : participantStatusTitle}
-              </h2>
+              {state.phase !== "round_result" && (
+                <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
+                  {participantStatusTitle}
+                </h2>
+              )}
               {state.phase === "round_result" ? (
                 <div
                   className={cx(
@@ -2478,11 +2480,18 @@ export default function App() {
                       : "border-red-700 bg-gradient-to-bl from-red-950 via-red-800 to-red-600"
                   )}
                 >
-                  <strong className="text-lg font-black text-white">{roundWinnerName}</strong>
-                  <span className="text-sm font-bold text-white/50">·</span>
-                  <span className="text-sm font-semibold text-amber-300">
-                    +<AnimatedNumber value={roundPointsWon} padStart={2} /> puntos
-                  </span>
+                  <div className="flex flex-col items-center text-center">
+                    <strong className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
+                      {roundWinnerName}
+                    </strong>
+                    <h3 className="mt-1 text-3xl font-black text-white sm:text-5xl">
+                      ¡Ronda ganada!
+                    </h3>
+                    <span className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
+                      +<AnimatedNumber value={roundPointsWon} padStart={2} /> puntos · marcador
+                      actualizado
+                    </span>
+                  </div>
                 </div>
               ) : (
                 <div className="grid min-h-16 grid-cols-[1fr_auto_1fr] items-center gap-1">
