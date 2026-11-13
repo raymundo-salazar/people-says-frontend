@@ -2465,27 +2465,20 @@ export default function App() {
             <p className="text-[11px] font-semibold uppercase tracking-[.17em] text-emerald-800">
               Panel del presentador
             </p>
-            <section
-              className={cx(
-                "rounded-2xl p-5",
-                state.phase === "round_result"
-                  ? roundWinner === "blue"
-                    ? "bg-gradient-to-br from-blue-950 via-blue-800 to-blue-600 text-white"
-                    : "bg-gradient-to-bl from-red-950 via-red-800 to-red-600 text-white"
-                  : "bg-gradient-to-r from-blue-100/80 via-slate-50 to-red-100/80"
-              )}
-            >
-              <h2
-                className={cx(
-                  "mb-2 text-[10px] font-bold uppercase tracking-wide",
-                  state.phase === "round_result" ? "text-white/70" : "text-stone-900"
-                )}
-              >
+            <section className="rounded-2xl bg-gradient-to-r from-blue-100/80 via-slate-50 to-red-100/80 p-5">
+              <h2 className="mb-2 text-[10px] font-bold uppercase tracking-wide text-stone-900">
                 {state.phase === "round_result" ? "Equipo ganador" : participantStatusTitle}
               </h2>
               {state.phase === "round_result" ? (
-                <div className="flex min-h-16 items-center justify-center gap-3 rounded-lg border border-white/20 bg-white/10 px-4 py-3 text-center shadow-sm">
-                  <strong className={cx("text-lg font-black text-white")}>{roundWinnerName}</strong>
+                <div
+                  className={cx(
+                    "flex min-h-16 items-center justify-center gap-3 rounded-lg border px-4 py-3 text-center shadow-sm",
+                    roundWinner === "blue"
+                      ? "border-blue-700 bg-gradient-to-br from-blue-950 via-blue-800 to-blue-600"
+                      : "border-red-700 bg-gradient-to-bl from-red-950 via-red-800 to-red-600"
+                  )}
+                >
+                  <strong className="text-lg font-black text-white">{roundWinnerName}</strong>
                   <span className="text-sm font-bold text-white/50">·</span>
                   <span className="text-sm font-semibold text-amber-300">
                     +<AnimatedNumber value={roundPointsWon} padStart={2} /> puntos
