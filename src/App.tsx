@@ -614,12 +614,15 @@ export default function App() {
     const socketConnected = () => setSocketConnected(true)
     const socketDisconnected = () => setSocketConnected(false)
     const strike = (payload: { count?: number; team?: "blue" | "red" }) => {
-      const buzzerTeam = buttonRole === "blue_button" ? "blue" : "red"
+      const buzzerTeam = currentDeviceRole === "red_button" ? "red" : "blue"
       const shouldShowStrike = screen !== "buzzer" || payload.team === buzzerTeam
       if (shouldShowStrike) {
         setStrikeOverlayCount(Math.max(1, payload.count ?? 1))
         setPublicStrikeVisible(true)
         setStrikeVisible(true)
+      } else if (screen === "buzzer") {
+        setPublicStrikeVisible(false)
+        setStrikeVisible(false)
       }
       if (payload.team) {
         const strikeTeam = payload.team
