@@ -3403,7 +3403,7 @@ export default function App() {
                   <Hand className="mb-5 size-20 drop-shadow-lg transition-transform group-active:scale-90 sm:size-24" />
                 )}
                 <span className="text-3xl font-black uppercase tracking-wide drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] sm:text-5xl">
-                  {buzzerSelected ? "Seleccionado" : "Pulsar"}
+                  {buzzerSelected ? "Pulsado" : "Pulsar"}
                 </span>
                 <span className="mt-2 text-sm font-bold text-white/75">{buzzerTeamName}</span>
               </button>
