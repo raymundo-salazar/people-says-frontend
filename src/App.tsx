@@ -2502,7 +2502,7 @@ export default function App() {
                         faceoffFirstTeam === "blue" ? "text-white/70" : "text-blue-700"
                       )}
                     >
-                      {teams[0].name}
+                      {state.teams[0].name}
                     </p>
                     <p
                       className={cx(
@@ -2537,7 +2537,7 @@ export default function App() {
                         faceoffFirstTeam === "red" ? "text-white/70" : "text-red-700"
                       )}
                     >
-                      {teams[1].name}
+                      {state.teams[1].name}
                     </p>
                     <p
                       className={cx(
@@ -2961,7 +2961,7 @@ export default function App() {
                   <span>
                     <span className="block text-xl font-black">{state.teams[0].name}</span>
                     <span className="mt-1 block text-xs font-semibold text-blue-100">
-                      {teams[0].name}
+                      {state.teams[0].name}
                     </span>
                   </span>
                 </button>
@@ -2987,7 +2987,7 @@ export default function App() {
                   <span>
                     <span className="block text-xl font-black">{state.teams[1].name}</span>
                     <span className="mt-1 block text-xs font-semibold text-red-100">
-                      {teams[1].name}
+                      {state.teams[1].name}
                     </span>
                   </span>
                 </button>
