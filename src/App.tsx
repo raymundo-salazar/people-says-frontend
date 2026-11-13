@@ -3389,7 +3389,12 @@ export default function App() {
               <p className="text-xs font-bold uppercase tracking-[.22em] text-white/65">
                 {buzzerTeamName}
               </p>
-              <h1 className="mt-1 text-5xl font-black tracking-tight sm:text-6xl">
+              <h1
+                className={cx(
+                  "mt-1 text-5xl font-black tracking-tight transition-colors duration-300 sm:text-6xl",
+                  buzzerSelected ? "text-emerald-300" : "text-white"
+                )}
+              >
                 {buzzerPlayer}
               </h1>
               <p
