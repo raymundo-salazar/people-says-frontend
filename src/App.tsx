@@ -3422,7 +3422,14 @@ export default function App() {
                 </p>
                 <span className="block text-xs font-normal leading-none text-white/50">puntos</span>
               </div>
-              <div className="border-l border-white/20 p-4">
+              <div
+                className={cx(
+                  "border-l border-white/20 bg-gradient-to-b p-4",
+                  buzzerTeam === "blue"
+                    ? "from-blue-900/45 to-blue-500/10"
+                    : "from-red-900/45 to-red-500/10"
+                )}
+              >
                 <p className="text-[10px] font-black uppercase tracking-[.18em] text-white/60">
                   {buzzerTeamName}
                 </p>
