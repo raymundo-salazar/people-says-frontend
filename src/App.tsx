@@ -21,8 +21,10 @@ import {
   Pointer,
   SquareDashed,
   SquareX,
+  Shield,
   Settings2,
   Timer,
+  Target,
   X,
 } from "lucide-react"
 import { gameSocket } from "./socket"
@@ -3459,7 +3461,13 @@ export default function App() {
             <div className="relative mx-auto w-full">
               {!faceoffActive && (
                 <div className="buzzer-turn-card-enter pointer-events-auto absolute inset-0 z-20 m-auto h-fit w-[calc(100%-2rem)] rounded-3xl border border-white/20 bg-black/15 p-8 text-center shadow-sm backdrop-blur-md transition-all duration-300">
-                  {buzzerTurnMode && activeTeam === buzzerTeam ? (
+                  {state.phase === "steal" ? (
+                    activeTeam === buzzerTeam ? (
+                      <Target className="mx-auto mb-3 size-12 text-emerald-300" strokeWidth={2.5} />
+                    ) : (
+                      <Shield className="mx-auto mb-3 size-12 text-white/60" strokeWidth={2.5} />
+                    )
+                  ) : buzzerTurnMode && activeTeam === buzzerTeam ? (
                     <Hand className="mx-auto mb-3 size-12 text-emerald-300" strokeWidth={2.5} />
                   ) : (
                     <Clock3 className="mx-auto mb-3 size-12 text-white/60" strokeWidth={2.5} />
@@ -3467,8 +3475,8 @@ export default function App() {
                   <p className="text-4xl font-black tracking-tight text-white drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] sm:text-5xl">
                     {state.phase === "steal"
                       ? activeTeam === buzzerTeam
-                        ? "Roba los puntos"
-                        : "Te pueden robar los puntos"
+                        ? "¡A robar!"
+                        : "¡EN RIESGO!"
                       : buzzerTurnMode
                         ? activeTeam === buzzerTeam
                           ? "Es tu turno"
@@ -3478,8 +3486,8 @@ export default function App() {
                   <p className="mt-1 text-sm text-white/65">
                     {state.phase === "steal"
                       ? activeTeam === buzzerTeam
-                        ? "Responde correctamente para ganar los puntos acumulados."
-                        : "El equipo contrario está intentando robar los puntos."
+                        ? "¡Una respuesta correcta y los puntos son suyos!"
+                        : "El otro equipo intenta quedarse con los puntos."
                       : buzzerTurnMode
                         ? activeTeam === buzzerTeam
                           ? "Tu equipo está jugando ahora."
