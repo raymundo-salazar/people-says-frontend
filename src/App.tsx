@@ -1227,6 +1227,30 @@ export default function App() {
         </div>
       </>
     ) : null
+  const roundResultBanner =
+    state.phase === "round_result" && roundWinner ? (
+      <>
+        <div className="pointer-events-auto fixed inset-0 z-30 bg-black/50" />
+        <div
+          className={cx(
+            "pointer-events-none fixed inset-x-0 top-1/2 z-40 -translate-y-1/2 bg-gradient-to-r py-12 text-center text-white shadow-2xl",
+            roundWinner === "blue"
+              ? "from-blue-950 via-blue-900 to-blue-950"
+              : "from-red-950 via-red-900 to-red-950"
+          )}
+        >
+          <div className="mx-auto w-fit px-8">
+            <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
+              {roundWinnerName}
+            </p>
+            <h2 className="mt-1 text-3xl font-black sm:text-5xl">¡Ronda ganada!</h2>
+            <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
+              +<AnimatedNumber value={roundPointsWon} padStart={2} /> puntos · marcador actualizado
+            </p>
+          </div>
+        </div>
+      </>
+    ) : null
   useEffect(() => {
     if (state.phase !== "lobby") setLoadingAction(null)
     if (screen === "joinLobby" && state.phase !== "lobby") {
@@ -2771,7 +2795,7 @@ export default function App() {
                   <span>
                     <span className="block text-xl font-black">{state.teams[0].name}</span>
                     <span className="mt-1 block text-xs font-semibold text-blue-100">
-                      Equipo azul
+                      {teams[0].name}
                     </span>
                   </span>
                 </button>
@@ -2797,7 +2821,7 @@ export default function App() {
                   <span>
                     <span className="block text-xl font-black">{state.teams[1].name}</span>
                     <span className="mt-1 block text-xs font-semibold text-red-100">
-                      Equipo rojo
+                      {teams[1].name}
                     </span>
                   </span>
                 </button>
@@ -2951,6 +2975,7 @@ export default function App() {
     return (
       <div className="public-display relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 px-5 py-10 text-white">
         {stealBanner}
+        {roundResultBanner}
         <Button
           ghost
           ariaLabel="Salir de la partida"
@@ -2975,7 +3000,7 @@ export default function App() {
         <div className="display-floating-accent display-floating-accent-left pointer-events-none absolute -bottom-36 -left-28 size-[360px] rounded-full border-[50px] border-white/5" />
         <div className="relative z-10 mx-auto w-full max-w-7xl">
           <div className="flex justify-end">{pauseControl}</div>
-          {state.phase === "round_result" ? (
+          {false ? (
             <section className="mx-auto w-full max-w-2xl rounded-2xl border border-white/20 bg-black/20 px-6 py-8 text-center shadow-lg">
               <p className="text-xs font-black uppercase tracking-[.24em] text-amber-100/80">
                 Ronda {String(state.roundIndex + 1).padStart(2, "0")}
@@ -3013,12 +3038,7 @@ export default function App() {
               </div>
             </section>
           ) : null}
-          <div
-            className={cx(
-              "grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]",
-              state.phase === "round_result" && "hidden"
-            )}
-          >
+          <div className="grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]">
             <div
               className={cx(
                 "mb-4 rounded-2xl bg-gradient-to-br from-blue-900/60 via-blue-700/40 to-blue-400/20 px-4 py-4 text-center shadow-[0_10px_34px_rgba(0,0,0,0.38)] backdrop-blur-sm transition duration-300",
