@@ -3381,7 +3381,10 @@ export default function App() {
           )}
           <div className="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-xl flex-col justify-center gap-6">
             <section
-              className={cx("text-center transition-transform", buzzerSelected && "scale-[1.2]")}
+              className={cx(
+                "text-center transition-all duration-300",
+                buzzerSelected && "scale-[1.2]"
+              )}
             >
               <p className="text-xs font-bold uppercase tracking-[.22em] text-white/65">
                 {buzzerTeamName}
@@ -3391,7 +3394,7 @@ export default function App() {
               </h1>
               <p
                 className={cx(
-                  "mt-2 text-sm text-white/70 transition-opacity",
+                  "mt-2 text-sm text-white/70 transition-all duration-300",
                   buzzerSelected ? "opacity-0" : "opacity-100"
                 )}
               >
