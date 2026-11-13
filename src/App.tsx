@@ -1429,25 +1429,34 @@ export default function App() {
               : "from-emerald-950 via-emerald-900 to-emerald-950"
         )}
       >
-        <div className="team-back-banner-content mx-auto w-fit px-8">
-          <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
-            Partida finalizada
-          </p>
-          <h2 className="mt-1 text-5xl font-black sm:text-7xl">{finalWinnerName}</h2>
-          <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
-            {finalWinner ? "¡Tenemos ganador!" : "¡Partida empatada!"}
-          </p>
-        </div>
-        <div
-          className="team-back-banner-content mx-auto mt-4 w-fit px-8"
-          style={{ animationDelay: "1.5s", animationDuration: "3.5s" }}
-        >
-          <strong className="block font-mono text-6xl font-black tabular-nums text-amber-300 drop-shadow-[3px_4px_0_rgba(120,53,15,0.65)] sm:text-8xl">
-            <AnimatedNumber value={finalWinnerScore} padStart={2} />
-          </strong>
-          <span className="text-xs font-black uppercase tracking-[.24em] text-amber-100/80">
-            puntos ganados
-          </span>
+        <div className="relative mx-auto h-32 w-full max-w-3xl">
+          <div
+            className="team-back-banner-content absolute inset-0 grid place-items-center px-8"
+            style={{ animationDuration: "2.5s" }}
+          >
+            <div className="text-center">
+              <p className="text-xs font-black uppercase tracking-[.28em] text-amber-300">
+                Partida finalizada
+              </p>
+              <h2 className="mt-1 text-5xl font-black sm:text-7xl">{finalWinnerName}</h2>
+              <p className="mt-1 text-sm font-semibold text-emerald-100 sm:text-base">
+                {finalWinner ? "¡Tenemos ganador!" : "¡Partida empatada!"}
+              </p>
+            </div>
+          </div>
+          <div
+            className="team-back-banner-content absolute inset-0 grid place-items-center px-8"
+            style={{ animationDelay: "2.5s", animationDuration: "2.5s" }}
+          >
+            <div className="text-center">
+              <strong className="block font-mono text-6xl font-black tabular-nums text-amber-300 drop-shadow-[3px_4px_0_rgba(120,53,15,0.65)] sm:text-8xl">
+                <AnimatedNumber value={finalWinnerScore} padStart={2} />
+              </strong>
+              <span className="text-xs font-black uppercase tracking-[.24em] text-amber-100/80">
+                puntos ganados
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </>
