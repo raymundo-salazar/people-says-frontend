@@ -3339,11 +3339,14 @@ export default function App() {
             "Participante en turno")
       const faceoffActive = state.phase === "faceoff"
       const buzzerSelected = activeTeam === buzzerTeam
+      const buzzerBlocked = Boolean(activeTeam) && activeTeam !== buzzerTeam
       const buttonClasses = buzzerSelected
         ? "border-emerald-950 bg-emerald-700 shadow-[0_18px_0_#064e3b,0_25px_40px_rgba(0,0,0,.45)]"
-        : buzzerTeam === "blue"
-          ? "border-blue-950 bg-blue-800 shadow-[0_18px_0_#172554,0_25px_40px_rgba(0,0,0,.45)]"
-          : "border-red-950 bg-red-800 shadow-[0_18px_0_#450a0a,0_25px_40px_rgba(0,0,0,.45)]"
+        : buzzerBlocked
+          ? "border-stone-700 bg-stone-600 shadow-[0_18px_0_#292524,0_25px_40px_rgba(0,0,0,.35)]"
+          : buzzerTeam === "blue"
+            ? "border-blue-950 bg-blue-800 shadow-[0_18px_0_#172554,0_25px_40px_rgba(0,0,0,.45)]"
+            : "border-red-950 bg-red-800 shadow-[0_18px_0_#450a0a,0_25px_40px_rgba(0,0,0,.45)]"
       const screenClasses =
         buzzerTeam === "blue"
           ? "bg-gradient-to-b from-blue-950 via-blue-900 to-slate-950"
@@ -3354,10 +3357,10 @@ export default function App() {
           className={cx(
             "buzzer-screen fixed inset-0 overflow-y-auto px-5 py-6 text-white sm:px-8",
             screenClasses,
-            faceoffActive && socketConnected && !buzzerWinner && "cursor-pointer"
+            faceoffActive && socketConnected && !buzzerWinner && !buzzerBlocked && "cursor-pointer"
           )}
           onClick={(event) => {
-            if (!faceoffActive || !socketConnected || buzzerWinner) return
+            if (!faceoffActive || !socketConnected || buzzerWinner || buzzerBlocked) return
             if ((event.target as HTMLElement).closest(".pointer-events-auto")) return
             gameSocket.emit("buzzer:press", { code: roomCode, team: buzzerTeam })
           }}
@@ -3390,7 +3393,7 @@ export default function App() {
             {faceoffActive ? (
               <button
                 type="button"
-                disabled={Boolean(buzzerWinner)}
+                disabled={Boolean(buzzerWinner) || buzzerBlocked}
                 aria-label={`Pulsador del equipo ${buzzerTeamName}`}
                 className={cx(
                   "group relative mx-auto flex aspect-square w-[min(76vw,340px)] max-w-full flex-col items-center justify-center rounded-full border-[12px] px-6 text-center text-white transition-transform hover:-translate-y-1 active:translate-y-3 active:shadow-none disabled:cursor-not-allowed disabled:opacity-55 sm:w-[min(56vw,360px)]",
@@ -3399,13 +3402,15 @@ export default function App() {
                     "translate-y-3 shadow-none hover:translate-y-3 disabled:opacity-100"
                 )}
               >
-                {buzzerSelected ? (
+                {buzzerBlocked ? (
+                  <Lock className="mb-5 size-20 drop-shadow-lg sm:size-24" strokeWidth={2.5} />
+                ) : buzzerSelected ? (
                   <Check className="mb-5 size-20 drop-shadow-lg sm:size-24" strokeWidth={3} />
                 ) : (
                   <Hand className="mb-5 size-20 drop-shadow-lg transition-transform group-active:scale-90 sm:size-24" />
                 )}
                 <span className="text-3xl font-black uppercase tracking-wide drop-shadow-[2px_3px_0_rgba(0,0,0,0.35)] sm:text-5xl">
-                  {buzzerSelected ? "Pulsado" : "Pulsar"}
+                  {buzzerBlocked ? "Bloqueado" : buzzerSelected ? "Pulsado" : "Pulsar"}
                 </span>
                 <span className="mt-2 text-sm font-bold text-white/75">{buzzerTeamName}</span>
               </button>
