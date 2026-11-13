@@ -9,6 +9,7 @@ import {
   RefreshCw,
   Trash2,
 } from "lucide-react"
+import { useState } from "react"
 import { Button, Heading, Shell, Skeleton, WizardProgress } from "./atoms"
 import { ParticipantRow, ParticipantsSubtitle, TeamNameField } from "./participants"
 
@@ -16,7 +17,14 @@ export type SetupMode = "classic" | "auto"
 export type SetupTeam = { name: string; color: "blue" | "red"; players: string[] }
 export type SetupRound = { answerCount: string; multiplier: 1 | 2 | 3 }
 export type SetupModeOption = { id: SetupMode; title: string; detail: string; devices: string }
-export type SetupCategory = { id: number; name: string; description: string; questionCount: number }
+export type SetupCategory = {
+  id: number
+  code: string
+  name: string
+  description: string
+  questionCount: number
+  types?: Array<{ slug: string; name: string; description: string }>
+}
 export type SetupQuestion = {
   id: number
   prompt: string
@@ -56,6 +64,18 @@ export function GameSetupStep({
   selectedCategoryIds,
   onCategoryToggle,
 }: GameSetupProps) {
+  const [categoryTypeFilter, setCategoryTypeFilter] = useState("all")
+  const categoryTypes = Array.from(
+    new Map(
+      categories.flatMap((category) => category.types ?? []).map((type) => [type.slug, type])
+    ).values()
+  )
+  const visibleCategories =
+    categoryTypeFilter === "all"
+      ? categories
+      : categories.filter((category) =>
+          category.types?.some((type) => type.slug === categoryTypeFilter)
+        )
   return (
     <Shell showBack={false}>
       <WizardProgress step={1} />
@@ -135,8 +155,29 @@ export function GameSetupStep({
             <p className="mb-3 text-xs font-medium text-stone-500">
               Categorías de preguntas <span className="text-red-600">*</span>
             </p>
+            {categoryTypes.length > 0 && (
+              <div className="mb-3 flex flex-wrap gap-2" aria-label="Filtrar categorías">
+                <button
+                  type="button"
+                  className={`cursor-pointer rounded-full px-3 py-1.5 text-xs font-semibold ${categoryTypeFilter === "all" ? "bg-emerald-900 text-white" : "bg-stone-100 text-stone-600"}`}
+                  onClick={() => setCategoryTypeFilter("all")}
+                >
+                  Todas
+                </button>
+                {categoryTypes.map((type) => (
+                  <button
+                    key={type.slug}
+                    type="button"
+                    className={`cursor-pointer rounded-full px-3 py-1.5 text-xs font-semibold ${categoryTypeFilter === type.slug ? "bg-emerald-900 text-white" : "bg-stone-100 text-stone-600"}`}
+                    onClick={() => setCategoryTypeFilter(type.slug)}
+                  >
+                    {type.name}
+                  </button>
+                ))}
+              </div>
+            )}
             <div className="grid gap-2 sm:grid-cols-2">
-              {categories.map((category) => {
+              {visibleCategories.map((category) => {
                 const selected = selectedCategoryIds.includes(category.id)
                 return (
                   <button
