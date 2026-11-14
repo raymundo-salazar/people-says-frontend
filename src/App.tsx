@@ -860,6 +860,13 @@ export default function App() {
     navigate(path)
     setJoinStage(stage)
   }
+  const startJoinWithCode = () => {
+    setError("")
+    setJoinCode("")
+    setJoinStage("name")
+    navigate("/join")
+    setScreenState("join")
+  }
   useEffect(() => {
     setScreenState(screenFromLocation())
     setJoinStage(joinStageFromLocation())
@@ -1878,7 +1885,7 @@ export default function App() {
             <Button onClick={startNewGame}>
               Crear una partida <ExternalLink size={16} aria-hidden="true" />
             </Button>
-            <Button secondary onClick={() => setJoinRoute("name")}>
+            <Button secondary onClick={startJoinWithCode}>
               Unirme con código
             </Button>
           </div>
