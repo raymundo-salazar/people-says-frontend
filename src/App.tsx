@@ -328,6 +328,48 @@ function RulesPage({ onBack }: { onBack: () => void }) {
           </div>
         </section>
 
+        <section className="mt-10">
+          <div>
+            <h2 className="text-[11px] font-black uppercase tracking-[.18em] text-stone-500">
+              Las pantallas del juego
+            </h2>
+            <p className="mt-2 text-sm text-stone-500">
+              Ejemplos reales capturados desde la partida de demostración BAB15E15.
+            </p>
+          </div>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            {[
+              ["/rules/host-desktop.webp", "Presentador", "Escritorio · 1366 × 768"],
+              ["/rules/display-tv.webp", "Pantalla pública", "TV · 1920 × 1080"],
+              ["/rules/buzzer-blue-mobile.webp", "Pulsador azul", "Móvil · 390 × 844"],
+              ["/rules/buzzer-red-tablet.webp", "Pulsador rojo", "Tablet · 768 × 1024"],
+              ["/rules/create-desktop.webp", "Crear partida", "Escritorio · configuración inicial"],
+              ["/rules/lobby-desktop.webp", "Lobby principal", "Escritorio · dispositivos y QR"],
+              ["/rules/join-mobile.webp", "Unirse con código", "Móvil · captura OTP"],
+            ].map(([src, title, detail]) => (
+              <figure
+                key={src}
+                className="overflow-hidden rounded-2xl border border-stone-200 bg-white"
+              >
+                <div className="bg-stone-100 p-2 sm:p-3">
+                  <img
+                    src={src}
+                    alt={title}
+                    loading="lazy"
+                    className="block h-auto w-full rounded-xl"
+                  />
+                </div>
+                <figcaption className="flex items-center justify-between gap-3 px-4 py-3">
+                  <span className="text-sm font-bold text-stone-900">{title}</span>
+                  <span className="text-right text-[10px] font-semibold uppercase tracking-wide text-stone-400">
+                    {detail}
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
         <section className="mt-10 grid gap-4 lg:grid-cols-2">
           <div className="rounded-2xl border border-stone-200 bg-white p-6 lg:col-span-2">
             <div className="flex items-end justify-between gap-4">
