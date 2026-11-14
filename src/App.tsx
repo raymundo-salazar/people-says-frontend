@@ -3148,7 +3148,7 @@ export default function App() {
               </Button>
               <Button
                 className="bg-red-600 hover:bg-red-700"
-                onClick={() => emitAction({ type: "end" })}
+                onClick={finalizeHostSession}
               >
                 <SquareX size={16} aria-hidden="true" /> Terminar partida
               </Button>
