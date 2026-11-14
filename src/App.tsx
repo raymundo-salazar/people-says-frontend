@@ -2378,6 +2378,11 @@ export default function App() {
     return (
       <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
         <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-md flex-col items-center justify-center">
+          <div className="mb-4 flex w-full justify-start">
+            <Button ghost onClick={() => setScreen("home")}>
+              <ArrowLeft size={16} aria-hidden="true" /> Regresar
+            </Button>
+          </div>
           <Brand />
           <div className="mt-12 w-full text-center">
             <h1 className="text-3xl font-semibold tracking-tight">Unirse a una sala</h1>
