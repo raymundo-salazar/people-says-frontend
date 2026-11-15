@@ -1,3 +1,215 @@
+---
+lockfileVersion: "9.0"
+
+importers:
+  .:
+    configDependencies: {}
+    packageManagerDependencies:
+      pnpm:
+        specifier: 12.21.0
+        version: 12.21.0
+
+packages:
+  "@pnpm/exe.android-arm64@12.21.0":
+    resolution:
+      {
+        integrity: sha512-iaWidxR5B9NUBpwMznCQu1yUpKB6BjTY5BYX2lORj76VsfINdj8Z8XWSzSNrGI8qlxa28Jzdp5fiaspzOaJZlA==,
+      }
+    cpu: [arm64]
+    os: [android]
+
+  "@pnpm/exe.android-x64@12.21.0":
+    resolution:
+      {
+        integrity: sha512-35e5v3wlwjIYxDywq+R6/z8CE4gLOEgRxt18yqz1tMRLmx2mnW+CFJI2Q8+srTNjn7gykXUC0x1k195JNikC5A==,
+      }
+    cpu: [x64]
+    os: [android]
+
+  "@pnpm/exe.darwin-arm64@12.21.0":
+    resolution:
+      {
+        integrity: sha512-F5OyMX/6zLSowpTZEQRojbCmPS1Pq+fyRaIinslsIe6Glh3qbyQ52u+Fe0eEzSaRuIbWZkXmAAXSWh6Q5Wrlgg==,
+      }
+    cpu: [arm64]
+    os: [darwin]
+
+  "@pnpm/exe.darwin-x64@12.21.0":
+    resolution:
+      {
+        integrity: sha512-EzpvcsaE6hrrgYeEiAFYd2rSgFybYyxXhkAY7K3y6Hg3loVfcyJ81hHczpFzi8lW5RXtUlFECRPZ8ZAMRFQYYg==,
+      }
+    cpu: [x64]
+    os: [darwin]
+
+  "@pnpm/exe.freebsd-x64@12.21.0":
+    resolution:
+      {
+        integrity: sha512-wNjuEnmdLks4aayPu/QZWQ5tQM9Jn+odUp/vwQM8BXRYoulkTZhtZTHoD60N6mUdLWef1hgUeUh8llNGEUsimw==,
+      }
+    cpu: [x64]
+    os: [freebsd]
+
+  "@pnpm/exe.linux-arm64-musl@12.21.0":
+    resolution:
+      {
+        integrity: sha512-Ceit9zn4g5ZqCJtx1fV8eJE7p8aeXMrGZ+Dc01vRqZLIUNgNeI+Ur0ruyqxtsnJx6rGADyXzohumxPLHjaJ5AQ==,
+      }
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
+  "@pnpm/exe.linux-arm64@12.21.0":
+    resolution:
+      {
+        integrity: sha512-4Oj/iF2TDCe2lcH0n4TupPR5sSdrNLclJB6xBElLMPCUOAvBhdf2rRlSaO5M4erJ6g4Fyy7YTXTpcmfFsKyxEA==,
+      }
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  "@pnpm/exe.linux-ppc64@12.21.0":
+    resolution:
+      {
+        integrity: sha512-s2o7rdSDeUTBFsNqxptpZXlTgT6cojmMVUOvTQvFNSv6Easian02ha4tR32fwwD97Au4YzIIjMCwywCF4D82Sw==,
+      }
+    cpu: [ppc64]
+    os: [linux]
+    libc: [glibc]
+
+  "@pnpm/exe.linux-riscv64@12.21.0":
+    resolution:
+      {
+        integrity: sha512-EYv3GzxeBTITCuM3yGHHbpRFpUvyulkXpQ6LsjKAQNL3iaba1E6h9iDmlouLb3Io4AMMsfdk0/uG6poQ41uewA==,
+      }
+    cpu: [riscv64]
+    os: [linux]
+    libc: [glibc]
+
+  "@pnpm/exe.linux-s390x@12.21.0":
+    resolution:
+      {
+        integrity: sha512-8VXGNGVNEfs7pL9GTZOzFxjFEnMt4WL3rLOADR5/kPQ7ROTV9GfpVI2DPO/zArXFSkvfc9Zad/WypHLbvzoaTQ==,
+      }
+    cpu: [s390x]
+    os: [linux]
+    libc: [glibc]
+
+  "@pnpm/exe.linux-x64-musl@12.21.0":
+    resolution:
+      {
+        integrity: sha512-MnC5vpIXYubhDZCgCwlfJMg7Cg6HupN2IuouT9gD/tUmOfVdQYqeyYccWbthyo/Jeto8de1oQlxeRN1+1Hl2DQ==,
+      }
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  "@pnpm/exe.linux-x64@12.21.0":
+    resolution:
+      {
+        integrity: sha512-8eufCjHXspKbNS/kh8q4Q0gqJoOuvC4Q5pgos6XS8By/nAMtP+jf8F1Cw9er840kfAX+PJ/ts+A9qnLE91rvXQ==,
+      }
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  "@pnpm/exe.netbsd-x64@12.21.0":
+    resolution:
+      {
+        integrity: sha512-eyh1M8hQZCkLWxuva7S/fc1SbFbgqg0/5di0dgWmyiuc2Io3dbWVihDun8X+XM8zsR5uhIDvvZpbS9aZQbCovg==,
+      }
+    cpu: [x64]
+    os: [netbsd]
+
+  "@pnpm/exe.win32-arm64@12.21.0":
+    resolution:
+      {
+        integrity: sha512-7xTxxUXo/grRLivSeIl6B21gnsz7ooe5EMPcJmQqwxc8WLJVReN8MzrlHru8bqXfVr4X3+6ZGZscntKenlCBqQ==,
+      }
+    cpu: [arm64]
+    os: [win32]
+
+  "@pnpm/exe.win32-x64@12.21.0":
+    resolution:
+      {
+        integrity: sha512-9TpkJemVApxJ1Z1w0ZFGN+AuSx4nJOqXSJUqMqDvaXTYwGOzvBiiWdFP9GN0ketiWCQS1Q0/pza2E7I3pP0OBQ==,
+      }
+    cpu: [x64]
+    os: [win32]
+
+  pnpm@12.21.0:
+    resolution:
+      {
+        integrity: sha512-Zv2CeO4ok1zpUXktNDZ/869cQyonVkRYIwKVM4NbjaUpu+C+UTCv1W7QcT+4eJ5Hutgtk71a4v5UsVVi1idu8A==,
+      }
+    engines: { node: ">=18" }
+    hasBin: true
+
+snapshots:
+  "@pnpm/exe.android-arm64@12.21.0":
+    optional: true
+
+  "@pnpm/exe.android-x64@12.21.0":
+    optional: true
+
+  "@pnpm/exe.darwin-arm64@12.21.0":
+    optional: true
+
+  "@pnpm/exe.darwin-x64@12.21.0":
+    optional: true
+
+  "@pnpm/exe.freebsd-x64@12.21.0":
+    optional: true
+
+  "@pnpm/exe.linux-arm64-musl@12.21.0":
+    optional: true
+
+  "@pnpm/exe.linux-arm64@12.21.0":
+    optional: true
+
+  "@pnpm/exe.linux-ppc64@12.21.0":
+    optional: true
+
+  "@pnpm/exe.linux-riscv64@12.21.0":
+    optional: true
+
+  "@pnpm/exe.linux-s390x@12.21.0":
+    optional: true
+
+  "@pnpm/exe.linux-x64-musl@12.21.0":
+    optional: true
+
+  "@pnpm/exe.linux-x64@12.21.0":
+    optional: true
+
+  "@pnpm/exe.netbsd-x64@12.21.0":
+    optional: true
+
+  "@pnpm/exe.win32-arm64@12.21.0":
+    optional: true
+
+  "@pnpm/exe.win32-x64@12.21.0":
+    optional: true
+
+  pnpm@12.21.0:
+    optionalDependencies:
+      "@pnpm/exe.android-arm64": 12.21.0
+      "@pnpm/exe.android-x64": 12.21.0
+      "@pnpm/exe.darwin-arm64": 12.21.0
+      "@pnpm/exe.darwin-x64": 12.21.0
+      "@pnpm/exe.freebsd-x64": 12.21.0
+      "@pnpm/exe.linux-arm64": 12.21.0
+      "@pnpm/exe.linux-arm64-musl": 12.21.0
+      "@pnpm/exe.linux-ppc64": 12.21.0
+      "@pnpm/exe.linux-riscv64": 12.21.0
+      "@pnpm/exe.linux-s390x": 12.21.0
+      "@pnpm/exe.linux-x64": 12.21.0
+      "@pnpm/exe.linux-x64-musl": 12.21.0
+      "@pnpm/exe.netbsd-x64": 12.21.0
+      "@pnpm/exe.win32-arm64": 12.21.0
+      "@pnpm/exe.win32-x64": 12.21.0
+
+---
 lockfileVersion: "9.0"
 
 settings:
@@ -10,15 +222,27 @@ importers:
       "@vitejs/plugin-react":
         specifier: 4.7.0
         version: 4.7.0(supports-color@7.2.0)(vite@6.4.5(jiti@2.7.0)(lightningcss@1.32.0))
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
+      lucide-react:
+        specifier: ^0.468.0
+        version: 0.468.0(react@19.3.1)
       react:
         specifier: 19.3.1
         version: 19.3.1
       react-dom:
         specifier: 19.3.1
         version: 19.3.1(react@19.3.1)
+      react-router-dom:
+        specifier: ^7.6.2
+        version: 7.18.5(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       socket.io-client:
         specifier: 4.8.3
         version: 4.8.3(supports-color@7.2.0)
+      tailwind-merge:
+        specifier: ^2.6.0
+        version: 2.6.1
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -1180,6 +1404,13 @@ packages:
       }
     engines: { node: ">=10" }
 
+  clsx@2.1.1:
+    resolution:
+      {
+        integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==,
+      }
+    engines: { node: ">=6" }
+
   color-convert@2.0.1:
     resolution:
       {
@@ -1204,6 +1435,13 @@ packages:
       {
         integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==,
       }
+
+  cookie@1.1.1:
+    resolution:
+      {
+        integrity: sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==,
+      }
+    engines: { node: ">=18" }
 
   cross-spawn@7.0.6:
     resolution:
@@ -1726,6 +1964,14 @@ packages:
         integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==,
       }
 
+  lucide-react@0.468.0:
+    resolution:
+      {
+        integrity: sha512-6koYRhnM2N0GGZIdXzSeiNwguv1gt/FAjZOiPl76roBi3xKEXa4WmfpxgQwTTL4KipXjefrnf3oV4IsYhi4JFA==,
+      }
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
+
   magic-string@0.30.21:
     resolution:
       {
@@ -1871,6 +2117,29 @@ packages:
       }
     engines: { node: ">=0.10.0" }
 
+  react-router-dom@7.18.5:
+    resolution:
+      {
+        integrity: sha512-9HcfDMU6JJ/fp6gJZYGwNE6RknVGS4kBjH1HkNw959mCJi70TVwdipQWv2FEol9uGpi+SZTFtVpJPtEQfayeOw==,
+      }
+    engines: { node: ">=20.0.0" }
+    peerDependencies:
+      react: ">=18"
+      react-dom: ">=18"
+
+  react-router@7.18.5:
+    resolution:
+      {
+        integrity: sha512-dTgvcXDOrLPrlLHrcZAqWveiK1hMSqN+rGAJzegP8HtmNkfRxOoshGWBNX3ZJ0cZjOHkRdlUJtaIhZMLLyGyPw==,
+      }
+    engines: { node: ">=20.0.0" }
+    peerDependencies:
+      react: ">=18"
+      react-dom: ">=18"
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+
   react@19.3.1:
     resolution:
       {
@@ -1913,6 +2182,12 @@ packages:
       }
     engines: { node: ">=10" }
     hasBin: true
+
+  set-cookie-parser@2.7.3:
+    resolution:
+      {
+        integrity: sha512-irZHtTqurLna57KQG/s+fzOwv/J6XSH4cs8M/vsrY3uCaQ3S6+QJguAH0WdN47SXlk82voMZ4naWMQf8fdEoIg==,
+      }
 
   shebang-command@2.0.0:
     resolution:
@@ -1962,6 +2237,12 @@ packages:
         integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==,
       }
     engines: { node: ">=8" }
+
+  tailwind-merge@2.6.1:
+    resolution:
+      {
+        integrity: sha512-Oo6tHdpZsGpkKG88HJ8RR1rg/RdnEkQEfMoEk2x1XRI3F1AxeU+ijRXpiVUF4UbLfcxxRGw6TbUINKYdWVsQTQ==,
+      }
 
   tailwindcss@4.3.1:
     resolution:
@@ -2734,6 +3015,8 @@ snapshots:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
 
+  clsx@2.1.1: {}
+
   color-convert@2.0.1:
     dependencies:
       color-name: 1.1.4
@@ -2743,6 +3026,8 @@ snapshots:
   concat-map@0.0.1: {}
 
   convert-source-map@2.0.0: {}
+
+  cookie@1.1.1: {}
 
   cross-spawn@7.0.6:
     dependencies:
@@ -3036,6 +3321,10 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
+  lucide-react@0.468.0(react@19.3.1):
+    dependencies:
+      react: 19.3.1
+
   magic-string@0.30.21:
     dependencies:
       "@jridgewell/sourcemap-codec": 1.6.0
@@ -3104,6 +3393,20 @@ snapshots:
 
   react-refresh@0.17.0: {}
 
+  react-router-dom@7.18.5(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
+    dependencies:
+      react: 19.3.1
+      react-dom: 19.3.1(react@19.3.1)
+      react-router: 7.18.5(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+
+  react-router@7.18.5(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
+    dependencies:
+      cookie: 1.1.1
+      react: 19.3.1
+      set-cookie-parser: 2.7.3
+    optionalDependencies:
+      react-dom: 19.3.1(react@19.3.1)
+
   react@19.3.1: {}
 
   resolve-from@4.0.0: {}
@@ -3146,6 +3449,8 @@ snapshots:
 
   semver@7.8.6: {}
 
+  set-cookie-parser@2.7.3: {}
+
   shebang-command@2.0.0:
     dependencies:
       shebang-regex: 3.0.0
@@ -3177,6 +3482,8 @@ snapshots:
   supports-color@7.2.0:
     dependencies:
       has-flag: 4.0.0
+
+  tailwind-merge@2.6.1: {}
 
   tailwindcss@4.3.1: {}
 
