@@ -45,7 +45,6 @@ import {
   DeviceIconAnimation,
   DeviceRoleIcon,
   Heading,
-  Score,
   Shell,
   Skeleton,
   WizardProgress,
@@ -596,13 +595,7 @@ const readCreateDraft = (): Partial<CreateDraft> => {
   }
 }
 
-function GameUnavailablePage({
-  onCreate,
-  onHome,
-}: {
-  onCreate: () => void
-  onHome: () => void
-}) {
+function GameUnavailablePage({ onCreate, onHome }: { onCreate: () => void; onHome: () => void }) {
   return (
     <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
       <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-md flex-col items-center justify-center text-center">
@@ -1834,10 +1827,9 @@ export default function App() {
     if (state.phase !== "lobby") setLoadingAction(null)
     if (
       screen === "joinLobby" &&
-      (roomCode &&
-        (localStorage.getItem("people-says-room-code") !== roomCode ||
+      roomCode &&
+      (localStorage.getItem("people-says-room-code") !== roomCode ||
         !getSavedDeviceConfigForCode(roomCode))
-      )
     ) {
       navigate("/join")
       setScreenState("join")
@@ -1899,10 +1891,7 @@ export default function App() {
     (screen === "join" && !isJoinEntryLocation())
   if (requiresRoomCode && !roomCode)
     return (
-      <GameUnavailablePage
-        onCreate={() => setScreen("create")}
-        onHome={() => setScreen("home")}
-      />
+      <GameUnavailablePage onCreate={() => setScreen("create")} onHome={() => setScreen("home")} />
     )
   if (roomLoading && ["create", "teams", "rounds"].includes(screen))
     return (
@@ -3213,10 +3202,7 @@ export default function App() {
               <Button secondary onClick={pauseGame}>
                 <Pause size={16} aria-hidden="true" /> Pausar partida
               </Button>
-              <Button
-                className="bg-red-600 hover:bg-red-700"
-                onClick={finalizeHostSession}
-              >
+              <Button className="bg-red-600 hover:bg-red-700" onClick={finalizeHostSession}>
                 <SquareX size={16} aria-hidden="true" /> Terminar partida
               </Button>
             </div>
@@ -3642,44 +3628,42 @@ export default function App() {
         <div className="display-floating-accent display-floating-accent-left pointer-events-none absolute -bottom-36 -left-28 size-[360px] rounded-full border-[50px] border-white/5" />
         <div className="relative z-10 mx-auto w-full max-w-7xl">
           <div className="flex justify-end">{pauseControl}</div>
-          {false ? (
-            <section className="mx-auto w-full max-w-2xl rounded-2xl border border-white/20 bg-black/20 px-6 py-8 text-center shadow-lg">
-              <p className="text-xs font-black uppercase tracking-[.24em] text-amber-100/80">
-                Ronda {String(state.roundIndex + 1).padStart(2, "0")}
-              </p>
-              <p className="mt-4 text-xs font-bold uppercase tracking-widest text-white/60">
-                Equipo ganador
-              </p>
-              <h1
-                className={cx(
-                  "mt-2 text-4xl font-black sm:text-6xl",
-                  roundWinner === "blue" ? "text-blue-200" : "text-red-200"
-                )}
-              >
-                {roundWinnerName}
-              </h1>
-              <p className="mt-5 text-sm font-semibold uppercase tracking-widest text-white/60">
-                Puntos ganados
-              </p>
-              <strong className="mt-1 block font-mono text-6xl font-black tabular-nums text-amber-300 sm:text-8xl">
-                +<AnimatedNumber value={roundPointsWon} padStart={2} />
-              </strong>
-              <div className="mt-8 grid grid-cols-2 gap-3 text-left">
-                <div className="rounded-xl bg-blue-900/60 p-4">
-                  <p className="text-xs font-bold text-blue-100">{teams[0].name}</p>
-                  <strong className="mt-1 block font-mono text-3xl font-black tabular-nums text-white">
-                    <AnimatedNumber value={blue} padStart={2} />
-                  </strong>
-                </div>
-                <div className="rounded-xl bg-red-900/60 p-4">
-                  <p className="text-xs font-bold text-red-100">{teams[1].name}</p>
-                  <strong className="mt-1 block font-mono text-3xl font-black tabular-nums text-white">
-                    <AnimatedNumber value={red} padStart={2} />
-                  </strong>
-                </div>
+          <section className="mx-auto w-full max-w-2xl rounded-2xl border border-white/20 bg-black/20 px-6 py-8 text-center shadow-lg">
+            <p className="text-xs font-black uppercase tracking-[.24em] text-amber-100/80">
+              Ronda {String(state.roundIndex + 1).padStart(2, "0")}
+            </p>
+            <p className="mt-4 text-xs font-bold uppercase tracking-widest text-white/60">
+              Equipo ganador
+            </p>
+            <h1
+              className={cx(
+                "mt-2 text-4xl font-black sm:text-6xl",
+                roundWinner === "blue" ? "text-blue-200" : "text-red-200"
+              )}
+            >
+              {roundWinnerName}
+            </h1>
+            <p className="mt-5 text-sm font-semibold uppercase tracking-widest text-white/60">
+              Puntos ganados
+            </p>
+            <strong className="mt-1 block font-mono text-6xl font-black tabular-nums text-amber-300 sm:text-8xl">
+              +<AnimatedNumber value={roundPointsWon} padStart={2} />
+            </strong>
+            <div className="mt-8 grid grid-cols-2 gap-3 text-left">
+              <div className="rounded-xl bg-blue-900/60 p-4">
+                <p className="text-xs font-bold text-blue-100">{teams[0].name}</p>
+                <strong className="mt-1 block font-mono text-3xl font-black tabular-nums text-white">
+                  <AnimatedNumber value={blue} padStart={2} />
+                </strong>
               </div>
-            </section>
-          ) : null}
+              <div className="rounded-xl bg-red-900/60 p-4">
+                <p className="text-xs font-bold text-red-100">{teams[1].name}</p>
+                <strong className="mt-1 block font-mono text-3xl font-black tabular-nums text-white">
+                  <AnimatedNumber value={red} padStart={2} />
+                </strong>
+              </div>
+            </div>
+          </section>
           <div className="grid w-full items-center gap-4 lg:grid-cols-[1fr_5fr_1fr]">
             <div
               className={cx(
