@@ -1856,11 +1856,7 @@ export default function App() {
       state.phase === "lobby" &&
       ["host", "faceoff", "decision", "steal", "display", "buzzer"].includes(screen)
     ) {
-      if (!roomCode) {
-        navigate("/")
-        setScreenState("home")
-        return
-      }
+      if (!roomCode) return
       if (hostToken) {
         setScreen("lobby")
       } else {
