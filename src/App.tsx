@@ -1817,6 +1817,11 @@ export default function App() {
       state.phase === "lobby" &&
       ["host", "faceoff", "decision", "steal", "display", "buzzer"].includes(screen)
     ) {
+      if (!roomCode) {
+        navigate("/")
+        setScreenState("home")
+        return
+      }
       if (hostToken) {
         setScreen("lobby")
       } else {
@@ -1825,7 +1830,12 @@ export default function App() {
       }
       return
     }
-    if (state.phase === "lobby" && screen === "join" && currentDeviceRole !== "pending") {
+    if (
+      state.phase === "lobby" &&
+      screen === "join" &&
+      roomCode &&
+      currentDeviceRole !== "pending"
+    ) {
       navigate("/join/lobby")
       setScreenState("joinLobby")
       return
