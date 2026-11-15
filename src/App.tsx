@@ -596,6 +596,44 @@ const readCreateDraft = (): Partial<CreateDraft> => {
   }
 }
 
+function GameUnavailablePage({
+  onCreate,
+  onHome,
+}: {
+  onCreate: () => void
+  onHome: () => void
+}) {
+  return (
+    <main className="min-h-screen px-5 py-7 sm:px-8 sm:py-10">
+      <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-md flex-col items-center justify-center text-center">
+        <Brand />
+        <section className="mt-10 w-full rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+          <span className="mx-auto grid size-12 place-items-center rounded-full bg-amber-50 text-amber-700">
+            <AlertTriangle size={25} aria-hidden="true" />
+          </span>
+          <p className="mt-5 text-xs font-bold uppercase tracking-widest text-stone-500">
+            Partida no disponible
+          </p>
+          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-stone-900">
+            No hay una partida iniciada
+          </h1>
+          <p className="mt-3 text-sm leading-6 text-stone-500">
+            Para acceder a esta pantalla necesitas iniciar una partida nueva o volver al inicio.
+          </p>
+          <div className="mt-6 grid gap-3">
+            <Button onClick={onCreate}>
+              Crear una partida <ArrowRight size={16} aria-hidden="true" />
+            </Button>
+            <Button ghost onClick={onHome}>
+              <ArrowLeft size={16} aria-hidden="true" /> Regresar al home
+            </Button>
+          </div>
+        </section>
+      </div>
+    </main>
+  )
+}
+
 export default function App() {
   const location = useLocation()
   const navigate = useNavigate()
@@ -1796,9 +1834,10 @@ export default function App() {
     if (state.phase !== "lobby") setLoadingAction(null)
     if (
       screen === "joinLobby" &&
-      (!roomCode ||
-        localStorage.getItem("people-says-room-code") !== roomCode ||
+      (roomCode &&
+        (localStorage.getItem("people-says-room-code") !== roomCode ||
         !getSavedDeviceConfigForCode(roomCode))
+      )
     ) {
       navigate("/join")
       setScreenState("join")
@@ -1857,6 +1896,18 @@ export default function App() {
     if (state.phase === "decision" && screen === "faceoff") setScreen("decision")
     if (state.phase === "turn" && (screen === "faceoff" || screen === "decision")) setScreen("host")
   }, [state.phase, screen, currentDeviceRole, hostToken, roomCode])
+  const requiresRoomCode =
+    ["lobby", "joinLobby", "host", "faceoff", "decision", "steal", "display", "buzzer"].includes(
+      screen
+    ) ||
+    (screen === "join" && !isJoinEntryLocation())
+  if (requiresRoomCode && !roomCode)
+    return (
+      <GameUnavailablePage
+        onCreate={() => setScreen("create")}
+        onHome={() => setScreen("home")}
+      />
+    )
   if (roomLoading && ["create", "teams", "rounds"].includes(screen))
     return (
       <Shell>
