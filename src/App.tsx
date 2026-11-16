@@ -47,6 +47,7 @@ import {
   Heading,
   Shell,
   Skeleton,
+  Toast,
   WizardProgress,
   DeviceTypeIcon,
 } from "./components/atoms"
@@ -639,6 +640,8 @@ export default function App() {
   const [state, setState] = useState<State>(defaultState)
   const [gameName, setGameName] = useState(savedCreateDraft.gameName ?? "")
   const [categories, setCategories] = useState<SetupCategory[]>([])
+  const [categoriesLoading, setCategoriesLoading] = useState(true)
+  const [categoriesError, setCategoriesError] = useState("")
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>(
     savedCreateDraft.selectedCategoryIds ?? []
   )
@@ -713,6 +716,7 @@ export default function App() {
     Array<{ id?: string; role: string; name?: string; deviceType?: DeviceType }>
   >([])
   const [error, setError] = useState("")
+  const [toastMessage, setToastMessage] = useState("")
   const [copied, setCopied] = useState<"code" | "url" | null>(null)
   const [showQrModal, setShowQrModal] = useState(false)
   const [qrLoaded, setQrLoaded] = useState(false)
@@ -762,14 +766,39 @@ export default function App() {
     )
   }, [roomCode, screen, gameName, mode, teams, rounds, selectedCategoryIds, selectedQuestions])
   useEffect(() => {
+    setCategoriesLoading(true)
+    setCategoriesError("")
     fetch(`${api}/api/categories`)
-      .then((response) => (response.ok ? response.json() : []))
+      .then(async (response) => {
+        if (!response.ok) throw new Error("No se pudieron cargar las categorías.")
+        return response.json()
+      })
       .then((data: SetupCategory[]) => {
-        setCategories(data)
+        setCategories(
+          data.map((category) => ({
+            ...category,
+            id: Number(category.id),
+            questionCount: Number(category.questionCount),
+          }))
+        )
         if (!savedCreateDraft.selectedCategoryIds) setSelectedCategoryIds([])
       })
-      .catch(() => setCategories([]))
+      .catch((loadError: unknown) => {
+        const message =
+          loadError instanceof Error
+            ? loadError.message
+            : "No se pudieron cargar las categorías."
+        setCategories([])
+        setCategoriesError(message)
+        setToastMessage(message)
+      })
+      .finally(() => setCategoriesLoading(false))
   }, [])
+  useEffect(() => {
+    if (!toastMessage) return
+    const timeout = window.setTimeout(() => setToastMessage(""), 4500)
+    return () => window.clearTimeout(timeout)
+  }, [toastMessage])
   useEffect(() => {
     if (!timerRunning) return
     const timer = window.setInterval(() => {
@@ -1970,27 +1999,32 @@ export default function App() {
   if (screen === "rules") return <RulesPage onBack={() => setScreen("home")} />
   if (screen === "create")
     return (
-      <GameSetupStep
-        editing={isEditLocation()}
-        gameName={gameName}
-        mode={mode}
-        modes={modes}
-        valid={validGameSetup}
-        loading={loadingAction === "create"}
-        error={error}
-        onGameNameChange={setGameName}
-        onModeChange={setMode}
-        onContinue={saveGameConfig}
-        categories={categories}
-        selectedCategoryIds={selectedCategoryIds}
-        onCategoryToggle={(id) =>
-          setSelectedCategoryIds((current) =>
-            current.includes(id)
-              ? current.filter((categoryId) => categoryId !== id)
-              : [...current, id]
-          )
-        }
-      />
+      <>
+        {toastMessage && <Toast message={toastMessage} onClose={() => setToastMessage("")} />}
+        <GameSetupStep
+          editing={isEditLocation()}
+          gameName={gameName}
+          mode={mode}
+          modes={modes}
+          valid={validGameSetup}
+          loading={loadingAction === "create"}
+          error={error}
+          onGameNameChange={setGameName}
+          onModeChange={setMode}
+          onContinue={saveGameConfig}
+          categories={categories}
+          categoriesLoading={categoriesLoading}
+          categoriesError={categoriesError}
+          selectedCategoryIds={selectedCategoryIds}
+          onCategoryToggle={(id) =>
+            setSelectedCategoryIds((current) =>
+              current.includes(id)
+                ? current.filter((categoryId) => categoryId !== id)
+                : [...current, id]
+            )
+          }
+        />
+      </>
     )
   if (screen === "teams")
     return (

@@ -47,6 +47,8 @@ type GameSetupProps = {
   onModeChange: (mode: SetupMode) => void
   onContinue: () => void
   categories: SetupCategory[]
+  categoriesLoading: boolean
+  categoriesError: string
   selectedCategoryIds: number[]
   onCategoryToggle: (id: number) => void
 }
@@ -63,6 +65,8 @@ export function GameSetupStep({
   onModeChange,
   onContinue,
   categories,
+  categoriesLoading,
+  categoriesError,
   selectedCategoryIds,
   onCategoryToggle,
 }: GameSetupProps) {
@@ -161,7 +165,21 @@ export function GameSetupStep({
             ))}
           </div>
         </div>
-        {categories.length > 0 && (
+        {categoriesLoading ? (
+          <div>
+            <Skeleton className="mb-3 h-3 w-44" />
+            <div className="grid gap-2 sm:grid-cols-2">
+              {Array.from({ length: 6 }, (_, index) => (
+                <div key={index} className="rounded-xl border border-stone-200 p-3">
+                  <Skeleton className="h-5 w-5" />
+                  <Skeleton className="mt-3 h-4 w-3/4" />
+                  <Skeleton className="mt-2 h-3 w-full" />
+                  <Skeleton className="mt-1 h-3 w-2/3" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : categories.length > 0 ? (
           <div>
             <p className="mb-3 text-xs font-medium text-stone-500">
               Categorías de preguntas <span className="text-red-600">*</span>
@@ -269,6 +287,10 @@ export function GameSetupStep({
               </button>
             )}
           </div>
+        ) : (
+          <p className="rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-500">
+            {categoriesError || "No hay categorías disponibles en este momento."}
+          </p>
         )}
         {error && <p className="text-sm text-red-700">{error}</p>}
       </div>

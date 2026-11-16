@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react"
 import { useNavigate } from "react-router-dom"
 import {
   ArrowLeft,
+  CircleAlert,
   Circle,
   Laptop,
   MicVocal,
@@ -76,6 +77,25 @@ export function Skeleton({ className = "" }: { className?: string }) {
       className={cx("block animate-pulse rounded-lg bg-stone-200", className)}
       aria-hidden="true"
     />
+  )
+}
+export function Toast({ message, onClose }: { message: string; onClose: () => void }) {
+  return (
+    <div
+      className="fixed right-5 top-5 z-[60] flex max-w-sm items-start gap-3 rounded-xl border border-red-200 bg-white px-4 py-3 text-sm text-red-800 shadow-xl"
+      role="alert"
+    >
+      <CircleAlert className="mt-0.5 shrink-0 text-red-600" size={18} aria-hidden="true" />
+      <span className="min-w-0 flex-1 leading-5">{message}</span>
+      <button
+        type="button"
+        className="cursor-pointer text-red-400 hover:text-red-700"
+        onClick={onClose}
+        aria-label="Cerrar mensaje"
+      >
+        <XIcon size={16} aria-hidden="true" />
+      </button>
+    </div>
   )
 }
 export function CountPill({ count, label }: { count: number; label: string }) {
