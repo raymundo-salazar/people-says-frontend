@@ -785,9 +785,7 @@ export default function App() {
       })
       .catch((loadError: unknown) => {
         const message =
-          loadError instanceof Error
-            ? loadError.message
-            : "No se pudieron cargar las categorías."
+          loadError instanceof Error ? loadError.message : "No se pudieron cargar las categorías."
         setCategories([])
         setCategoriesError(message)
         setToastMessage(message)
